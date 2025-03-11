@@ -2,10 +2,14 @@ import { useState } from "react"
 
 import "./App.css"
 
-import { Instructions } from "./components/"
+import { IdeaCard, Instructions } from "./components/"
 
 function App() {
 	const [count, setCount] = useState(0)
+
+	const createIdea = () => {
+		console.log("createIdea")
+	}
 
 	return (
 		<>
@@ -16,6 +20,8 @@ function App() {
 				</button>
 			</div>
 			<Instructions />
+			<button onClick={() => createIdea()}>Create a new idea</button>
+			<IdeaCard />
 		</>
 	)
 }

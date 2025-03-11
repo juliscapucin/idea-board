@@ -1,0 +1,12 @@
+.idea-card {
+	width: 20rem;
+	background-color: var(--color-secondary);
+	color: var(--color-text-dark);
+	padding: var(--space-sm);
+	border-radius: var(--round-corner-md);
+}
+
+.idea-card input,
+.idea-card textarea {
+	color: var(--color-text-dark);
+}

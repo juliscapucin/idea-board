@@ -1,3 +1,4 @@
+import IdeaCard from "./IdeaCard"
 import Instructions from "./Instructions"
 
-export { Instructions }
+export { IdeaCard, Instructions }
