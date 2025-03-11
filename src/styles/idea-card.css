@@ -1,4 +1,5 @@
-.idea-card {
+.idea-card,
+.idea-card-form {
 	width: 20rem;
 	background-color: var(--color-secondary);
 	color: var(--color-text-dark);
@@ -6,7 +7,24 @@
 	border-radius: var(--round-corner-md);
 }
 
+.idea-card input {
+	font-size: var(--text-md);
+}
+
 .idea-card input,
 .idea-card textarea {
 	color: var(--color-text-dark);
+	border: 1px solid var(--color-transparent);
+}
+
+.idea-card input:valid,
+.idea-card textarea:valid {
+	border: 1px solid var(--color-transparent);
+}
+
+.idea-card__buttons {
+	width: full;
+	display: flex;
+	justify-content: center;
+	gap: var(--space-sm);
 }

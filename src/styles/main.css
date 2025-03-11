@@ -1,0 +1,141 @@
+:root {
+	font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+	line-height: 1.5;
+	font-weight: 400;
+	text-align: left;
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	--color-primary: #242424;
+	--color-secondary: #bfbfc2;
+	--color-tertiary: #646cff;
+	--color-faded: #74747a;
+	--color-text-light: #ffffff;
+	--color-text-dark: #1a1a1a;
+	--color-link: #646cff;
+	--color-link-hover: #535bf2;
+	--color-transparent: rgba(255, 255, 255, 0);
+
+	--space-xs: 0.8rem;
+	--space-sm: 1.6rem;
+	--space-md: 2.4rem;
+	--space-lg: 3.2rem;
+	--space-xl: 4.8rem;
+
+	--round-corner-md: 8px;
+
+	--text-xs: 0.6rem;
+	--text-sm: 1rem;
+	--text-md: 1.6rem;
+	--text-lg: 2.4rem;
+	--text-xl: 3.2rem;
+
+	color-scheme: light dark;
+	color: var(--color-text-light);
+	background-color: var(--color-primary);
+}
+
+a {
+	font-weight: 500;
+	color: var(--color-link);
+	text-decoration: inherit;
+}
+
+a:hover {
+	color: var(--color-link-hover);
+}
+
+body {
+	margin: 0;
+	min-width: 320px;
+	min-height: 100svh;
+}
+
+h1 {
+	font-size: 3.2em;
+	line-height: 1.1;
+	text-align: left;
+}
+
+button {
+	display: block;
+	margin-top: var(--space-sm);
+	border-radius: 8px;
+	border: 1px solid transparent;
+	padding: var(--space-xs);
+	font-size: 1em;
+	font-weight: 500;
+	font-family: inherit;
+	background-color: var(--color-primary);
+	cursor: pointer;
+	transition: border-color 0.25s;
+}
+
+button:hover {
+	border-color: #646cff;
+}
+
+button:focus,
+button:focus-visible {
+	outline: 4px auto -webkit-focus-ring-color;
+}
+
+.button-main {
+	background-color: var(--color-tertiary);
+}
+
+.button-faded {
+	background-color: var(--color-faded);
+}
+
+@media (prefers-color-scheme: light) {
+	:root {
+		color: var(--color-text-dark);
+		background-color: var(--color-secondary);
+	}
+	a:hover {
+		color: var(--color-link-hover);
+	}
+}
+
+input,
+textarea {
+	display: block;
+	border-radius: var(--round-corner-md);
+	border: 1px solid var(--color-secondary);
+	padding: var(--space-xs);
+	font-size: 1rem;
+	font-weight: 500;
+	font-family: inherit;
+	background-color: transparent;
+}
+
+input,
+textarea {
+	margin-top: var(--space-sm);
+}
+
+input:invalid,
+textarea:invalid {
+	border: 1px solid red;
+}
+
+input:valid,
+textarea:valid {
+	border: 1px solid lime;
+}
+
+textarea {
+	resize: none;
+}
+
+.main {
+}
+
+.main__desktop {
+	display: flex;
+	gap: var(--space-md);
+}

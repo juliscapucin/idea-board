@@ -1,28 +1,34 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 
 import "./App.css"
 
-import { IdeaCard, Instructions } from "./components/"
+import { IdeaCard, IdeaCardForm, Instructions } from "./components/"
+
+import { IdeaCard as IdeaCardType } from "./types"
 
 function App() {
-	const [count, setCount] = useState(0)
+	const ideaCardFormRef = useRef<HTMLDivElement | null>(null)
 
-	const createIdea = () => {
-		console.log("createIdea")
-	}
+	const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCardType[]>(
+		[]
+	)
 
 	return (
-		<>
+		<main className='main'>
 			<h1>Idea Board</h1>
-			<div className='card'>
-				<button onClick={() => setCount((count) => count + 1)}>
-					count is {count}
-				</button>
-			</div>
 			<Instructions />
-			<button onClick={() => createIdea()}>Create a new idea</button>
-			<IdeaCard />
-		</>
+			<div className='main__desktop'>
+				<IdeaCardForm {...{ ideaCardCollection, setIdeaCardCollection }} />
+				{ideaCardCollection.map((ideaCard) => {
+					return (
+						<IdeaCard
+							ref={ideaCardFormRef}
+							{...{ title: ideaCard.title, description: ideaCard.description }}
+						/>
+					)
+				})}
+			</div>
+		</main>
 	)
 }
 

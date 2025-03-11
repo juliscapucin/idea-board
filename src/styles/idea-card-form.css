@@ -1,0 +1,14 @@
+.idea-card-form {
+	width: 20rem;
+	background-color: var(--color-secondary);
+	color: var(--color-text-dark);
+	padding: var(--space-sm);
+	border-radius: var(--round-corner-md);
+}
+
+.idea-card-form__button {
+	width: full;
+	display: flex;
+	justify-content: center;
+	gap: var(--space-sm);
+}

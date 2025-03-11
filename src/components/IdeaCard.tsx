@@ -1,23 +1,21 @@
-import { useActionState, useRef } from "react"
+import { Ref } from "react"
 
-export default function IdeaCard() {
+type IdeaCardProps = {
+	ref: Ref<HTMLDivElement> | undefined
+	title: string
+	description: string
+}
+
+export default function IdeaCard({ ref, title, description }: IdeaCardProps) {
 	// const [data, action] = useActionState()
-	const formRef = useRef<null | HTMLFormElement>(null)
 
-	const createIdea = () => {
-		if (formRef.current) {
-			const inputs = formRef.current.querySelectorAll("input")
-
-			inputs.forEach((input) => {
-				input.value = ""
-			})
-		}
-	}
+	const editIdea = () => {}
 
 	return (
-		<div className='idea-card text-left'>
-			<form ref={formRef} action={createIdea}>
+		<div ref={ref} className='idea-card text-left'>
+			<form action={editIdea}>
 				<input
+					value={title}
 					type='text'
 					id='title'
 					name='title'
@@ -25,9 +23,12 @@ export default function IdeaCard() {
 					placeholder='My Best Idea'
 					required
 				/>
-				<label htmlFor='title'>Idea title</label>
+				<label className='opacity-0' htmlFor='title'>
+					Idea title
+				</label>
 
 				<textarea
+					value={description}
 					id='description'
 					name='description'
 					placeholder='Idea description here'
@@ -36,11 +37,16 @@ export default function IdeaCard() {
 					rows={3}
 					required
 				/>
-				<label htmlFor='description'>
+				<label className='opacity-0' htmlFor='description'>
 					Write a description for your idea with a maximum of 140 characters
 				</label>
 
-				<button type='submit'>Create Idea</button>
+				<div className='idea-card__buttons'>
+					<button className='button-faded'>Delete Card</button>
+					<button type='submit' className='button-main'>
+						Save
+					</button>
+				</div>
 			</form>
 		</div>
 	)
