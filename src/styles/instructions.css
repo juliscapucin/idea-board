@@ -1,0 +1,17 @@
+.instructions {
+}
+
+.instructions__popup {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: var(--padding-md);
+	background-color: var(--color-primary);
+}
+
+.instructions__button-close {
+	position: absolute;
+	top: var(--padding-xs);
+	right: var(--padding-xs);
+	z-index: 10;
+}
