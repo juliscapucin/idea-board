@@ -1,15 +1,33 @@
 import { Ref } from "react"
 
+import { IdeaCard as IdeaCardType } from "../types"
+
 type IdeaCardProps = {
 	ref: Ref<HTMLDivElement> | undefined
 	title: string
 	description: string
+	ideaCardCollection: IdeaCardType[]
+	setIdeaCardCollection: (newCollection: IdeaCardType[]) => void
 }
 
-export default function IdeaCard({ ref, title, description }: IdeaCardProps) {
+export default function IdeaCard({
+	ref,
+	title,
+	description,
+	ideaCardCollection,
+	setIdeaCardCollection,
+}: IdeaCardProps) {
 	// const [data, action] = useActionState()
 
 	const editIdea = () => {}
+
+	const deleteIdea = (title: string) => {
+		const updatedIdeaCardCollection = ideaCardCollection.filter((card) => {
+			if (card.title !== title) return card
+		})
+
+		setIdeaCardCollection(updatedIdeaCardCollection)
+	}
 
 	return (
 		<div ref={ref} className='idea-card text-left'>
@@ -42,7 +60,9 @@ export default function IdeaCard({ ref, title, description }: IdeaCardProps) {
 				</label>
 
 				<div className='idea-card__buttons'>
-					<button className='button-faded'>Delete Card</button>
+					<button onClick={() => deleteIdea(title)} className='button-faded'>
+						Delete Card
+					</button>
 					<button type='submit' className='button-main'>
 						Save
 					</button>

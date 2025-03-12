@@ -23,7 +23,12 @@ function App() {
 					return (
 						<IdeaCard
 							ref={ideaCardFormRef}
-							{...{ title: ideaCard.title, description: ideaCard.description }}
+							{...{
+								title: ideaCard.title,
+								description: ideaCard.description,
+								ideaCardCollection,
+								setIdeaCardCollection,
+							}}
 						/>
 					)
 				})}
