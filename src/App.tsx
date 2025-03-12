@@ -22,6 +22,7 @@ function App() {
 				{ideaCardCollection.map((ideaCard) => {
 					return (
 						<IdeaCard
+							key={ideaCard.title}
 							ref={ideaCardFormRef}
 							{...{
 								title: ideaCard.title,

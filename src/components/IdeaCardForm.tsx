@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 
 import { IdeaCard } from "../types"
 
@@ -12,33 +12,32 @@ export default function IdeaCardForm({
 	setIdeaCardCollection,
 }: IdeaCardFormProps) {
 	// const [data, action] = useActionState()
-	const formRef = useRef<null | HTMLFormElement>(null)
-	const titleRef = useRef<HTMLInputElement | null>(null)
-	const descriptionRef = useRef<HTMLTextAreaElement | null>(null)
 
 	const [title, setTitle] = useState("")
 	const [description, setDescription] = useState("")
 
 	const createIdea = () => {
-		if (formRef.current) {
-			setIdeaCardCollection([...ideaCardCollection, { title, description }])
+		// CHECK IF TITLE ALREADY EXISTS
+		const duplicatedTitle = ideaCardCollection.find(
+			(card) => card.title === title
+		)
 
-			setTitle("")
-			setDescription("")
+		if (duplicatedTitle) {
+			alert("This title already exists. You must have unique titles.")
+			return
 		}
-	}
 
-	// useEffect(() => {
-	// 	console.log("card created")
-	// 	console.log(ideaCardCollection)
-	// }, [ideaCardCollection])
+		setIdeaCardCollection([...ideaCardCollection, { title, description }])
+
+		setTitle("")
+		setDescription("")
+	}
 
 	return (
 		<div className='idea-card-form text-left'>
-			<form ref={formRef} action={createIdea}>
+			<form action={createIdea}>
 				<input
 					onChange={(e) => setTitle(e.target.value)}
-					ref={titleRef}
 					type='text'
 					id='title'
 					name='title'
@@ -50,7 +49,6 @@ export default function IdeaCardForm({
 
 				<textarea
 					onChange={(e) => setDescription(e.target.value)}
-					ref={descriptionRef}
 					id='description'
 					name='description'
 					placeholder='Idea description here'

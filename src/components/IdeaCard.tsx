@@ -1,4 +1,4 @@
-import { Ref } from "react"
+import { Ref, useState } from "react"
 
 import { IdeaCard as IdeaCardType } from "../types"
 
@@ -17,9 +17,21 @@ export default function IdeaCard({
 	ideaCardCollection,
 	setIdeaCardCollection,
 }: IdeaCardProps) {
-	// const [data, action] = useActionState()
+	const [newTitle, setNewTitle] = useState("")
+	const [newDescription, setNewDescription] = useState("")
 
-	const editIdea = () => {}
+	const editIdea = (inputType: string) => {
+		const cardToEdit =
+			inputType === "title"
+				? ideaCardCollection.find((card) => card.title === title)
+				: ideaCardCollection.find((card) => card.description === description)
+
+		console.log(cardToEdit)
+
+		// setIdeaCardCollection([...ideaCardCollection, { title, description }])
+	}
+
+	const saveIdea = () => {}
 
 	const deleteIdea = (title: string) => {
 		const updatedIdeaCardCollection = ideaCardCollection.filter((card) => {
@@ -31,7 +43,7 @@ export default function IdeaCard({
 
 	return (
 		<div ref={ref} className='idea-card text-left'>
-			<form action={editIdea}>
+			<form action={saveIdea}>
 				<input
 					value={title}
 					type='text'
@@ -40,6 +52,7 @@ export default function IdeaCard({
 					minLength={2}
 					placeholder='My Best Idea'
 					required
+					onChange={(e) => setNewTitle(e.target.value)}
 				/>
 				<label className='opacity-0' htmlFor='title'>
 					Idea title
@@ -54,6 +67,7 @@ export default function IdeaCard({
 					maxLength={140}
 					rows={3}
 					required
+					onChange={(e) => setNewDescription(e.target.value)}
 				/>
 				<label className='opacity-0' htmlFor='description'>
 					Write a description for your idea with a maximum of 140 characters
