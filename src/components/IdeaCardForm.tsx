@@ -57,6 +57,11 @@ export default function IdeaCardForm({
 		}
 	}, [formRef])
 
+	// FOCUS ON TITLE INPUT WHEN COLLECTION IS EMPTY
+	useEffect(() => {
+		if (!ideaCardCollection.length && titleRef.current) titleRef.current.focus()
+	}, [ideaCardCollection])
+
 	return (
 		<div className='idea-card-form text-left'>
 			<form action={createIdea} ref={formRef}>
