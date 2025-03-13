@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 import { IdeaCard } from "../types"
+import { duplicatedTitleMessage } from "../lib/feedback-messages"
 
 type IdeaCardFormProps = {
 	ideaCardCollection: IdeaCard[]
@@ -23,7 +24,7 @@ export default function IdeaCardForm({
 		)
 
 		if (duplicatedTitle) {
-			alert("This title already exists. You must have unique titles.")
+			alert(duplicatedTitleMessage)
 			return
 		}
 

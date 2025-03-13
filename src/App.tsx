@@ -7,7 +7,7 @@ import { IdeaCard, IdeaCardForm, Instructions } from "./components/"
 import { IdeaCard as IdeaCardType } from "./types"
 
 function App() {
-	const ideaCardFormRef = useRef<HTMLDivElement | null>(null)
+	const ideaCardRef = useRef<HTMLDivElement | null>(null)
 
 	const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCardType[]>(
 		[]
@@ -23,7 +23,7 @@ function App() {
 					return (
 						<IdeaCard
 							key={ideaCard.title}
-							ref={ideaCardFormRef}
+							ref={ideaCardRef}
 							{...{
 								title: ideaCard.title,
 								description: ideaCard.description,

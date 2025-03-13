@@ -2,6 +2,8 @@ import { Ref, useState } from "react"
 
 import { IdeaCard as IdeaCardType } from "../types"
 
+import { duplicatedTitleMessage } from "../lib/feedback-messages"
+
 type IdeaCardProps = {
 	ref: Ref<HTMLDivElement> | undefined
 	title: string
@@ -17,21 +19,34 @@ export default function IdeaCard({
 	ideaCardCollection,
 	setIdeaCardCollection,
 }: IdeaCardProps) {
-	const [newTitle, setNewTitle] = useState("")
-	const [newDescription, setNewDescription] = useState("")
+	const [newTitle, setNewTitle] = useState(title)
+	const [newDescription, setNewDescription] = useState(description)
 
-	const editIdea = (inputType: string) => {
-		const cardToEdit =
-			inputType === "title"
-				? ideaCardCollection.find((card) => card.title === title)
-				: ideaCardCollection.find((card) => card.description === description)
+	// const [newCard, setNewCard] = useState({ title, description })
 
-		console.log(cardToEdit)
+	const saveIdea = () => {
+		const cardToEdit = ideaCardCollection.find(
+			(card) => card.title === title || card.description === description
+		)
 
-		// setIdeaCardCollection([...ideaCardCollection, { title, description }])
+		if (!cardToEdit) return
+
+		const cardToEditIndex = ideaCardCollection.indexOf(cardToEdit)
+
+		const editedCard = { title: newTitle, description: newDescription }
+
+		// CHECK FOR DUPLICATED TITLE
+		if (ideaCardCollection.find((card) => card.title === editedCard.title)) {
+			alert(duplicatedTitleMessage)
+			setNewTitle(title) // if duplicated, revert to original title
+		} else {
+			// CREATE A NEW ARRAY WITH UPDATED DATA
+			const updatedCollection = [...ideaCardCollection]
+			updatedCollection[cardToEditIndex] = editedCard
+
+			setIdeaCardCollection(updatedCollection)
+		}
 	}
-
-	const saveIdea = () => {}
 
 	const deleteIdea = (title: string) => {
 		const updatedIdeaCardCollection = ideaCardCollection.filter((card) => {
@@ -45,21 +60,23 @@ export default function IdeaCard({
 		<div ref={ref} className='idea-card text-left'>
 			<form action={saveIdea}>
 				<input
-					value={title}
+					value={newTitle}
 					type='text'
 					id='title'
 					name='title'
 					minLength={2}
 					placeholder='My Best Idea'
 					required
-					onChange={(e) => setNewTitle(e.target.value)}
+					onChange={(e) => {
+						setNewTitle(e.target.value)
+					}}
 				/>
 				<label className='opacity-0' htmlFor='title'>
 					Idea title
 				</label>
 
 				<textarea
-					value={description}
+					value={newDescription}
 					id='description'
 					name='description'
 					placeholder='Idea description here'
@@ -67,7 +84,9 @@ export default function IdeaCard({
 					maxLength={140}
 					rows={3}
 					required
-					onChange={(e) => setNewDescription(e.target.value)}
+					onChange={(e) => {
+						setNewDescription(e.target.value)
+					}}
 				/>
 				<label className='opacity-0' htmlFor='description'>
 					Write a description for your idea with a maximum of 140 characters
