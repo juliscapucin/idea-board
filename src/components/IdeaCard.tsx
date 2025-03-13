@@ -22,8 +22,6 @@ export default function IdeaCard({
 	const [newTitle, setNewTitle] = useState(title)
 	const [newDescription, setNewDescription] = useState(description)
 
-	// const [newCard, setNewCard] = useState({ title, description })
-
 	const saveIdea = () => {
 		const cardToEdit = ideaCardCollection.find(
 			(card) => card.title === title || card.description === description

@@ -1,7 +1,11 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import { IdeaCard } from "../types"
-import { duplicatedTitleMessage } from "../lib/feedback-messages"
+import {
+	duplicatedTitleMessage,
+	emptyTitleMessage,
+	emptyDescriptionMessage,
+} from "../lib/feedback-messages"
 
 type IdeaCardFormProps = {
 	ideaCardCollection: IdeaCard[]
@@ -16,6 +20,9 @@ export default function IdeaCardForm({
 
 	const [title, setTitle] = useState("")
 	const [description, setDescription] = useState("")
+
+	const formRef = useRef<HTMLFormElement>(null)
+	const titleRef = useRef<HTMLInputElement>(null)
 
 	const createIdea = () => {
 		// CHECK IF TITLE ALREADY EXISTS
@@ -32,12 +39,29 @@ export default function IdeaCardForm({
 
 		setTitle("")
 		setDescription("")
+
+		if (titleRef.current) titleRef.current.focus() // On complete, focus on Title input
 	}
+
+	// CREATE IDEA CARD ON ENTER KEYDOWN
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (!formRef.current) return
+			if (e.key == "Enter") formRef.current.requestSubmit()
+		}
+
+		document.addEventListener("keydown", handleKeyDown)
+
+		return () => {
+			document.removeEventListener("keydown", handleKeyDown)
+		}
+	}, [formRef])
 
 	return (
 		<div className='idea-card-form text-left'>
-			<form action={createIdea}>
+			<form action={createIdea} ref={formRef}>
 				<input
+					ref={titleRef}
 					onChange={(e) => setTitle(e.target.value)}
 					type='text'
 					id='title'
