@@ -1,4 +1,4 @@
-import { Ref, useState } from "react"
+import { Ref, useRef, useState } from "react"
 
 import { IdeaCard as IdeaCardType } from "../types"
 
@@ -22,6 +22,8 @@ export default function IdeaCard({
 	const [newTitle, setNewTitle] = useState(title)
 	const [newDescription, setNewDescription] = useState(description)
 
+	const titleRef = useRef<HTMLInputElement>(null)
+
 	const saveIdea = () => {
 		const cardToEdit = ideaCardCollection.find(
 			(card) => card.title === title || card.description === description
@@ -34,9 +36,13 @@ export default function IdeaCard({
 		const editedCard = { title: newTitle, description: newDescription }
 
 		// CHECK FOR DUPLICATED TITLE
-		if (ideaCardCollection.find((card) => card.title === editedCard.title)) {
+		if (
+			title !== newTitle && // if Title has been edited
+			ideaCardCollection.find((card) => card.title === editedCard.title)
+		) {
 			alert(duplicatedTitleMessage)
 			setNewTitle(title) // if duplicated, revert to original title
+			titleRef.current && titleRef.current.focus()
 		} else {
 			// CREATE A NEW ARRAY WITH UPDATED DATA
 			const updatedCollection = [...ideaCardCollection]
@@ -58,6 +64,7 @@ export default function IdeaCard({
 		<div ref={ref} className='idea-card text-left'>
 			<form action={saveIdea}>
 				<input
+					ref={titleRef}
 					value={newTitle}
 					type='text'
 					id='title'
