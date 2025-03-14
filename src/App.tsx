@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import gsap from "gsap"
 import Flip from "gsap/Flip"
 
@@ -19,7 +19,7 @@ function App() {
 	)
 
 	const createIdea = () => {
-		// CHECK IF TITLE ALREADY EXISTS
+		// CHECK IF EMPTY CARD ALREADY EXISTS
 		const duplicatedTitle = ideaCardCollection.find((card) => card.title === "")
 
 		if (duplicatedTitle) {
@@ -61,7 +61,6 @@ function App() {
 						return (
 							<IdeaCard
 								key={ideaCard.title}
-								ref={ideaCardRef}
 								{...{
 									ideaCard,
 									ideaCardCollection,

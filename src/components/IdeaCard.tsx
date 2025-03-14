@@ -1,4 +1,9 @@
-import { Ref, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+
+import gsap from "gsap"
+import Flip from "gsap/Flip"
+
+gsap.registerPlugin(Flip)
 
 import { IdeaCardType } from "../types"
 
@@ -6,19 +11,19 @@ import { duplicatedTitleMessage } from "../lib/feedback-messages"
 import { getDateAndTime } from "../lib/utils"
 
 type IdeaCardProps = {
-	ref: Ref<HTMLDivElement> | undefined
 	ideaCard: IdeaCardType
 	ideaCardCollection: IdeaCardType[]
 	setIdeaCardCollection: (newCollection: IdeaCardType[]) => void
 }
 
 export default function IdeaCard({
-	ref,
 	ideaCard,
 	ideaCardCollection,
 	setIdeaCardCollection,
 }: IdeaCardProps) {
 	const { title, description, dateCreated, dateEdited } = ideaCard
+
+	const isSaved = dateCreated ? true : false
 
 	const [newTitle, setNewTitle] = useState(title)
 	const [newDescription, setNewDescription] = useState(description)
@@ -26,6 +31,7 @@ export default function IdeaCard({
 	const [isEditingTitle, setIsEditingTitle] = useState(false)
 	const [isEditingDescription, setIsEditingDescription] = useState(false)
 
+	const ideaCardRef = useRef<HTMLDivElement>(null)
 	const titleRef = useRef<HTMLInputElement>(null)
 
 	const saveIdea = () => {
@@ -41,8 +47,8 @@ export default function IdeaCard({
 
 		const formattedDate = getDateAndTime()
 
-		// If dateCreated exists, set Edited Date
-		if (dateCreated) {
+		// If saved previously, set Edited Date
+		if (isSaved) {
 			editedCard = {
 				title: newTitle,
 				description: newDescription,
@@ -50,7 +56,7 @@ export default function IdeaCard({
 				dateEdited: formattedDate,
 			}
 		} else {
-			// If dateCreated doesn't exist, set Created Date
+			// If not saved previously, set Created Date
 			editedCard = {
 				title: newTitle,
 				description: newDescription,
@@ -79,18 +85,28 @@ export default function IdeaCard({
 	}
 
 	const deleteIdea = (title: string) => {
-		// const state = Flip.getState(containerRef.current.children)
+		let state
+
+		if (ideaCardRef.current && ideaCardRef.current.parentElement) {
+			console.log(ideaCardRef.current.parentElement)
+			state = Flip.getState(ideaCardRef.current.parentElement.children)
+		}
 
 		const updatedCollection = ideaCardCollection.filter((card) => {
 			if (card.title !== title) return card
 		})
 
 		setIdeaCardCollection(updatedCollection)
+
+		if (state)
+			requestAnimationFrame(() =>
+				Flip.from(state, { duration: 0.5, ease: "power2.out" })
+			)
 	}
 
 	// If it's a fresh card, focus on Title input
 	useEffect(() => {
-		if (!dateCreated && titleRef.current) titleRef.current.focus()
+		if (!isSaved && titleRef.current) titleRef.current.focus()
 	}, [])
 
 	useEffect(() => {
@@ -98,11 +114,11 @@ export default function IdeaCard({
 	}, [newDescription])
 
 	return (
-		<div ref={ref} className='idea-card'>
-			<form action={saveIdea}>
+		<div ref={ideaCardRef} className='idea-card'>
+			<div>
 				<div className='idea-card__form-section'>
 					<label
-						className={`${dateCreated ? "opacity-0" : "opacity-1"}`}
+						className={`${isSaved ? "opacity-0" : "opacity-1"}`}
 						htmlFor='title'
 					>
 						Idea title
@@ -127,7 +143,7 @@ export default function IdeaCard({
 
 				<div>
 					<label
-						className={`${dateCreated ? "opacity-0" : "opacity-1"}`} // if already saved once, no need for labels
+						className={`${isSaved ? "opacity-0" : "opacity-1"}`} // if already saved once, no need for labels
 						htmlFor='description'
 					>
 						Description
@@ -160,7 +176,7 @@ export default function IdeaCard({
 						Delete Card
 					</button>
 					{(isEditingTitle || isEditingDescription) && (
-						<button type='submit' className='button-main'>
+						<button onClick={saveIdea} className='button-main'>
 							Save
 						</button>
 					)}
@@ -169,7 +185,7 @@ export default function IdeaCard({
 					{dateEdited && <p>Last edited on: {dateEdited}</p>}
 					{dateCreated && <p>Created on: {dateCreated}</p>}
 				</div>
-			</form>
+			</div>
 		</div>
 	)
 }
