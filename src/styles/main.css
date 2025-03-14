@@ -19,6 +19,7 @@
 	--color-link-hover: #535bf2;
 	--color-transparent: rgba(255, 255, 255, 0);
 
+	--space-xxs: 0.4rem;
 	--space-xs: 0.8rem;
 	--space-sm: 1.6rem;
 	--space-md: 2.4rem;
@@ -107,16 +108,16 @@ textarea {
 
 input,
 textarea {
-	margin-top: var(--space-sm);
+	margin-top: var(--space-xxs);
 }
 
-input:invalid,
-textarea:invalid {
+input:user-invalid,
+textarea:user-invalid {
 	border: 1px solid red;
 }
 
-input:valid,
-textarea:valid {
+input:user-valid,
+textarea:user-valid {
 	border: 1px solid lime;
 }
 

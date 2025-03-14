@@ -1,11 +1,11 @@
-.idea-card,
-.idea-card-form {
+.idea-card {
 	width: 20rem;
 	background-color: var(--color-secondary);
 	color: var(--color-text-dark);
 	padding: var(--space-sm);
-	border-radius: var(--round-corner-md);
+	border-radius: var(--round-corner-sm);
 	transition: all 1s "ease-out";
+	text-align: left;
 }
 
 .idea-card input {
@@ -16,11 +16,16 @@
 .idea-card textarea {
 	color: var(--color-text-dark);
 	border: 1px solid var(--color-transparent);
+	width: 100%;
 }
 
 .idea-card input:valid,
 .idea-card textarea:valid {
 	border: 1px solid var(--color-transparent);
+}
+
+.idea-card__form-section {
+	margin-bottom: var(--space-md);
 }
 
 .idea-card__buttons {

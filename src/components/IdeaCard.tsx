@@ -1,4 +1,4 @@
-import { Ref, useRef, useState } from "react"
+import { Ref, useEffect, useRef, useState } from "react"
 
 import { IdeaCardType } from "../types"
 
@@ -75,6 +75,8 @@ export default function IdeaCard({
 	}
 
 	const deleteIdea = (title: string) => {
+		// const state = Flip.getState(containerRef.current.children)
+
 		const updatedCollection = ideaCardCollection.filter((card) => {
 			if (card.title !== title) return card
 		})
@@ -82,42 +84,61 @@ export default function IdeaCard({
 		setIdeaCardCollection(updatedCollection)
 	}
 
-	return (
-		<div ref={ref} className='idea-card text-left'>
-			<form action={saveIdea}>
-				<input
-					ref={titleRef}
-					value={newTitle}
-					type='text'
-					id='title'
-					name='title'
-					minLength={2}
-					placeholder='My Best Idea'
-					required
-					onChange={(e) => {
-						setNewTitle(e.target.value)
-					}}
-				/>
-				<label className='opacity-0' htmlFor='title'>
-					Idea title
-				</label>
+	// If it's a fresh card, focus on Title input
+	useEffect(() => {
+		if (!dateCreated && titleRef.current) titleRef.current.focus()
+	}, [])
 
-				<textarea
-					value={newDescription}
-					id='description'
-					name='description'
-					placeholder='Idea description here'
-					minLength={2}
-					maxLength={140}
-					rows={3}
-					required
-					onChange={(e) => {
-						setNewDescription(e.target.value)
-					}}
-				/>
-				<label className='opacity-0' htmlFor='description'>
-					Write a description for your idea with a maximum of 140 characters
-				</label>
+	return (
+		<div ref={ref} className='idea-card'>
+			<form action={saveIdea}>
+				<div className='idea-card__form-section'>
+					<label
+						className={`${dateCreated ? "opacity-0" : "opacity-1"}`}
+						htmlFor='title'
+					>
+						Idea title
+					</label>
+					<input
+						ref={titleRef}
+						value={newTitle}
+						type='text'
+						id='title'
+						name='title'
+						minLength={2}
+						placeholder='My Best Idea'
+						required
+						onFocus={() => console.log("focus")}
+						onChange={(e) => {
+							setNewTitle(e.target.value)
+						}}
+					/>
+				</div>
+
+				<div>
+					<label
+						className={`${dateCreated ? "opacity-0" : "opacity-1"}`} // if already saved once, no need for labels
+						htmlFor='description'
+					>
+						Description
+					</label>
+					<textarea
+						value={newDescription}
+						id='description'
+						name='description'
+						placeholder='Idea description here'
+						minLength={2}
+						maxLength={140}
+						rows={3}
+						required
+						onChange={(e) => {
+							setNewDescription(e.target.value)
+						}}
+					/>
+					<div>
+						Write a description for your idea with a maximum of 140 characters
+					</div>
+				</div>
 
 				<div className='idea-card__buttons'>
 					<button onClick={() => deleteIdea(title)} className='button-faded'>
