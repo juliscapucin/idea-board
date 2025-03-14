@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import Flip from "gsap/Flip"
 
@@ -11,7 +11,6 @@ import { IdeaCardType } from "./types"
 import { incompleteCardMessage } from "./lib/feedback-messages"
 
 function App() {
-	const ideaCardRef = useRef<HTMLDivElement>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
 
 	const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCardType[]>(
@@ -42,6 +41,48 @@ function App() {
 		)
 	}
 
+	const sort = (option: string) => {
+		if (!containerRef.current) return
+		const state = Flip.getState(containerRef.current.children)
+
+		console.log("sort")
+		const sortedCollection = [...ideaCardCollection].sort((a, b) => {
+			if (option === "dateCreated" && a.dateCreated && b.dateCreated) {
+				return (
+					new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime()
+				)
+			} else if (option === "title" && a.title && b.title) {
+				if (a.title < b.title) {
+					return -1
+				} else if (a.title > b.title) {
+					return 1
+				} else {
+					return 0
+				}
+			}
+			return 0
+		})
+
+		setIdeaCardCollection(sortedCollection)
+
+		requestAnimationFrame(() =>
+			Flip.from(state, { duration: 0.5, ease: "power2.out" })
+		)
+	}
+
+	//TODO CREATE IDEA CARD ON ENTER KEYDOWN
+	// useEffect(() => {
+	// 	const handleKeyDown = (e: KeyboardEvent) => {
+	// 		if (e.key == "Enter") createIdea()
+	// 	}
+
+	// 	document.addEventListener("keydown", handleKeyDown)
+
+	// 	return () => {
+	// 		document.removeEventListener("keydown", handleKeyDown)
+	// 	}
+	// }, [])
+
 	return (
 		<main className='main'>
 			<h1>Idea Board</h1>
@@ -50,6 +91,12 @@ function App() {
 					Create New Card
 				</button>
 				<Instructions />
+				<button className='button-main' onClick={() => sort("title")}>
+					Sort by title
+				</button>
+				<button className='button-main' onClick={() => sort("dateCreated")}>
+					Sort by date
+				</button>
 			</div>
 			<div ref={containerRef} className='main__desktop'>
 				{ideaCardCollection.length === 0 ? (

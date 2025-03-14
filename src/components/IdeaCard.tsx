@@ -68,7 +68,9 @@ export default function IdeaCard({
 		// CHECK FOR DUPLICATED TITLE
 		if (
 			title !== newTitle && // if Title has been edited
-			ideaCardCollection.find((card) => card.title === editedCard.title)
+			ideaCardCollection.find(
+				(card) => card.title.toLowerCase() === editedCard.title.toLowerCase()
+			)
 		) {
 			alert(duplicatedTitleMessage)
 			setNewTitle(title) // if new title exists, revert to original title
