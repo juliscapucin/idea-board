@@ -5,6 +5,7 @@
 	color: var(--color-text-dark);
 	padding: var(--space-sm);
 	border-radius: var(--round-corner-md);
+	transition: all 1s "ease-out";
 }
 
 .idea-card input {

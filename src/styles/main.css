@@ -64,7 +64,7 @@ button {
 	display: block;
 	margin-top: var(--space-sm);
 	border-radius: 8px;
-	border: 1px solid transparent;
+	border: 1px solid var(--color-link);
 	padding: var(--space-xs);
 	font-size: 1em;
 	font-weight: 500;
@@ -137,5 +137,12 @@ textarea {
 
 .main__desktop {
 	display: flex;
+	flex-wrap: wrap;
 	gap: var(--space-md);
+}
+
+.main__header {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: var(--space-lg);
 }
