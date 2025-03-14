@@ -41,7 +41,7 @@ export default function IdeaCard({
 			ideaCardCollection.find((card) => card.title === editedCard.title)
 		) {
 			alert(duplicatedTitleMessage)
-			setNewTitle(title) // if duplicated, revert to original title
+			setNewTitle(title) // if new title exists, revert to original title
 			titleRef.current && titleRef.current.focus()
 		} else {
 			// CREATE A NEW ARRAY WITH UPDATED DATA
@@ -104,6 +104,10 @@ export default function IdeaCard({
 					<button type='submit' className='button-main'>
 						Save
 					</button>
+				</div>
+				<div>
+					<p>Edited on:</p>
+					<p>First saved on:</p>
 				</div>
 			</form>
 		</div>

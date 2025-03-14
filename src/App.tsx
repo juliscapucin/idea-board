@@ -6,6 +6,11 @@ import { IdeaCard, IdeaCardForm, Instructions } from "./components/"
 
 import { IdeaCard as IdeaCardType } from "./types"
 
+import {
+	duplicatedTitleMessage,
+	incompleteCardMessage,
+} from "./lib/feedback-messages"
+
 function App() {
 	const ideaCardRef = useRef<HTMLDivElement | null>(null)
 
@@ -13,12 +18,28 @@ function App() {
 		[]
 	)
 
+	const createIdea = () => {
+		// CHECK IF TITLE ALREADY EXISTS
+		const duplicatedTitle = ideaCardCollection.find((card) => card.title === "")
+
+		if (duplicatedTitle) {
+			alert(incompleteCardMessage)
+			return
+		}
+
+		setIdeaCardCollection([
+			...ideaCardCollection,
+			{ title: "", description: "" },
+		])
+	}
+
 	return (
 		<main className='main'>
 			<h1>Idea Board</h1>
 			<Instructions />
+			<button onClick={createIdea}>Create Idea</button>
 			<div className='main__desktop'>
-				<IdeaCardForm {...{ ideaCardCollection, setIdeaCardCollection }} />
+				{/* <IdeaCardForm {...{ ideaCardCollection, setIdeaCardCollection }} /> */}
 				{ideaCardCollection.map((ideaCard) => {
 					return (
 						<IdeaCard
