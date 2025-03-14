@@ -23,7 +23,8 @@ export default function IdeaCard({
 	const [newTitle, setNewTitle] = useState(title)
 	const [newDescription, setNewDescription] = useState(description)
 	const [characterCount, setCharacterCount] = useState(0)
-	const [isEditing, setIsEditing] = useState(false)
+	const [isEditingTitle, setIsEditingTitle] = useState(false)
+	const [isEditingDescription, setIsEditingDescription] = useState(false)
 
 	const titleRef = useRef<HTMLInputElement>(null)
 
@@ -72,7 +73,8 @@ export default function IdeaCard({
 			updatedCollection[cardToEditIndex] = editedCard
 
 			setIdeaCardCollection(updatedCollection)
-			setIsEditing(false)
+			setIsEditingTitle(false)
+			setIsEditingDescription(false)
 		}
 	}
 
@@ -112,12 +114,13 @@ export default function IdeaCard({
 						id='title'
 						name='title'
 						minLength={2}
+						maxLength={50}
 						placeholder='My Best Idea'
 						required
 						onFocus={() => console.log("focus")}
 						onChange={(e) => {
 							setNewTitle(e.target.value)
-							setIsEditing(true)
+							setIsEditingTitle(true)
 						}}
 					/>
 				</div>
@@ -140,10 +143,14 @@ export default function IdeaCard({
 						required
 						onChange={(e) => {
 							setNewDescription(e.target.value)
-							setIsEditing(true)
+							setIsEditingDescription(true)
 						}}
 					/>
-					<p className='idea-card__countdown'>
+					<p
+						className={`idea-card__countdown ${
+							isEditingDescription ? "opacity-1" : "opacity-0"
+						}`}
+					>
 						{characterCount} of 140 characters
 					</p>
 				</div>
@@ -152,7 +159,7 @@ export default function IdeaCard({
 					<button onClick={() => deleteIdea(title)} className='button-faded'>
 						Delete Card
 					</button>
-					{isEditing && (
+					{(isEditingTitle || isEditingDescription) && (
 						<button type='submit' className='button-main'>
 							Save
 						</button>
