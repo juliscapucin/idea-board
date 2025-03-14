@@ -1,7 +1,8 @@
 type IdeaCardType = {
 	title: string
 	description: string
-	[key: string]: string | undefined
+	[key: string]: string | undefined | number
+	dateCreatedRaw?: number
 	dateCreated?: string
 	dateEdited?: string
 }

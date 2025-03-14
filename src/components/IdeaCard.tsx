@@ -8,7 +8,7 @@ gsap.registerPlugin(Flip)
 import { IdeaCardType } from "../types"
 
 import { duplicatedTitleMessage } from "../lib/feedback-messages"
-import { getDateAndTime } from "../lib/utils"
+import { formatDateAndTime } from "../lib/utils"
 
 type IdeaCardProps = {
 	ideaCard: IdeaCardType
@@ -21,7 +21,8 @@ export default function IdeaCard({
 	ideaCardCollection,
 	setIdeaCardCollection,
 }: IdeaCardProps) {
-	const { title, description, dateCreated, dateEdited } = ideaCard
+	const { title, description, dateCreated, dateCreatedRaw, dateEdited } =
+		ideaCard
 
 	const isSaved = dateCreated ? true : false
 
@@ -45,22 +46,22 @@ export default function IdeaCard({
 
 		let editedCard: IdeaCardType
 
-		const formattedDate = getDateAndTime()
-
 		// If saved previously, set Edited Date
 		if (isSaved) {
 			editedCard = {
 				title: newTitle,
 				description: newDescription,
 				dateCreated,
-				dateEdited: formattedDate,
+				dateCreatedRaw,
+				dateEdited: formatDateAndTime(),
 			}
 		} else {
 			// If not saved previously, set Created Date
 			editedCard = {
 				title: newTitle,
 				description: newDescription,
-				dateCreated: formattedDate,
+				dateCreated: formatDateAndTime(),
+				dateCreatedRaw: Date.now(),
 				dateEdited: undefined,
 			}
 		}

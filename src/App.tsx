@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import gsap from "gsap"
 import Flip from "gsap/Flip"
 
@@ -45,12 +45,9 @@ function App() {
 		if (!containerRef.current) return
 		const state = Flip.getState(containerRef.current.children)
 
-		console.log("sort")
 		const sortedCollection = [...ideaCardCollection].sort((a, b) => {
-			if (option === "dateCreated" && a.dateCreated && b.dateCreated) {
-				return (
-					new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime()
-				)
+			if (option === "dateCreatedRaw" && a.dateCreatedRaw && b.dateCreatedRaw) {
+				return a.dateCreatedRaw - b.dateCreatedRaw
 			} else if (option === "title" && a.title && b.title) {
 				if (a.title < b.title) {
 					return -1
@@ -94,7 +91,7 @@ function App() {
 				<button className='button-main' onClick={() => sort("title")}>
 					Sort by title
 				</button>
-				<button className='button-main' onClick={() => sort("dateCreated")}>
+				<button className='button-main' onClick={() => sort("dateCreatedRaw")}>
 					Sort by date
 				</button>
 			</div>
