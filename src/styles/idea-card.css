@@ -1,11 +1,10 @@
 .idea-card {
-	width: 20rem;
+	width: 30rem;
 	background-color: var(--color-secondary);
 	color: var(--color-text-dark);
 	padding: var(--space-sm);
 	border-radius: var(--round-corner-sm);
 	transition: all 1s "ease-out";
-	text-align: left;
 }
 
 .idea-card input {
@@ -15,7 +14,6 @@
 .idea-card input,
 .idea-card textarea {
 	color: var(--color-text-dark);
-	border: 1px solid var(--color-transparent);
 	width: 100%;
 }
 
@@ -33,4 +31,8 @@
 	display: flex;
 	justify-content: center;
 	gap: var(--space-sm);
+}
+
+.idea-card__countdown {
+	text-align: right;
 }

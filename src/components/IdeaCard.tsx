@@ -22,8 +22,8 @@ export default function IdeaCard({
 
 	const [newTitle, setNewTitle] = useState(title)
 	const [newDescription, setNewDescription] = useState(description)
-	// const [dateCreated, setDateCreated] = useState<string | undefined>(undefined)
-	// const [dateEdited, setDateEdited] = useState<string | undefined>(undefined)
+	const [characterCount, setCharacterCount] = useState(0)
+	const [isEditing, setIsEditing] = useState(false)
 
 	const titleRef = useRef<HTMLInputElement>(null)
 
@@ -40,7 +40,7 @@ export default function IdeaCard({
 
 		const formattedDate = getDateAndTime()
 
-		// If dateCreated exists, use formattedDate as Edited Date
+		// If dateCreated exists, set Edited Date
 		if (dateCreated) {
 			editedCard = {
 				title: newTitle,
@@ -49,6 +49,7 @@ export default function IdeaCard({
 				dateEdited: formattedDate,
 			}
 		} else {
+			// If dateCreated doesn't exist, set Created Date
 			editedCard = {
 				title: newTitle,
 				description: newDescription,
@@ -71,6 +72,7 @@ export default function IdeaCard({
 			updatedCollection[cardToEditIndex] = editedCard
 
 			setIdeaCardCollection(updatedCollection)
+			setIsEditing(false)
 		}
 	}
 
@@ -88,6 +90,10 @@ export default function IdeaCard({
 	useEffect(() => {
 		if (!dateCreated && titleRef.current) titleRef.current.focus()
 	}, [])
+
+	useEffect(() => {
+		setCharacterCount(newDescription.length)
+	}, [newDescription])
 
 	return (
 		<div ref={ref} className='idea-card'>
@@ -111,6 +117,7 @@ export default function IdeaCard({
 						onFocus={() => console.log("focus")}
 						onChange={(e) => {
 							setNewTitle(e.target.value)
+							setIsEditing(true)
 						}}
 					/>
 				</div>
@@ -133,20 +140,23 @@ export default function IdeaCard({
 						required
 						onChange={(e) => {
 							setNewDescription(e.target.value)
+							setIsEditing(true)
 						}}
 					/>
-					<div>
-						Write a description for your idea with a maximum of 140 characters
-					</div>
+					<p className='idea-card__countdown'>
+						{characterCount} of 140 characters
+					</p>
 				</div>
 
 				<div className='idea-card__buttons'>
 					<button onClick={() => deleteIdea(title)} className='button-faded'>
 						Delete Card
 					</button>
-					<button type='submit' className='button-main'>
-						Save
-					</button>
+					{isEditing && (
+						<button type='submit' className='button-main'>
+							Save
+						</button>
+					)}
 				</div>
 				<div>
 					{dateEdited && <p>Last edited on: {dateEdited}</p>}
