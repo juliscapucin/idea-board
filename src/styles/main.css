@@ -48,16 +48,8 @@ a:hover {
 	color: var(--color-link-hover);
 }
 
-body {
-	margin: 0;
-	min-width: 320px;
-	min-height: 100svh;
-}
-
 h1 {
-	font-size: 3.2em;
-	line-height: 1.1;
-	text-align: left;
+	font-size: var(--text-xl);
 }
 
 button {
@@ -133,6 +125,7 @@ textarea {
 }
 
 .main {
+	width: 100%;
 }
 
 .main__desktop {
@@ -145,4 +138,12 @@ textarea {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: var(--space-lg);
+}
+
+.main__no-cards {
+	width: 100%;
+	height: 100%;
+	align-content: center;
+	justify-content: center;
+	background-color: var(--color-faded);
 }

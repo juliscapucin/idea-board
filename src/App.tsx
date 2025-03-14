@@ -1,10 +1,8 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import gsap from "gsap"
 import Flip from "gsap/Flip"
 
 gsap.registerPlugin(Flip)
-
-import "./App.css"
 
 import { IdeaCard, Instructions } from "./components/"
 
@@ -54,19 +52,25 @@ function App() {
 				<Instructions />
 			</div>
 			<div ref={containerRef} className='main__desktop'>
-				{ideaCardCollection.map((ideaCard) => {
-					return (
-						<IdeaCard
-							key={ideaCard.title}
-							ref={ideaCardRef}
-							{...{
-								ideaCard,
-								ideaCardCollection,
-								setIdeaCardCollection,
-							}}
-						/>
-					)
-				})}
+				{ideaCardCollection.length === 0 ? (
+					<div className='main__no-cards'>
+						<p>No cards in this collection</p>
+					</div>
+				) : (
+					ideaCardCollection.map((ideaCard) => {
+						return (
+							<IdeaCard
+								key={ideaCard.title}
+								ref={ideaCardRef}
+								{...{
+									ideaCard,
+									ideaCardCollection,
+									setIdeaCardCollection,
+								}}
+							/>
+						)
+					})
+				)}
 			</div>
 		</main>
 	)
