@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import Flip from "gsap/Flip"
 
@@ -17,7 +17,7 @@ function App() {
 		[]
 	)
 
-	const createIdea = () => {
+	const createNewIdea = () => {
 		// CHECK IF EMPTY CARD ALREADY EXISTS
 		const duplicatedTitle = ideaCardCollection.find((card) => card.title === "")
 
@@ -44,7 +44,6 @@ function App() {
 	const sort = (option: string) => {
 		if (!containerRef.current) return
 		const state = Flip.getState(containerRef.current.children)
-
 		const sortedCollection = [...ideaCardCollection].sort((a, b) => {
 			if (option === "dateCreatedRaw" && a.dateCreatedRaw && b.dateCreatedRaw) {
 				return a.dateCreatedRaw - b.dateCreatedRaw
@@ -59,9 +58,7 @@ function App() {
 			}
 			return 0
 		})
-
 		setIdeaCardCollection(sortedCollection)
-
 		requestAnimationFrame(() =>
 			Flip.from(state, { duration: 0.5, ease: "power2.out" })
 		)
@@ -80,11 +77,16 @@ function App() {
 	// 	}
 	// }, [])
 
+	useEffect(() => {
+		const getLocalStorage = localStorage.getItem("ideaCardCollection")
+		getLocalStorage && setIdeaCardCollection(JSON.parse(getLocalStorage))
+	}, [])
+
 	return (
 		<main className='main'>
 			<h1>Idea Board</h1>
 			<div className='main__header'>
-				<button className='button-main' onClick={createIdea}>
+				<button className='button-main' onClick={createNewIdea}>
 					Create New Card
 				</button>
 				<Instructions />

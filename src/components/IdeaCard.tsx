@@ -35,7 +35,7 @@ export default function IdeaCard({
 	const ideaCardRef = useRef<HTMLDivElement>(null)
 	const titleRef = useRef<HTMLInputElement>(null)
 
-	const saveIdea = () => {
+	const saveIdeaCard = () => {
 		const cardToEdit = ideaCardCollection.find(
 			(card) => card.title === title || card.description === description
 		)
@@ -82,6 +82,7 @@ export default function IdeaCard({
 			updatedCollection[cardToEditIndex] = editedCard
 
 			setIdeaCardCollection(updatedCollection)
+
 			setIsEditingTitle(false)
 			setIsEditingDescription(false)
 		}
@@ -115,6 +116,14 @@ export default function IdeaCard({
 	useEffect(() => {
 		setCharacterCount(newDescription.length)
 	}, [newDescription])
+
+	useEffect(() => {
+		// SAVE NEW / UPDATED COLLECTION TO LOCAL STORAGE
+		localStorage.setItem(
+			"ideaCardCollection",
+			JSON.stringify(ideaCardCollection)
+		)
+	}, [ideaCardCollection])
 
 	return (
 		<div ref={ideaCardRef} className='idea-card'>
@@ -165,8 +174,10 @@ export default function IdeaCard({
 							setIsEditingDescription(true)
 						}}
 					/>
+
 					<p
 						className={`idea-card__countdown ${
+							// Show character count if user is editing description
 							isEditingDescription ? "opacity-1" : "opacity-0"
 						}`}
 					>
@@ -179,7 +190,7 @@ export default function IdeaCard({
 						Delete Card
 					</button>
 					{(isEditingTitle || isEditingDescription) && (
-						<button onClick={saveIdea} className='button-main'>
+						<button onClick={saveIdeaCard} className='button-main'>
 							Save
 						</button>
 					)}

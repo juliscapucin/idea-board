@@ -13,3 +13,14 @@ const formatDateAndTime = () => {
 }
 
 export { formatDateAndTime }
+
+// const formattedDate = dateCreated.toLocaleString("en-GB", {
+// 	day: "2-digit",
+// 	month: "2-digit",
+// 	year: "numeric",
+// 	hour: "2-digit",
+// 	minute: "2-digit",
+// 	hour12: false, // Use 24-hour format
+// }).replace(",", " at"); // Replace comma with "at"
+
+// console.log(formattedDate); // Example: "14/03/2025 at 14:02"
