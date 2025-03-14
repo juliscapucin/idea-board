@@ -1,26 +1,29 @@
 import { Ref, useRef, useState } from "react"
 
-import { IdeaCard as IdeaCardType } from "../types"
+import { IdeaCardType } from "../types"
 
 import { duplicatedTitleMessage } from "../lib/feedback-messages"
+import { getDateAndTime } from "../lib/utils"
 
 type IdeaCardProps = {
 	ref: Ref<HTMLDivElement> | undefined
-	title: string
-	description: string
+	ideaCard: IdeaCardType
 	ideaCardCollection: IdeaCardType[]
 	setIdeaCardCollection: (newCollection: IdeaCardType[]) => void
 }
 
 export default function IdeaCard({
 	ref,
-	title,
-	description,
+	ideaCard,
 	ideaCardCollection,
 	setIdeaCardCollection,
 }: IdeaCardProps) {
+	const { title, description, dateCreated, dateEdited } = ideaCard
+
 	const [newTitle, setNewTitle] = useState(title)
 	const [newDescription, setNewDescription] = useState(description)
+	// const [dateCreated, setDateCreated] = useState<string | undefined>(undefined)
+	// const [dateEdited, setDateEdited] = useState<string | undefined>(undefined)
 
 	const titleRef = useRef<HTMLInputElement>(null)
 
@@ -33,7 +36,26 @@ export default function IdeaCard({
 
 		const cardToEditIndex = ideaCardCollection.indexOf(cardToEdit)
 
-		const editedCard = { title: newTitle, description: newDescription }
+		let editedCard: IdeaCardType
+
+		const formattedDate = getDateAndTime()
+
+		// If dateCreated exists, use formattedDate as Edited Date
+		if (dateCreated) {
+			editedCard = {
+				title: newTitle,
+				description: newDescription,
+				dateCreated,
+				dateEdited: formattedDate,
+			}
+		} else {
+			editedCard = {
+				title: newTitle,
+				description: newDescription,
+				dateCreated: formattedDate,
+				dateEdited: undefined,
+			}
+		}
 
 		// CHECK FOR DUPLICATED TITLE
 		if (
@@ -53,11 +75,11 @@ export default function IdeaCard({
 	}
 
 	const deleteIdea = (title: string) => {
-		const updatedIdeaCardCollection = ideaCardCollection.filter((card) => {
+		const updatedCollection = ideaCardCollection.filter((card) => {
 			if (card.title !== title) return card
 		})
 
-		setIdeaCardCollection(updatedIdeaCardCollection)
+		setIdeaCardCollection(updatedCollection)
 	}
 
 	return (
@@ -106,8 +128,8 @@ export default function IdeaCard({
 					</button>
 				</div>
 				<div>
-					<p>Edited on:</p>
-					<p>First saved on:</p>
+					{dateEdited && <p>Last edited on: {dateEdited}</p>}
+					{dateCreated && <p>Created on: {dateCreated}</p>}
 				</div>
 			</form>
 		</div>

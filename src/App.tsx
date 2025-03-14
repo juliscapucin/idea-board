@@ -8,7 +8,7 @@ import "./App.css"
 
 import { IdeaCard, Instructions } from "./components/"
 
-import { IdeaCard as IdeaCardType } from "./types"
+import { IdeaCardType } from "./types"
 
 import { incompleteCardMessage } from "./lib/feedback-messages"
 
@@ -32,7 +32,10 @@ function App() {
 		const state = Flip.getState(containerRef.current.children)
 
 		setIdeaCardCollection([
-			{ title: "", description: "" },
+			{
+				title: "",
+				description: "",
+			},
 			...ideaCardCollection,
 		])
 
@@ -40,24 +43,6 @@ function App() {
 			Flip.from(state, { duration: 0.5, ease: "power2.out" })
 		)
 	}
-
-	useEffect(() => {
-		const ctx = gsap.context(() => {
-			if (containerRef.current) {
-				const cards = containerRef.current.children
-				if (cards.length > 0) {
-					// Animate the first (newest) card
-					gsap.fromTo(
-						cards[0],
-						{ opacity: 0, y: -20, scale: 0.9 },
-						{ opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power2.out" }
-					)
-				}
-			}
-		})
-
-		return () => ctx.revert() // Clean up animations on unmount
-	}, [ideaCardCollection])
 
 	return (
 		<main className='main'>
@@ -75,8 +60,7 @@ function App() {
 							key={ideaCard.title}
 							ref={ideaCardRef}
 							{...{
-								title: ideaCard.title,
-								description: ideaCard.description,
+								ideaCard,
 								ideaCardCollection,
 								setIdeaCardCollection,
 							}}
