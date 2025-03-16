@@ -26,7 +26,7 @@ function App() {
 			return
 		}
 		if (!containerRef.current) return
-		const state = Flip.getState(containerRef.current.children)
+		// const state = Flip.getState(containerRef.current.children)
 
 		setIdeaCardCollection([
 			{
@@ -36,9 +36,9 @@ function App() {
 			...ideaCardCollection,
 		])
 
-		requestAnimationFrame(() =>
-			Flip.from(state, { duration: 0.5, ease: "power2.out" })
-		)
+		// requestAnimationFrame(() =>
+		// 	Flip.from(state, { duration: 0.5, ease: "power2.out" })
+		// )
 	}
 
 	const sort = (option: string) => {

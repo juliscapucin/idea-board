@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 
 import gsap from "gsap"
 import Flip from "gsap/Flip"
+import Draggable from "gsap/Draggable"
 
 gsap.registerPlugin(Flip)
 
@@ -35,7 +36,7 @@ export default function IdeaCard({
 	const ideaCardRef = useRef<HTMLDivElement>(null)
 	const titleRef = useRef<HTMLInputElement>(null)
 
-	const saveIdeaCard = () => {
+	const saveIdea = () => {
 		const cardToEdit = ideaCardCollection.find(
 			(card) => card.title === title || card.description === description
 		)
@@ -91,10 +92,9 @@ export default function IdeaCard({
 	const deleteIdea = (title: string) => {
 		let state
 
-		if (ideaCardRef.current && ideaCardRef.current.parentElement) {
-			console.log(ideaCardRef.current.parentElement)
-			state = Flip.getState(ideaCardRef.current.parentElement.children)
-		}
+		// if (ideaCardRef.current && ideaCardRef.current.parentElement) {
+		// 	state = Flip.getState(ideaCardRef.current.parentElement.children)
+		// }
 
 		const updatedCollection = ideaCardCollection.filter((card) => {
 			if (card.title !== title) return card
@@ -102,28 +102,44 @@ export default function IdeaCard({
 
 		setIdeaCardCollection(updatedCollection)
 
-		if (state)
-			requestAnimationFrame(() =>
-				Flip.from(state, { duration: 0.5, ease: "power2.out" })
-			)
+		// if (state)
+		// 	requestAnimationFrame(() =>
+		// 		Flip.from(state, { duration: 0.5, ease: "power2.out" })
+		// 	)
 	}
 
-	// If it's a fresh card, focus on Title input
 	useEffect(() => {
-		if (!isSaved && titleRef.current) titleRef.current.focus()
+		if (!isSaved && titleRef.current) titleRef.current.focus() // If it's a fresh card, focus on Title input
 	}, [])
 
+	// CHARACTER COUNT
 	useEffect(() => {
 		setCharacterCount(newDescription.length)
 	}, [newDescription])
 
+	// SAVE NEW / UPDATED COLLECTION TO LOCAL STORAGE
 	useEffect(() => {
-		// SAVE NEW / UPDATED COLLECTION TO LOCAL STORAGE
 		localStorage.setItem(
 			"ideaCardCollection",
 			JSON.stringify(ideaCardCollection)
 		)
 	}, [ideaCardCollection])
+
+	// DRAGGABLE
+	useEffect(() => {
+		if (!ideaCardRef.current) return
+
+		gsap.registerPlugin(Draggable)
+
+		const ctx = gsap.context(() => {
+			Draggable.create(ideaCardRef.current, {
+				// bounds: "screen",
+				inertia: false,
+			})
+		})
+
+		return () => ctx.revert()
+	}, [ideaCardRef])
 
 	return (
 		<div ref={ideaCardRef} className='idea-card'>
@@ -190,7 +206,7 @@ export default function IdeaCard({
 						Delete Card
 					</button>
 					{(isEditingTitle || isEditingDescription) && (
-						<button onClick={saveIdeaCard} className='button-main'>
+						<button onClick={saveIdea} className='button-main'>
 							Save
 						</button>
 					)}
