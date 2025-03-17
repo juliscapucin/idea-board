@@ -86,12 +86,14 @@ textarea {
 
 .main {
 	width: 100%;
+	height: 100svh;
 }
 
 .main__desktop {
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--space-md);
+	height: 100%;
 }
 
 .main__header {

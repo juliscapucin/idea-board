@@ -4,7 +4,8 @@
 	color: var(--color-text-dark);
 	padding: var(--space-sm);
 	border-radius: var(--round-corner-sm);
-	transition: all 1s "ease-out";
+	/* transition: all 1s ease-out; */
+	border: solid 2px var(--color-primary);
 }
 
 .idea-card input {

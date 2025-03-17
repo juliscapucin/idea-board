@@ -2,6 +2,10 @@
 	display: none;
 }
 
+.highlight {
+	border: dotted 2px darkblue;
+}
+
 .opacity-0 {
 	opacity: 0;
 }

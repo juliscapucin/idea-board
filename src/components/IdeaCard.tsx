@@ -6,6 +6,8 @@ import Draggable from "gsap/Draggable"
 
 gsap.registerPlugin(Flip)
 
+const overlapThreshold = "80%"
+
 import { IdeaCardType } from "../types"
 
 import { duplicatedTitleMessage } from "../lib/feedback-messages"
@@ -32,6 +34,7 @@ export default function IdeaCard({
 	const [characterCount, setCharacterCount] = useState(0)
 	const [isEditingTitle, setIsEditingTitle] = useState(false)
 	const [isEditingDescription, setIsEditingDescription] = useState(false)
+	// const [isOverlapping, setIsOverlapping] = useState<number | null>(null)
 
 	const ideaCardRef = useRef<HTMLDivElement>(null)
 	const titleRef = useRef<HTMLInputElement>(null)
@@ -127,14 +130,50 @@ export default function IdeaCard({
 
 	// DRAGGABLE
 	useEffect(() => {
-		if (!ideaCardRef.current) return
+		if (!ideaCardRef.current || !ideaCardRef.current.parentElement) return
 
 		gsap.registerPlugin(Draggable)
+
+		let isOverlapping = -1
+
+		const cards: HTMLDivElement[] = gsap.utils.toArray(
+			ideaCardRef.current!.parentElement!.children
+		)
+
+		const cardsContainer = ideaCardRef.current.parentElement
 
 		const ctx = gsap.context(() => {
 			Draggable.create(ideaCardRef.current, {
 				// bounds: "screen",
 				inertia: false,
+				dragClickables: false,
+				// onDragStart: (e) => {
+				// 	console.log(e.target)
+				// },
+				onDrag: function () {
+					cards.forEach((card: HTMLDivElement, index: number) => {
+						if (this.hitTest(card, overlapThreshold)) {
+							card.classList.add("highlight")
+							isOverlapping = index
+						} else if (card.classList.contains("highlight")) {
+							card.classList.remove("highlight")
+						}
+					})
+				},
+				onRelease: function () {
+					if (isOverlapping >= 0) {
+						// const cardClone = cardsContainer.removeChild(this.target)
+						cards[isOverlapping].insertAdjacentElement(
+							"beforebegin",
+							this.target
+						)
+					}
+					gsap.to(ideaCardRef.current, {
+						x: 0,
+						y: 0,
+						duration: 0.3,
+					})
+				},
 			})
 		})
 
