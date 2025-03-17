@@ -92,6 +92,7 @@ textarea {
 .main__desktop {
 	display: flex;
 	flex-wrap: wrap;
+	align-items: flex-start;
 	gap: var(--space-md);
 	height: 100%;
 }

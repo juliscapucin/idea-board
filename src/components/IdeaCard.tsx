@@ -103,13 +103,16 @@ export default function IdeaCard({
 		setIdeaCardCollection(updatedCollection)
 
 		if (state)
-			requestAnimationFrame(() =>
-				Flip.from(state, { duration: 0.5, ease: "power2.out" })
-			)
+			requestAnimationFrame(() => {
+				requestAnimationFrame(() => {
+					Flip.from(state, { duration: 0.5, ease: "power2.out" })
+				})
+			})
 	}
 
+	// FOCUS ON TITLE (NEW CARD)
 	useEffect(() => {
-		if (!isSaved && titleRef.current) titleRef.current.focus() // If it's a fresh card, focus on Title input
+		if (!isSaved && titleRef.current) titleRef.current.focus()
 	}, [])
 
 	// CHARACTER COUNT

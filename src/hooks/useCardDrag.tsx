@@ -75,7 +75,13 @@ export default function useCardDrag(
 
 					// IF DRAG HITS ANY TARGET
 					if (isOverlapped >= 0) {
-						cards[isOverlapped].insertAdjacentElement("afterend", this.target)
+						if (isDragged > isOverlapped)
+							cards[isOverlapped].insertAdjacentElement(
+								"beforebegin",
+								this.target
+							)
+						else
+							cards[isOverlapped].insertAdjacentElement("afterend", this.target)
 
 						if (state) {
 							requestAnimationFrame(() => {

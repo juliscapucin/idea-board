@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import Flip from "gsap/Flip"
 
-gsap.registerPlugin(Flip)
-
 import { IdeaCard, Instructions } from "./components/"
 
 import { IdeaCardType } from "./types"
@@ -26,7 +24,7 @@ function App() {
 			return
 		}
 		if (!containerRef.current) return
-		// const state = Flip.getState(containerRef.current.children)
+		const state = Flip.getState(containerRef.current.children)
 
 		setIdeaCardCollection([
 			{
@@ -36,13 +34,18 @@ function App() {
 			...ideaCardCollection,
 		])
 
-		// requestAnimationFrame(() =>
-		// 	Flip.from(state, { duration: 0.5, ease: "power2.out" })
-		// )
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				Flip.from(state, { duration: 0.5, ease: "power2.out" })
+			})
+		})
 	}
 
 	const sort = (option: string) => {
 		if (!containerRef.current) return
+
+		gsap.registerPlugin(Flip)
+
 		const state = Flip.getState(containerRef.current.children)
 		const sortedCollection = [...ideaCardCollection].sort((a, b) => {
 			if (option === "dateCreatedRaw" && a.dateCreatedRaw && b.dateCreatedRaw) {
@@ -59,9 +62,11 @@ function App() {
 			return 0
 		})
 		setIdeaCardCollection(sortedCollection)
-		requestAnimationFrame(() =>
-			Flip.from(state, { duration: 0.5, ease: "power2.out" })
-		)
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				Flip.from(state, { duration: 0.5, ease: "power2.out" })
+			})
+		})
 	}
 
 	//TODO CREATE IDEA CARD ON ENTER KEYDOWN

@@ -1,5 +1,6 @@
 .idea-card {
 	width: 30rem;
+	aspect-ratio: square;
 	background-color: var(--color-secondary);
 	color: var(--color-text-dark);
 	padding: var(--space-sm);
