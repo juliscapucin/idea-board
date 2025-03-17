@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import gsap from "gsap"
 import Flip from "gsap/Flip"
@@ -11,12 +11,22 @@ const moveElement = (
 	fromIndex: number,
 	toIndex: number
 ) => {
+	if (
+		fromIndex < 0 ||
+		toIndex < 0 ||
+		fromIndex >= arr.length ||
+		toIndex >= arr.length
+	) {
+		console.warn("Invalid indices:", { fromIndex, toIndex })
+		return arr // Return original array if indices are invalid
+	}
+
 	const newArray = [...arr] // Clone the array to avoid mutation
-	const movedElement = newArray[fromIndex]
+	const movedElement = { ...newArray[fromIndex] } // Clone the moved element
+
 	newArray.splice(fromIndex, 1) // Remove element
 	newArray.splice(toIndex, 0, movedElement) // Insert at new position
 
-	console.log(newArray)
 	return newArray
 }
 
@@ -25,8 +35,15 @@ export default function useCardDrag(
 	ideaCardCollection: IdeaCardType[],
 	setIdeaCardCollection: (arg: IdeaCardType[]) => void
 ) {
+	const [cards, setCards] = useState<Element[] | null>(null)
+
 	useEffect(() => {
 		if (!ideaCard || !ideaCard.parentElement) return
+		setCards([...ideaCard!.parentElement!.children])
+	}, [ideaCard, ideaCardCollection])
+
+	useEffect(() => {
+		if (!cards) return
 
 		gsap.registerPlugin(Draggable)
 		gsap.registerPlugin(Flip)
@@ -34,20 +51,17 @@ export default function useCardDrag(
 		let isOverlapped = -1 // the index of the element that's being overlapped ('-1' means 'none')
 		let isDragged = -1 // the index of the element that's being dragged ('-1' means 'none')
 
-		const cards: HTMLDivElement[] = gsap.utils.toArray(
-			ideaCard!.parentElement!.children
-		)
-
 		const ctx = gsap.context(() => {
 			Draggable.create(ideaCard, {
 				inertia: false,
 				dragClickables: false,
 				onDrag: function () {
 					// do hitTests while dragging
-					cards.forEach((card: HTMLDivElement, index: number) => {
+					cards.forEach((card: Element, index: number) => {
 						if (card === this.target) isDragged = index // define the index of the element that's being dragged
+						console.log("dragged: ", isDragged)
+						// hitTest + overlap threshold
 						if (this.hitTest(card, "80%")) {
-							// Overlap threshold
 							card.classList.add("highlight")
 							isOverlapped = index // define the index of the element that's being overlapped
 						} else {
@@ -61,19 +75,15 @@ export default function useCardDrag(
 
 					// IF DRAG HITS ANY TARGET
 					if (isOverlapped >= 0) {
-						console.log("dragged: ", isDragged, "overlapped: ", isOverlapped)
-						if (isDragged < isOverlapped) {
-							cards[isOverlapped].insertAdjacentElement("afterend", this.target)
-						} else {
-							cards[isOverlapped].insertAdjacentElement(
-								"beforebegin",
-								this.target
-							)
-						}
+						cards[isOverlapped].insertAdjacentElement("afterend", this.target)
 
 						if (state) {
 							requestAnimationFrame(() => {
-								Flip.from(state, { duration: 0.5, ease: "power2.out" })
+								Flip.from(state, {
+									duration: 0.5,
+									ease: "power2.out",
+									onComplete: () => setIdeaCardCollection(newIdeaCardOrder),
+								})
 							})
 						}
 
@@ -81,7 +91,12 @@ export default function useCardDrag(
 						gsap.set(this.target, {
 							x: 0,
 							y: 0,
-							duration: 0.3,
+						})
+
+						// REMOVE HIGHLIGHT
+						cards.forEach((card) => {
+							if (card.classList.contains("highlight"))
+								card.classList.remove("highlight")
 						})
 
 						// EDIT ORDER IN DATA ARRAY
@@ -90,26 +105,20 @@ export default function useCardDrag(
 							isDragged,
 							isOverlapped
 						)
-						setIdeaCardCollection(newIdeaCardOrder)
 
 						// RESET INDEXES
 						isDragged = -1
 						isOverlapped = -1
-
-						// REMOVE HIGHLIGHT
-						cards.forEach((card) => {
-							if (card.classList.contains("highlight"))
-								card.classList.remove("highlight")
-						})
 					} else {
-						console.log("dragged: ", isDragged, "overlapped: ", isOverlapped)
-
 						// IF DRAG DOESN'T HIT ANY TARGET, MOVE BACK TO ORIGINAL POSITION
 						gsap.to(this.target, {
 							x: 0,
 							y: 0,
 							duration: 0.3,
 						})
+
+						if (!ideaCard || !ideaCard.parentElement) return
+						// cards = [...ideaCard!.parentElement!.children]
 
 						isDragged = -1
 						isOverlapped = -1
@@ -119,5 +128,5 @@ export default function useCardDrag(
 		})
 
 		return () => ctx.revert()
-	}, [ideaCard])
+	}, [cards])
 }
