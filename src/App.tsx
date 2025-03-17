@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import Flip from "gsap/Flip"
 
-import { IdeaCard, Instructions } from "./components/"
+import { DropDownMenu, IdeaCard, Instructions } from "./components/"
 
 import { IdeaCardType } from "./types"
 
@@ -95,12 +95,7 @@ function App() {
 					Create New Card
 				</button>
 				<Instructions />
-				<button className='button-main' onClick={() => sort("title")}>
-					Sort by title
-				</button>
-				<button className='button-main' onClick={() => sort("dateCreatedRaw")}>
-					Sort by date
-				</button>
+				<DropDownMenu {...{ sort }} />
 			</div>
 			<div ref={containerRef} className='main__desktop'>
 				{ideaCardCollection.length === 0 ? (

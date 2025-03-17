@@ -1,0 +1,10 @@
+.dropdown-menu {
+	position: relative;
+	width: 20rem;
+}
+
+.dropdown-menu__list {
+	position: absolute;
+	top: var(--space-lg);
+	left: 0;
+}

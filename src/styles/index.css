@@ -1,7 +1,9 @@
 @import "reset.css";
 @import "variables.css";
+@import "main.css";
+@import "utilities.css";
+
+@import "dropdown-menu.css";
 @import "idea-card.css";
 @import "idea-card-form.css";
 @import "instructions.css";
-@import "main.css";
-@import "utilities.css";
