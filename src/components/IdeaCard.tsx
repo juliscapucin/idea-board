@@ -2,16 +2,14 @@ import { useEffect, useRef, useState } from "react"
 
 import gsap from "gsap"
 import Flip from "gsap/Flip"
-import Draggable from "gsap/Draggable"
 
 gsap.registerPlugin(Flip)
-
-const overlapThreshold = "80%"
 
 import { IdeaCardType } from "../types"
 
 import { duplicatedTitleMessage } from "../lib/feedback-messages"
 import { formatDateAndTime } from "../lib/utils"
+import { useCardDrag } from "../hooks"
 
 type IdeaCardProps = {
 	ideaCard: IdeaCardType
@@ -34,7 +32,6 @@ export default function IdeaCard({
 	const [characterCount, setCharacterCount] = useState(0)
 	const [isEditingTitle, setIsEditingTitle] = useState(false)
 	const [isEditingDescription, setIsEditingDescription] = useState(false)
-	// const [isOverlapping, setIsOverlapping] = useState<number | null>(null)
 
 	const ideaCardRef = useRef<HTMLDivElement>(null)
 	const titleRef = useRef<HTMLInputElement>(null)
@@ -95,9 +92,9 @@ export default function IdeaCard({
 	const deleteIdea = (title: string) => {
 		let state
 
-		// if (ideaCardRef.current && ideaCardRef.current.parentElement) {
-		// 	state = Flip.getState(ideaCardRef.current.parentElement.children)
-		// }
+		if (ideaCardRef.current && ideaCardRef.current.parentElement) {
+			state = Flip.getState(ideaCardRef.current.parentElement.children)
+		}
 
 		const updatedCollection = ideaCardCollection.filter((card) => {
 			if (card.title !== title) return card
@@ -105,10 +102,10 @@ export default function IdeaCard({
 
 		setIdeaCardCollection(updatedCollection)
 
-		// if (state)
-		// 	requestAnimationFrame(() =>
-		// 		Flip.from(state, { duration: 0.5, ease: "power2.out" })
-		// 	)
+		if (state)
+			requestAnimationFrame(() =>
+				Flip.from(state, { duration: 0.5, ease: "power2.out" })
+			)
 	}
 
 	useEffect(() => {
@@ -129,56 +126,7 @@ export default function IdeaCard({
 	}, [ideaCardCollection])
 
 	// DRAGGABLE
-	useEffect(() => {
-		if (!ideaCardRef.current || !ideaCardRef.current.parentElement) return
-
-		gsap.registerPlugin(Draggable)
-
-		let isOverlapping = -1
-
-		const cards: HTMLDivElement[] = gsap.utils.toArray(
-			ideaCardRef.current!.parentElement!.children
-		)
-
-		const cardsContainer = ideaCardRef.current.parentElement
-
-		const ctx = gsap.context(() => {
-			Draggable.create(ideaCardRef.current, {
-				// bounds: "screen",
-				inertia: false,
-				dragClickables: false,
-				// onDragStart: (e) => {
-				// 	console.log(e.target)
-				// },
-				onDrag: function () {
-					cards.forEach((card: HTMLDivElement, index: number) => {
-						if (this.hitTest(card, overlapThreshold)) {
-							card.classList.add("highlight")
-							isOverlapping = index
-						} else if (card.classList.contains("highlight")) {
-							card.classList.remove("highlight")
-						}
-					})
-				},
-				onRelease: function () {
-					if (isOverlapping >= 0) {
-						// const cardClone = cardsContainer.removeChild(this.target)
-						cards[isOverlapping].insertAdjacentElement(
-							"beforebegin",
-							this.target
-						)
-					}
-					gsap.to(ideaCardRef.current, {
-						x: 0,
-						y: 0,
-						duration: 0.3,
-					})
-				},
-			})
-		})
-
-		return () => ctx.revert()
-	}, [ideaCardRef])
+	useCardDrag(ideaCardRef.current, ideaCardCollection, setIdeaCardCollection)
 
 	return (
 		<div ref={ideaCardRef} className='idea-card'>
