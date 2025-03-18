@@ -12,9 +12,14 @@
 	--color-primary: #242424;
 	--color-secondary: #bfbfc2;
 	--color-tertiary: #646cff;
-	--color-faded: #74747a;
+
+	--color-faded-light: #74747a;
+	--color-faded-medium: #48484b;
+	--color-faded-dark: #333336;
+
 	--color-text-light: #ffffff;
 	--color-text-dark: #1a1a1a;
+
 	--color-link: #646cff;
 	--color-link-hover: #535bf2;
 	--color-transparent: rgba(255, 255, 255, 0);
@@ -30,7 +35,7 @@
 	--space-lg: 3.2rem;
 	--space-xl: 4.8rem;
 
-	--round-corner-md: 8px;
+	--radius-md: 8px;
 
 	--text-xs: 0.6rem;
 	--text-sm: 1rem;

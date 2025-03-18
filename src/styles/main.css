@@ -1,3 +1,7 @@
+body {
+	padding: var(--space-md);
+}
+
 a {
 	font-weight: 500;
 	color: var(--color-link);
@@ -14,20 +18,13 @@ h1 {
 
 button {
 	display: block;
-	margin-top: var(--space-sm);
-	border-radius: 8px;
-	border: 1px solid var(--color-link);
-	padding: var(--space-xs);
 	font-size: 1em;
 	font-weight: 500;
 	font-family: inherit;
 	background-color: var(--color-primary);
+	border-radius: var(--radius-md);
 	cursor: pointer;
 	transition: border-color 0.25s;
-}
-
-button:hover {
-	border-color: #646cff;
 }
 
 button:focus,
@@ -36,7 +33,14 @@ button:focus-visible {
 }
 
 .button-main {
+	margin-top: var(--space-sm);
+	border: 1px solid var(--color-link);
+	padding: var(--space-xs);
 	background-color: var(--color-tertiary);
+}
+
+.button-main:hover {
+	border-color: #646cff;
 }
 
 .button-faded {

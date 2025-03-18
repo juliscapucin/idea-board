@@ -27,34 +27,34 @@ export default function DropDownMenu({ sort }: DropDownMenuProps) {
 	}, [])
 
 	return (
-		<div className='dropdown-menu' ref={dropDownRef}>
+		<div className='dropdown' ref={dropDownRef}>
 			<button
-				className='dropdown-menu__trigger button-main'
+				className='dropdown__trigger button-main'
 				onClick={handleOpenMenu}
 			>
-				Sort {sortChoice && `: ${sortChoice}`}
+				Sort by: {sortChoice && ` ${sortChoice}`}
 			</button>
 			{showMenu && (
-				<div className='dropdown-menu__list'>
+				<div className='dropdown__list'>
 					<button
-						className='button-main'
+						className='dropdown__list-item'
 						onClick={() => {
 							sort("title")
-							setSortChoice("title")
+							setSortChoice("Title")
 							handleOpenMenu()
 						}}
 					>
-						Sort by title
+						Title
 					</button>
 					<button
-						className='button-main'
+						className='dropdown__list-item'
 						onClick={() => {
 							sort("dateCreatedRaw")
 							setSortChoice("Date Created")
 							handleOpenMenu()
 						}}
 					>
-						Sort by date
+						Date Created
 					</button>
 				</div>
 			)}
