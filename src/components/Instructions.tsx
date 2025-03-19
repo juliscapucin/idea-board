@@ -1,20 +1,20 @@
 import { useState } from "react"
+import { ButtonClose, ButtonFaded } from "./Buttons"
 
 export default function Instructions() {
 	const [showInstructions, setShowInstructions] = useState(false)
 	return (
-		<div>
-			<button onClick={() => setShowInstructions(true)}>
-				Show instructions
-			</button>
+		<div className='instructions'>
+			<ButtonFaded onClickAction={() => setShowInstructions(true)}>
+				Instructions
+			</ButtonFaded>
 			{showInstructions && (
 				<div className='instructions__popup text-left'>
-					<button
-						className='instructions__button-close'
-						onClick={() => setShowInstructions(false)}
-					>
-						Hide instructions
-					</button>
+					<ButtonClose
+						classes={"instructions__button-close"}
+						onClickAction={() => setShowInstructions(false)}
+					/>
+
 					<h2>Task</h2>
 					<p>
 						Build an idea board that allows a user to create new ideas, edit

@@ -7,6 +7,7 @@ import { DropDownMenu, IdeaCard, Instructions } from "./components/"
 import { IdeaCardType } from "./types"
 
 import { incompleteCardMessage } from "./lib/feedback-messages"
+import { ButtonPrimary } from "./components/Buttons"
 
 function App() {
 	const containerRef = useRef<HTMLDivElement>(null)
@@ -89,13 +90,16 @@ function App() {
 
 	return (
 		<main className='main'>
-			<h1>Idea Board</h1>
 			<div className='main__header'>
-				<button className='button-main' onClick={createNewIdea}>
-					Create New Card
-				</button>
 				<Instructions />
-				<DropDownMenu {...{ sort }} />
+				<h1 className='main__title'>Idea Board</h1>
+				<div>
+					<ButtonPrimary classes='button-main' onClickAction={createNewIdea}>
+						Create New Card
+					</ButtonPrimary>
+					{/* SORT DROPDOWN */}
+					<DropDownMenu {...{ sort }} />
+				</div>
 			</div>
 			<div ref={containerRef} className='main__desktop'>
 				{ideaCardCollection.length === 0 ? (

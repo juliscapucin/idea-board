@@ -10,6 +10,7 @@ import { IdeaCardType } from "../types"
 import { duplicatedTitleMessage } from "../lib/feedback-messages"
 import { formatDateAndTime } from "../lib/utils"
 import { useCardDrag } from "../hooks"
+import { ButtonFaded, ButtonPrimary } from "./Buttons"
 
 type IdeaCardProps = {
 	ideaCard: IdeaCardType
@@ -142,6 +143,7 @@ export default function IdeaCard({
 						Idea title
 					</label>
 					<input
+						className='idea-card__title'
 						ref={titleRef}
 						value={newTitle}
 						type='text'
@@ -192,13 +194,11 @@ export default function IdeaCard({
 				</div>
 
 				<div className='idea-card__buttons'>
-					<button onClick={() => deleteIdea(title)} className='button-faded'>
+					<ButtonFaded onClickAction={() => deleteIdea(title)}>
 						Delete Card
-					</button>
+					</ButtonFaded>
 					{(isEditingTitle || isEditingDescription) && (
-						<button onClick={saveIdea} className='button-main'>
-							Save
-						</button>
+						<ButtonPrimary onClickAction={saveIdea}>Save</ButtonPrimary>
 					)}
 				</div>
 				<div>

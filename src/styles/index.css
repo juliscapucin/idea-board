@@ -3,6 +3,9 @@
 @import "main.css";
 @import "utilities.css";
 
+@import "icons.css";
+@import "buttons.css";
+
 @import "dropdown-menu.css";
 @import "idea-card.css";
 @import "idea-card-form.css";

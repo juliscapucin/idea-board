@@ -9,6 +9,10 @@
 	border: solid 2px var(--color-primary);
 }
 
+.idea-card__title {
+	text-transform: capitalize;
+}
+
 .idea-card input {
 	font-size: var(--text-md);
 }
@@ -29,9 +33,11 @@
 }
 
 .idea-card__buttons {
-	width: full;
+	width: 100%;
+	margin-top: var(--space-xxs);
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	gap: var(--space-sm);
 	margin-bottom: var(--space-md);
 }

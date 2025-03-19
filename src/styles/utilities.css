@@ -14,6 +14,14 @@
 	opacity: 1;
 }
 
+.rotate-45 {
+	transform: rotate(45deg);
+}
+
+.-rotate-45 {
+	transform: rotate(-45deg);
+}
+
 .text-left {
 	text-align: left;
 }
