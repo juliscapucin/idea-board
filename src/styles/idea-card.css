@@ -10,7 +10,7 @@
 	background-color: var(--color-secondary);
 	color: var(--color-text-dark);
 	padding: var(--space-xs);
-	border-radius: var(--round-corner-sm);
+	border-radius: var(--radius-md);
 	border: solid 2px var(--color-primary);
 }
 

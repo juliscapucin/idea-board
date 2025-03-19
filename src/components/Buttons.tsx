@@ -1,7 +1,7 @@
 import { IconClose } from "./Icons"
 
 type ButtonProps = {
-	onClickAction: (arg: boolean) => void
+	onClickAction: () => void
 	classes?: string
 	children?: React.ReactNode
 	iconColor?: string
@@ -14,10 +14,7 @@ export function ButtonClose({
 	iconColor,
 }: ButtonProps) {
 	return (
-		<button
-			className={`button-close ${classes}`}
-			onClick={() => onClickAction(false)}
-		>
+		<button className={`button-close ${classes}`} onClick={onClickAction}>
 			<IconClose {...{ iconColor }} />
 		</button>
 	)
@@ -37,7 +34,39 @@ export function Button({
 	return (
 		<button
 			className={`${variant && variantClasses[variant]} ${classes}`}
-			onClick={() => onClickAction(false)}
+			onClick={onClickAction}
+		>
+			{children}
+		</button>
+	)
+}
+
+type ButtonHoverProps = {
+	onMouseEnterAction: () => void
+	onMouseLeaveAction: () => void
+	classes?: string
+	children?: React.ReactNode
+	iconColor?: string
+	variant?: string
+}
+
+export function ButtonHover({
+	onMouseEnterAction,
+	onMouseLeaveAction,
+	classes,
+	children,
+	variant,
+}: ButtonHoverProps) {
+	const variantClasses: Record<string, string> = {
+		primary: "button-main",
+		faded: "button-faded",
+	}
+
+	return (
+		<button
+			className={`${variant && variantClasses[variant]} ${classes}`}
+			onMouseEnter={onMouseEnterAction}
+			onMouseLeave={onMouseLeaveAction}
 		>
 			{children}
 		</button>

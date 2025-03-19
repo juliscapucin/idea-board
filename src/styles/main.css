@@ -45,12 +45,12 @@ textarea {
 
 input:user-invalid,
 textarea:user-invalid {
-	border: 1px solid red;
+	border: 2px solid red;
 }
 
 input:user-valid,
 textarea:user-valid {
-	border: 1px solid lime;
+	border: 2px solid lime;
 }
 
 textarea {

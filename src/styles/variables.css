@@ -45,6 +45,11 @@
 	--text-xl: 2.25rem;
 	--text-xxl: 4;
 
+	--mobile: 480px;
+	--tablet: 768px;
+	--desktop: 1024px;
+	--large-desktop: 1440px;
+
 	color-scheme: light dark;
 	color: var(--color-text-light);
 	background-color: var(--color-primary);
