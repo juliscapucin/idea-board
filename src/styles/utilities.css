@@ -30,6 +30,10 @@
 	opacity: 1;
 }
 
+.pointer-events-none {
+	pointer-events: none;
+}
+
 .rotate-45 {
 	transform: rotate(45deg);
 }
