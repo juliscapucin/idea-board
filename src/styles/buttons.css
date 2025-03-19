@@ -8,7 +8,6 @@ button {
 	background-color: transparent;
 }
 
-button:focus,
 button:focus-visible {
 	outline: 4px dotted var(--color-tertiary);
 }
@@ -17,7 +16,7 @@ button:focus-visible {
 	border: 1px solid var(--color-link);
 	background-color: var(--color-tertiary);
 	border-radius: var(--radius-md);
-	padding: var(--space-xs);
+	padding: var(--space-xxs) var(--space-xs);
 	transition: background-color 0.3s;
 }
 

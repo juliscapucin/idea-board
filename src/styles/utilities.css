@@ -10,8 +10,12 @@
 	background-color: var(--color-tertiary);
 }
 
+.bg-faded-light {
+	background-color: var(--color-faded-light);
+}
+
 .hidden {
-	display: none;
+	visibility: hidden;
 }
 
 .highlight {

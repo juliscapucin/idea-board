@@ -137,7 +137,7 @@ export default function IdeaCard({
 			<ButtonClose
 				classes={"idea-card__close-button"}
 				onClickAction={() => deleteIdea(title)}
-				iconColor='primary'
+				iconColor='faded-light'
 			/>
 
 			<div className='idea-card__fields'>
@@ -206,8 +206,12 @@ export default function IdeaCard({
 				)}
 			</div>
 			<div className='idea-card__dates'>
-				{dateCreated && <p>Created on: {dateCreated}</p>}
-				{dateEdited && <p>Last edited on: {dateEdited}</p>}
+				<p className={`${!dateCreated && "hidden"}`}>
+					Created on: {dateCreated}
+				</p>
+				<p className={`${!dateEdited && "hidden"}`}>
+					Last edited on: {dateEdited}
+				</p>
 			</div>
 		</div>
 	)

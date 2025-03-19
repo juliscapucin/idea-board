@@ -1,12 +1,16 @@
 .idea-card {
+	--card-width: calc(
+		calc(99vw - calc(2 * var(--space-md)) - calc(2 * var(--space-md))) / 3
+	);
 	position: relative;
-	width: clamp(25rem, calc(30vw - (2 * var(--space-md))), 40rem);
+	flex: 0 0 var(--card-width);
+	min-width: 23rem;
+	max-width: 35rem;
 	aspect-ratio: square;
 	background-color: var(--color-secondary);
 	color: var(--color-text-dark);
-	padding: var(--space-sm);
+	padding: var(--space-xs);
 	border-radius: var(--round-corner-sm);
-	/* transition: all 1s ease-out; */
 	border: solid 2px var(--color-primary);
 }
 
@@ -38,20 +42,22 @@
 
 .idea-card__buttons {
 	width: 100%;
+	height: 3rem;
 	margin-top: var(--space-xxs);
+	margin-bottom: var(--space-xs);
 	display: flex;
-	justify-content: center;
 	align-items: center;
-	gap: var(--space-sm);
-	margin-bottom: var(--space-md);
+	justify-content: center;
 }
 
 .idea-card__countdown {
+	font-size: var(--text-xxs);
 	text-align: right;
 	margin-top: var(--space-xxs);
+	color: var(--color-faded-light);
 }
 
 .idea-card__dates {
-	height: 4rem;
-	font-size: var(--text-xs);
+	font-size: var(--text-xxs);
+	color: var(--color-faded-light);
 }
