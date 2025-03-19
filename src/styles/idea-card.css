@@ -1,5 +1,6 @@
 .idea-card {
-	width: 30rem;
+	position: relative;
+	width: clamp(25rem, calc(30vw - (2 * var(--space-md))), 40rem);
 	aspect-ratio: square;
 	background-color: var(--color-secondary);
 	color: var(--color-text-dark);
@@ -9,12 +10,15 @@
 	border: solid 2px var(--color-primary);
 }
 
-.idea-card__title {
-	text-transform: capitalize;
+.idea-card__close-button {
+	position: absolute;
+	top: var(--space-xs);
+	right: var(--space-xs);
 }
 
-.idea-card input {
-	font-size: var(--text-md);
+.idea-card__title {
+	font-size: var(--text-lg);
+	text-transform: capitalize;
 }
 
 .idea-card input,
@@ -28,7 +32,7 @@
 	border: 1px solid var(--color-transparent);
 }
 
-.idea-card__form-section {
+.idea-card__fields {
 	margin-bottom: var(--space-md);
 }
 
@@ -45,4 +49,9 @@
 .idea-card__countdown {
 	text-align: right;
 	margin-top: var(--space-xxs);
+}
+
+.idea-card__dates {
+	height: 4rem;
+	font-size: var(--text-xs);
 }

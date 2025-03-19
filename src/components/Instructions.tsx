@@ -1,18 +1,19 @@
 import { useState } from "react"
-import { ButtonClose, ButtonFaded } from "./Buttons"
+import { Button, ButtonClose } from "./Buttons"
 
 export default function Instructions() {
 	const [showInstructions, setShowInstructions] = useState(false)
 	return (
 		<div className='instructions'>
-			<ButtonFaded onClickAction={() => setShowInstructions(true)}>
+			<Button onClickAction={() => setShowInstructions(true)}>
 				Instructions
-			</ButtonFaded>
+			</Button>
 			{showInstructions && (
 				<div className='instructions__popup text-left'>
 					<ButtonClose
 						classes={"instructions__button-close"}
 						onClickAction={() => setShowInstructions(false)}
+						iconColor='secondary'
 					/>
 
 					<h2>Task</h2>

@@ -10,7 +10,7 @@ import { IdeaCardType } from "../types"
 import { duplicatedTitleMessage } from "../lib/feedback-messages"
 import { formatDateAndTime } from "../lib/utils"
 import { useCardDrag } from "../hooks"
-import { ButtonFaded, ButtonPrimary } from "./Buttons"
+import { Button, ButtonClose } from "./Buttons"
 
 type IdeaCardProps = {
 	ideaCard: IdeaCardType
@@ -134,77 +134,80 @@ export default function IdeaCard({
 
 	return (
 		<div ref={ideaCardRef} className='idea-card'>
+			<ButtonClose
+				classes={"idea-card__close-button"}
+				onClickAction={() => deleteIdea(title)}
+				iconColor='primary'
+			/>
+
+			<div className='idea-card__fields'>
+				<label
+					className={`${isSaved ? "opacity-0" : "opacity-1"}`}
+					htmlFor='title'
+				>
+					Idea title
+				</label>
+				<input
+					className='idea-card__title'
+					ref={titleRef}
+					value={newTitle}
+					type='text'
+					id='title'
+					name='title'
+					minLength={2}
+					maxLength={50}
+					placeholder='My Best Idea'
+					required
+					onFocus={() => console.log("focus")}
+					onChange={(e) => {
+						setNewTitle(e.target.value)
+						setIsEditingTitle(true)
+					}}
+				/>
+			</div>
+
 			<div>
-				<div className='idea-card__form-section'>
-					<label
-						className={`${isSaved ? "opacity-0" : "opacity-1"}`}
-						htmlFor='title'
-					>
-						Idea title
-					</label>
-					<input
-						className='idea-card__title'
-						ref={titleRef}
-						value={newTitle}
-						type='text'
-						id='title'
-						name='title'
-						minLength={2}
-						maxLength={50}
-						placeholder='My Best Idea'
-						required
-						onFocus={() => console.log("focus")}
-						onChange={(e) => {
-							setNewTitle(e.target.value)
-							setIsEditingTitle(true)
-						}}
-					/>
-				</div>
+				<label
+					className={`${isSaved ? "opacity-0" : "opacity-1"}`} // if already saved once, no need for labels
+					htmlFor='description'
+				>
+					Description
+				</label>
+				<textarea
+					value={newDescription}
+					id='description'
+					name='description'
+					placeholder='Idea description here'
+					minLength={2}
+					maxLength={140}
+					rows={3}
+					required
+					onChange={(e) => {
+						setNewDescription(e.target.value)
+						setIsEditingDescription(true)
+					}}
+				/>
 
-				<div>
-					<label
-						className={`${isSaved ? "opacity-0" : "opacity-1"}`} // if already saved once, no need for labels
-						htmlFor='description'
-					>
-						Description
-					</label>
-					<textarea
-						value={newDescription}
-						id='description'
-						name='description'
-						placeholder='Idea description here'
-						minLength={2}
-						maxLength={140}
-						rows={3}
-						required
-						onChange={(e) => {
-							setNewDescription(e.target.value)
-							setIsEditingDescription(true)
-						}}
-					/>
+				<p
+					className={`idea-card__countdown ${
+						// Show character count if user is editing description
+						isEditingDescription ? "opacity-1" : "opacity-0"
+					}`}
+				>
+					{characterCount} of 140 characters
+				</p>
+			</div>
 
-					<p
-						className={`idea-card__countdown ${
-							// Show character count if user is editing description
-							isEditingDescription ? "opacity-1" : "opacity-0"
-						}`}
-					>
-						{characterCount} of 140 characters
-					</p>
-				</div>
-
-				<div className='idea-card__buttons'>
-					<ButtonFaded onClickAction={() => deleteIdea(title)}>
-						Delete Card
-					</ButtonFaded>
-					{(isEditingTitle || isEditingDescription) && (
-						<ButtonPrimary onClickAction={saveIdea}>Save</ButtonPrimary>
-					)}
-				</div>
-				<div>
-					{dateEdited && <p>Last edited on: {dateEdited}</p>}
-					{dateCreated && <p>Created on: {dateCreated}</p>}
-				</div>
+			<div className='idea-card__buttons'>
+				{(isEditingTitle || isEditingDescription) && (
+					<Button variant='primary' onClickAction={saveIdea}>
+						Save
+					</Button>
+				)}
+			</div>
+			<div className='idea-card__dates'>
+				{dateCreated && <p>Created on: {dateCreated}</p>}
+				{dateEdited && <p>Last edited on: {dateEdited}</p>}
 			</div>
 		</div>
 	)

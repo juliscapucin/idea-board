@@ -37,11 +37,13 @@
 
 	--radius-md: 8px;
 
-	--text-xs: 0.6rem;
+	--text-xxs: 0.625rem;
+	--text-xs: 0.875rem;
 	--text-sm: 1rem;
-	--text-md: 1.6rem;
-	--text-lg: 2.4rem;
-	--text-xl: 3.2rem;
+	--text-md: 1.125rem;
+	--text-lg: 1.5rem;
+	--text-xl: 2.25rem;
+	--text-xxl: 4;
 
 	color-scheme: light dark;
 	color: var(--color-text-light);

@@ -1,3 +1,15 @@
+.bg-primary {
+	background-color: var(--color-primary);
+}
+
+.bg-secondary {
+	background-color: var(--color-secondary);
+}
+
+.bg-tertiary {
+	background-color: var(--color-tertiary);
+}
+
 .hidden {
 	display: none;
 }

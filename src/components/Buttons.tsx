@@ -4,38 +4,39 @@ type ButtonProps = {
 	onClickAction: (arg: boolean) => void
 	classes?: string
 	children?: React.ReactNode
+	iconColor?: string
+	variant?: string
 }
 
-export function ButtonClose({ onClickAction, classes }: ButtonProps) {
+export function ButtonClose({
+	onClickAction,
+	classes,
+	iconColor,
+}: ButtonProps) {
 	return (
 		<button
 			className={`button-close ${classes}`}
 			onClick={() => onClickAction(false)}
 		>
-			<IconClose />
+			<IconClose {...{ iconColor }} />
 		</button>
 	)
 }
 
-export function ButtonPrimary({
+export function Button({
 	onClickAction,
 	classes,
 	children,
+	variant,
 }: ButtonProps) {
-	return (
-		<button
-			className={`button-main ${classes}`}
-			onClick={() => onClickAction(false)}
-		>
-			{children}
-		</button>
-	)
-}
+	const variantClasses: Record<string, string> = {
+		primary: "button-main",
+		faded: "button-faded",
+	}
 
-export function ButtonFaded({ onClickAction, classes, children }: ButtonProps) {
 	return (
 		<button
-			className={`button-faded ${classes}`}
+			className={`${variant && variantClasses[variant]} ${classes}`}
 			onClick={() => onClickAction(false)}
 		>
 			{children}
