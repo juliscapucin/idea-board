@@ -71,6 +71,7 @@ export default function IdeaCard({
 		// CHECK FOR DUPLICATED TITLE
 		if (
 			title !== newTitle && // if Title has been edited
+			editedCard &&
 			ideaCardCollection.find(
 				(card) => card.title.toLowerCase() === editedCard.title.toLowerCase()
 			)
@@ -78,10 +79,12 @@ export default function IdeaCard({
 			alert(duplicatedTitleMessage)
 			setNewTitle(title) // if new title exists, revert to original title
 			titleRef.current && titleRef.current.focus()
-		} else {
+		} else if (editedCard) {
 			// CREATE A NEW ARRAY WITH UPDATED DATA
 			const updatedCollection = [...ideaCardCollection]
 			updatedCollection[cardToEditIndex] = editedCard
+
+			console.log(editedCard)
 
 			setIdeaCardCollection(updatedCollection)
 
@@ -115,6 +118,22 @@ export default function IdeaCard({
 	useEffect(() => {
 		if (!isSaved && titleRef.current) titleRef.current.focus()
 	}, [])
+
+	// SAVE ON CLICK OUTSIDE
+	// useEffect(() => {
+	// 	if (!ideaCardRef.current || (!isEditingTitle && !isEditingDescription))
+	// 		return
+
+	// 	const saveOnClickOutside = (e: Event) => {
+	// 		if (!ideaCardRef.current!.contains(e.target)) {
+	// 			saveIdea()
+	// 		}
+	// 	}
+
+	// 	document.addEventListener("click", saveOnClickOutside)
+
+	// 	return () => document.removeEventListener("click", saveOnClickOutside)
+	// }, [ideaCardRef, isEditingDescription, isEditingTitle])
 
 	// CHARACTER COUNT
 	useEffect(() => {
@@ -174,13 +193,14 @@ export default function IdeaCard({
 					Description
 				</label>
 				<textarea
+					className='idea-card__description'
 					value={newDescription}
 					id='description'
 					name='description'
 					placeholder='Idea description here'
 					minLength={2}
 					maxLength={140}
-					rows={3}
+					rows={4}
 					required
 					onChange={(e) => {
 						setNewDescription(e.target.value)
