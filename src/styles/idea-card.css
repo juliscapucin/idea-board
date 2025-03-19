@@ -4,12 +4,13 @@
 	);
 	position: relative;
 	flex: 0 0 var(--card-width);
-	min-width: 23rem;
+	min-width: 20rem;
 	max-width: 35rem;
 	aspect-ratio: square;
 	background-color: var(--color-secondary);
 	color: var(--color-text-dark);
 	padding: var(--space-xs);
+	padding-top: var(--space-lg);
 	border-radius: var(--radius-md);
 	border: solid 2px var(--color-primary);
 }

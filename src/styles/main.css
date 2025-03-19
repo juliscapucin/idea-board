@@ -64,7 +64,6 @@ textarea:focus-visible {
 
 .main {
 	width: 100%;
-	height: 100svh;
 }
 
 .main__cards-container {
@@ -73,12 +72,13 @@ textarea:focus-visible {
 	align-items: flex-start;
 	justify-content: flex-start;
 	gap: var(--space-md);
-	height: 100%;
+	height: calc(100% - var(--header-height));
 }
 
 .main__header {
 	position: relative;
 	width: 100%;
+	height: var(--header-height);
 	margin-bottom: var(--space-lg);
 }
 
