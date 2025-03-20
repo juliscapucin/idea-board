@@ -55,12 +55,13 @@ export default function DropDownMenu({
 	}
 
 	// CLICK OUTSIDE FUNCTIONALITY
-	useEffect(() => {
-		function handleClickOutside(e: MouseEvent) {
-			if (!dropDownRef.current || !showMenu) return
-			if (!dropDownRef.current.contains(e.target as Node)) setShowMenu(false)
-		}
+	function handleClickOutside(e: MouseEvent) {
+		if (!dropDownRef.current || !showMenu) return
+		console.log("click outside")
+		if (!dropDownRef.current.contains(e.target as Node)) setShowMenu(false)
+	}
 
+	useEffect(() => {
 		document.addEventListener("click", (e) => handleClickOutside(e))
 
 		return () =>

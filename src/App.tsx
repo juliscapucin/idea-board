@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 
+import Flip from "gsap/Flip"
+
 import { DropDownMenu, IdeaCard, InstructionsPopup } from "./components/"
 
 import { IdeaCardType } from "./types"

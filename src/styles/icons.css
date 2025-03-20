@@ -1,4 +1,4 @@
-.icon-close {
+.icon-close__container {
 	position: relative;
 	width: 100%;
 	aspect-ratio: square;
@@ -8,4 +8,27 @@
 	width: 100%;
 	height: 1px;
 	position: absolute;
+}
+
+.icon-help__container {
+	background-color: var(--color-primary);
+	border: 1px solid var(--color-faded-medium);
+	border-radius: 50%;
+	height: 2rem;
+	width: 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background-color 0.3s;
+}
+
+.icon-help__container:hover {
+	background-color: var(--color-faded-light);
+	border: 1px solid var(--color-faded-light);
+}
+
+.icon-help__icon {
+	font-size: var(--text-md);
+	line-height: 1;
+	font-weight: 100;
 }

@@ -45,3 +45,19 @@
 .text-left {
 	text-align: left;
 }
+
+.text-primary {
+	color: var(--color-primary);
+}
+
+.text-secondary {
+	color: var(--color-secondary);
+}
+
+.text-tertiary {
+	color: var(--color-tertiary);
+}
+
+.text-faded-medium {
+	color: var(--color-faded-medium);
+}

@@ -2,6 +2,7 @@ import { useRef, useState } from "react"
 
 import { Button, ButtonClose } from "./Buttons"
 import usePopupAnimate from "../hooks/usePopupAnimate"
+import { IconHelp } from "./Icons"
 
 export default function InstructionsPopup() {
 	const [showInstructions, setShowInstructions] = useState(false)
@@ -16,7 +17,9 @@ export default function InstructionsPopup() {
 
 	return (
 		<div className='instructions'>
-			<Button onClickAction={handleClick}>Instructions</Button>
+			<Button onClickAction={handleClick}>
+				<IconHelp iconColor='secondary' />
+			</Button>
 			<div
 				ref={popupRef}
 				className={`instructions__popup ${
