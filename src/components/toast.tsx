@@ -1,16 +1,16 @@
-import { useLayoutEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 
 import gsap from "gsap"
 
 type ToastProps = {
 	showToast: boolean
-	setShowToast: (art: boolean) => void
+	setShowToast: (arg: boolean) => void
 }
 
 export default function Toast({ showToast, setShowToast }: ToastProps) {
 	const toastRef = useRef(null)
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		console.log(showToast)
 		if (!showToast) return
 

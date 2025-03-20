@@ -27,11 +27,8 @@ export default function IdeaCard({
 	const { title, description, dateCreated, dateCreatedRaw, dateEdited } =
 		ideaCard
 
-	const isSaved = dateCreated ? true : false
-
 	const [newTitle, setNewTitle] = useState(title)
 	const [newDescription, setNewDescription] = useState(description)
-	const [characterCount, setCharacterCount] = useState(0)
 	const [isEditingTitle, setIsEditingTitle] = useState(false)
 	const [isEditingDescription, setIsEditingDescription] = useState(false)
 	const [showToast, setShowToast] = useState(false)
@@ -41,6 +38,9 @@ export default function IdeaCard({
 
 	const ideaCardRef = useRef<HTMLDivElement>(null)
 	const titleRef = useRef<HTMLInputElement>(null)
+
+	const isSaved = dateCreated ? true : false
+	const characterCount = newDescription.length
 
 	const saveIdea = () => {
 		const cardToEdit = ideaCardCollection.find(
@@ -84,29 +84,31 @@ export default function IdeaCard({
 			alert(duplicatedTitleMessage)
 			setNewTitle(title) // if new title exists, revert to original title
 			titleRef.current && titleRef.current.focus()
-		} else if (editedCard) {
-			// CREATE A NEW ARRAY WITH UPDATED DATA
+			console.log("hello")
+			return
+		}
+
+		// SAVE AND SHOW TOAST
+		if ((title !== newTitle || description !== newDescription) && editedCard) {
+			// Create a new array with updated data
 			const updatedCollection = [...ideaCardCollection]
 			updatedCollection[cardToEditIndex] = editedCard
 
-			setIdeaCardCollection(updatedCollection)
-
-			// STORE DATA ON LOCAL STORAGE
+			// Store updated data on local storage
 			const finalData = JSON.stringify(updatedCollection)
 			localStorage.setItem("ideaCardCollection", finalData)
 
-			// CHECK IF DATA WAS SAVED + SHOW TOAST
+			// Check if data was saved + show toast
 			const storedData = localStorage.getItem("ideaCardCollection")
 			if (storedData === finalData) {
 				setShowToast(true)
-				console.log("saved")
-			} else {
-				console.log("not saved")
-				setShowToast(false)
-			}
 
-			setIsEditingTitle(false)
-			setIsEditingDescription(false)
+				setIsEditingTitle(false)
+				setIsEditingDescription(false)
+
+				//TODO: why this triggers a component re-render only on title edits??
+				setIdeaCardCollection(updatedCollection)
+			}
 		}
 	}
 
@@ -136,7 +138,7 @@ export default function IdeaCard({
 	// FOCUS ON TITLE (NEW CARD)
 	useEffect(() => {
 		if (!isSaved && titleRef.current) titleRef.current.focus()
-	}, [])
+	}, [isSaved])
 
 	// SAVE ON CLICK OUTSIDE
 	// useEffect(() => {
@@ -153,11 +155,6 @@ export default function IdeaCard({
 
 	// 	return () => document.removeEventListener("click", saveOnClickOutside)
 	// }, [ideaCardRef, isEditingDescription, isEditingTitle])
-
-	// CHARACTER COUNT
-	useEffect(() => {
-		setCharacterCount(newDescription.length)
-	}, [newDescription])
 
 	// DRAGGABLE FUNCTIONALITY
 	useCardDrag(ideaCardRef.current, ideaCardCollection, setIdeaCardCollection)
@@ -181,14 +178,13 @@ export default function IdeaCard({
 					className='idea-card__title'
 					ref={titleRef}
 					value={newTitle}
-					type='text'
 					id='title'
 					name='title'
+					placeholder='My Best Idea'
 					minLength={2}
 					maxLength={50}
-					placeholder='My Best Idea'
+					type='text'
 					required
-					onFocus={() => console.log("focus")}
 					onChange={(e) => {
 						setNewTitle(e.target.value)
 						setIsEditingTitle(true)

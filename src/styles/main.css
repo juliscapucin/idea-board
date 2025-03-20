@@ -59,7 +59,7 @@ textarea {
 
 input:focus-visible,
 textarea:focus-visible {
-	outline: 2px solid var(--color-primary);
+	outline: 1px solid var(--color-primary);
 }
 
 .main {
