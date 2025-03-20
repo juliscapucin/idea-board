@@ -1,6 +1,6 @@
 import DropDownMenu from "./DropDownMenu"
 import IdeaCard from "./IdeaCard"
 import IdeaCardForm from "./IdeaCardForm"
-import Instructions from "./Instructions"
+import InstructionsPopup from "./InstructionsPopup"
 
-export { DropDownMenu, IdeaCard, IdeaCardForm, Instructions }
+export { DropDownMenu, IdeaCard, IdeaCardForm, InstructionsPopup }

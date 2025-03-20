@@ -1,9 +1,9 @@
-import { useLayoutEffect, useRef, useState } from "react"
-import gsap from "gsap"
+import { useRef, useState } from "react"
 
 import { Button, ButtonClose } from "./Buttons"
+import usePopupAnimate from "../hooks/usePopupAnimate"
 
-export default function Instructions() {
+export default function InstructionsPopup() {
 	const [showInstructions, setShowInstructions] = useState(false)
 
 	const popupRef = useRef(null)
@@ -12,43 +12,7 @@ export default function Instructions() {
 		setShowInstructions(showInstructions ? false : true)
 	}
 
-	useLayoutEffect(() => {
-		if (!popupRef.current) return
-
-		const popup = popupRef.current
-
-		const ctx = gsap.context(() => {
-			if (showInstructions) {
-				// SHOW POPUP
-				gsap.fromTo(
-					popup,
-					{ opacity: 0, scale: 0.8, yPercent: -6 },
-					{
-						opacity: 1,
-						scale: 1,
-						yPercent: 0,
-						duration: 0.2,
-						ease: "power2.out",
-					}
-				)
-			} else {
-				// HIDE POPUP
-				gsap.fromTo(
-					popup,
-					{ opacity: 1, scale: 1, yPercent: 0 },
-					{
-						opacity: 0,
-						scale: 0.9,
-						yPercent: -6,
-						duration: 0.2,
-						ease: "power2.in",
-					}
-				)
-			}
-		})
-
-		return () => ctx.revert()
-	}, [showInstructions])
+	usePopupAnimate(showInstructions, popupRef.current)
 
 	return (
 		<div className='instructions'>
@@ -56,7 +20,7 @@ export default function Instructions() {
 			<div
 				ref={popupRef}
 				className={`instructions__popup ${
-					!showInstructions && "pointer-events-none"
+					!showInstructions && "hidden pointer-events-none"
 				}`}
 			>
 				<ButtonClose
