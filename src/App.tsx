@@ -10,11 +10,13 @@ import { incompleteCardMessage } from "./lib/feedback-messages"
 
 function App() {
 	const containerRef = useRef<HTMLDivElement>(null)
-	const flipStateRef = useRef<ReturnType<typeof Flip.getState> | null>(null) // used ChatGPT :)
 
 	const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCardType[]>(
 		[]
 	)
+	const [flipState, setFlipState] = useState<ReturnType<
+		typeof Flip.getState
+	> | null>(null)
 
 	const createNewIdea = () => {
 		// CHECK IF EMPTY CARD ALREADY EXISTS
@@ -25,7 +27,7 @@ function App() {
 			return
 		}
 		if (!containerRef.current) return
-		flipStateRef.current = Flip.getState(containerRef.current.children)
+		setFlipState(Flip.getState(containerRef.current.children))
 
 		setIdeaCardCollection([
 			{
@@ -36,15 +38,15 @@ function App() {
 		])
 	}
 
-	// FLIP + SAVE WHENEVER IDEA CARD COLLECTION CHANGES
+	// FLIP ANIMATION
 	useEffect(() => {
-		// FLIP
-		if (flipStateRef.current)
-			Flip.from(flipStateRef.current, {
-				duration: 0.5,
-				ease: "power2.out",
-			})
-	}, [ideaCardCollection])
+		if (!flipState) return
+
+		Flip.from(flipState, {
+			duration: 0.5,
+			ease: "power2.out",
+		})
+	}, [flipState])
 
 	// RETRIEVE CARDS FROM LOCAL STORAGE
 	useEffect(() => {
@@ -73,7 +75,6 @@ function App() {
 					setIdeaCardCollection,
 					createNewIdea,
 					cardsContainer: containerRef.current,
-					flipState: flipStateRef.current,
 				}}
 			/>
 			{/* CARDS LIST */}
@@ -82,7 +83,6 @@ function App() {
 					{...{
 						ideaCardCollection,
 						setIdeaCardCollection,
-						flipState: flipStateRef.current,
 					}}
 				/>
 			</div>

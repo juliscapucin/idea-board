@@ -4,13 +4,11 @@ import { IdeaCard } from "../components"
 type CardsListProps = {
 	ideaCardCollection: IdeaCardType[]
 	setIdeaCardCollection: (arg: IdeaCardType[]) => void
-	flipState: ReturnType<typeof Flip.getState> | null
 }
 
 export default function CardsList({
 	ideaCardCollection,
 	setIdeaCardCollection,
-	flipState,
 }: CardsListProps) {
 	return ideaCardCollection.length === 0 ? (
 		<div className='main__no-cards'>
@@ -25,7 +23,6 @@ export default function CardsList({
 						ideaCard,
 						ideaCardCollection,
 						setIdeaCardCollection,
-						flipState,
 					}}
 				/>
 			)

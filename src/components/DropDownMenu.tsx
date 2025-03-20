@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import gsap from "gsap"
 import Flip from "gsap/Flip"
@@ -14,17 +14,18 @@ type DropDownMenuProps = {
 	container: HTMLElement | null
 	ideaCardCollection: IdeaCardType[]
 	setIdeaCardCollection: (arg: IdeaCardType[]) => void
-	flipState: ReturnType<typeof Flip.getState> | null
 }
 
 export default function DropDownMenu({
 	container,
 	ideaCardCollection,
 	setIdeaCardCollection,
-	flipState,
 }: DropDownMenuProps) {
 	const [showMenu, setShowMenu] = useState(false)
 	const [sortChoice, setSortChoice] = useState("")
+	const [flipState, setFlipState] = useState<ReturnType<
+		typeof Flip.getState
+	> | null>(null)
 
 	const dropDownContainerRef = useRef<HTMLDivElement | null>(null)
 	const dropDownRef = useRef<HTMLDivElement | null>(null)
@@ -34,7 +35,7 @@ export default function DropDownMenu({
 
 		gsap.registerPlugin(Flip)
 
-		flipState = Flip.getState(container.children)
+		setFlipState(Flip.getState(container.children))
 
 		const sortedCollection = [...ideaCardCollection].sort((a, b) => {
 			if (option === "dateCreatedRaw" && a.dateCreatedRaw && b.dateCreatedRaw) {
@@ -53,6 +54,16 @@ export default function DropDownMenu({
 		setIdeaCardCollection(sortedCollection)
 		saveToLocalStorage(sortedCollection)
 	}
+
+	// FLIP ANIMATION
+	useEffect(() => {
+		if (!flipState) return
+
+		Flip.from(flipState, {
+			duration: 0.5,
+			ease: "power2.out",
+		})
+	}, [flipState])
 
 	const handleClick = () => {
 		setShowMenu(!showMenu)

@@ -88,7 +88,11 @@ export default function useCardDrag(
 								Flip.from(state, {
 									duration: 0.5,
 									ease: "power2.out",
-									onComplete: () => setIdeaCardCollection(newIdeaCardOrder),
+									onComplete: () => {
+										// SAVE REORDERED ARRAY
+										setIdeaCardCollection(newIdeaCardOrder)
+										saveToLocalStorage(newIdeaCardOrder)
+									},
 								})
 							})
 						}
@@ -111,9 +115,6 @@ export default function useCardDrag(
 							isDragged,
 							isOverlapped
 						)
-
-						setIdeaCardCollection(newIdeaCardOrder)
-						saveToLocalStorage(newIdeaCardOrder)
 
 						// RESET INDEXES
 						isDragged = -1

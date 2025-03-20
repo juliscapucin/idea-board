@@ -16,14 +16,12 @@ type IdeaCardProps = {
 	ideaCard: IdeaCardType
 	ideaCardCollection: IdeaCardType[]
 	setIdeaCardCollection: (newCollection: IdeaCardType[]) => void
-	flipState: ReturnType<typeof Flip.getState> | null
 }
 
 export default function IdeaCard({
 	ideaCard,
 	ideaCardCollection,
 	setIdeaCardCollection,
-	flipState,
 }: IdeaCardProps) {
 	const { title, description, dateCreated, dateCreatedRaw, dateEdited } =
 		ideaCard
@@ -35,6 +33,9 @@ export default function IdeaCard({
 	const [characterCount, setCharacterCount] = useState(0)
 	const [isEditingTitle, setIsEditingTitle] = useState(false)
 	const [isEditingDescription, setIsEditingDescription] = useState(false)
+	const [flipState, setFlipState] = useState<ReturnType<
+		typeof Flip.getState
+	> | null>(null)
 
 	const ideaCardRef = useRef<HTMLDivElement>(null)
 	const titleRef = useRef<HTMLInputElement>(null)
@@ -96,7 +97,7 @@ export default function IdeaCard({
 
 	const deleteIdea = (title: string) => {
 		if (ideaCardRef.current && ideaCardRef.current.parentElement) {
-			flipState = Flip.getState(ideaCardRef.current.parentElement.children)
+			setFlipState(Flip.getState(ideaCardRef.current.parentElement.children))
 		}
 
 		const updatedCollection = ideaCardCollection.filter((card) => {
@@ -106,6 +107,16 @@ export default function IdeaCard({
 		setIdeaCardCollection(updatedCollection)
 		saveToLocalStorage(updatedCollection)
 	}
+
+	// FLIP ANIMATION
+	useEffect(() => {
+		if (!flipState) return
+
+		Flip.from(flipState, {
+			duration: 0.5,
+			ease: "power2.out",
+		})
+	}, [flipState])
 
 	// FOCUS ON TITLE (NEW CARD)
 	useEffect(() => {

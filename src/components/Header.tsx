@@ -8,7 +8,6 @@ type HeaderProps = {
 	setIdeaCardCollection: (arg: IdeaCardType[]) => void
 	createNewIdea: () => void
 	cardsContainer: HTMLDivElement | null
-	flipState: ReturnType<typeof Flip.getState> | null
 }
 
 export default function Header({
@@ -16,7 +15,6 @@ export default function Header({
 	setIdeaCardCollection,
 	createNewIdea,
 	cardsContainer,
-	flipState,
 }: HeaderProps) {
 	return (
 		<div className='main__header'>
@@ -37,7 +35,6 @@ export default function Header({
 						container: cardsContainer,
 						ideaCardCollection,
 						setIdeaCardCollection,
-						flipState,
 					}}
 				/>
 			</div>
