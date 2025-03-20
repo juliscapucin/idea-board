@@ -9,15 +9,12 @@ export default function useCloseOnClickOutside(
 		if (!container) return
 
 		function handleClickOutside(e: MouseEvent) {
-			console.log("click outside")
 			if (!container!.contains(e.target as Node)) setState(false)
 		}
 
 		if (state) {
-			console.log("event added")
 			document.addEventListener("click", handleClickOutside)
 		} else {
-			console.log("event removed")
 			document.removeEventListener("click", handleClickOutside)
 		}
 

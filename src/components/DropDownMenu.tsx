@@ -1,27 +1,30 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 
 import gsap from "gsap"
 import Flip from "gsap/Flip"
 
-import { IdeaCardType } from "../types"
 import { Button } from "./Buttons"
-import _Flip from "gsap/Flip"
+
 import { useCloseOnClickOutside, usePopupAnimate } from "../hooks"
+import { saveToLocalStorage } from "../lib/utils"
+
+import { IdeaCardType } from "../types"
 
 type DropDownMenuProps = {
 	container: HTMLElement | null
 	ideaCardCollection: IdeaCardType[]
 	setIdeaCardCollection: (arg: IdeaCardType[]) => void
+	flipState: ReturnType<typeof Flip.getState> | null
 }
 
 export default function DropDownMenu({
 	container,
 	ideaCardCollection,
 	setIdeaCardCollection,
+	flipState,
 }: DropDownMenuProps) {
 	const [showMenu, setShowMenu] = useState(false)
 	const [sortChoice, setSortChoice] = useState("")
-	const [flipState, setFlipState] = useState<any | null>(null) //TODO: fix any type
 
 	const dropDownContainerRef = useRef<HTMLDivElement | null>(null)
 	const dropDownRef = useRef<HTMLDivElement | null>(null)
@@ -31,7 +34,7 @@ export default function DropDownMenu({
 
 		gsap.registerPlugin(Flip)
 
-		setFlipState(Flip.getState(container.children))
+		flipState = Flip.getState(container.children)
 
 		const sortedCollection = [...ideaCardCollection].sort((a, b) => {
 			if (option === "dateCreatedRaw" && a.dateCreatedRaw && b.dateCreatedRaw) {
@@ -48,23 +51,17 @@ export default function DropDownMenu({
 			return 0
 		})
 		setIdeaCardCollection(sortedCollection)
+		saveToLocalStorage(sortedCollection)
 	}
-
-	// FLIP WHEN IDEA CARD COLLECTION CHANGES
-	useEffect(() => {
-		if (flipState)
-			requestAnimationFrame(() => {
-				Flip.from(flipState, { duration: 0.5, ease: "power2.out" })
-			})
-	}, [ideaCardCollection])
 
 	const handleClick = () => {
 		setShowMenu(!showMenu)
 	}
 
-	// CLICK OUTSIDE FUNCTIONALITY
+	// CLOSE ON CLICK OUTSIDE FUNCTIONALITY
 	useCloseOnClickOutside(dropDownContainerRef.current, showMenu, setShowMenu)
 
+	// ANIMATE DROPDOWN
 	usePopupAnimate(showMenu, dropDownRef.current)
 
 	return (

@@ -2,15 +2,15 @@ import { useEffect, useRef, useState } from "react"
 
 import Flip from "gsap/Flip"
 
-import { DropDownMenu, IdeaCard, InstructionsPopup } from "./components/"
+import { CardsList, Header } from "./components/"
 
 import { IdeaCardType } from "./types"
 
 import { incompleteCardMessage } from "./lib/feedback-messages"
-import { Button } from "./components/Buttons"
 
 function App() {
 	const containerRef = useRef<HTMLDivElement>(null)
+	const flipStateRef = useRef<ReturnType<typeof Flip.getState> | null>(null) // used ChatGPT :)
 
 	const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCardType[]>(
 		[]
@@ -25,7 +25,7 @@ function App() {
 			return
 		}
 		if (!containerRef.current) return
-		const state = Flip.getState(containerRef.current.children)
+		flipStateRef.current = Flip.getState(containerRef.current.children)
 
 		setIdeaCardCollection([
 			{
@@ -34,13 +34,23 @@ function App() {
 			},
 			...ideaCardCollection,
 		])
-
-		requestAnimationFrame(() => {
-			requestAnimationFrame(() => {
-				Flip.from(state, { duration: 0.5, ease: "power2.out" })
-			})
-		})
 	}
+
+	// FLIP + SAVE WHENEVER IDEA CARD COLLECTION CHANGES
+	useEffect(() => {
+		// FLIP
+		if (flipStateRef.current)
+			Flip.from(flipStateRef.current, {
+				duration: 0.5,
+				ease: "power2.out",
+			})
+	}, [ideaCardCollection])
+
+	// RETRIEVE CARDS FROM LOCAL STORAGE
+	useEffect(() => {
+		const getLocalStorage = localStorage.getItem("ideaCardCollection")
+		getLocalStorage && setIdeaCardCollection(JSON.parse(getLocalStorage))
+	}, [])
 
 	//TODO CREATE IDEA CARD ON ENTER KEYDOWN
 	// useEffect(() => {
@@ -55,54 +65,26 @@ function App() {
 	// 	}
 	// }, [])
 
-	useEffect(() => {
-		const getLocalStorage = localStorage.getItem("ideaCardCollection")
-		getLocalStorage && setIdeaCardCollection(JSON.parse(getLocalStorage))
-	}, [])
-
 	return (
 		<main className='main'>
-			<div className='main__header'>
-				<InstructionsPopup />
-				<h1 className='main__title'>Idea Board</h1>
-				<div className='main__buttons'>
-					<Button
-						variant='primary'
-						classes='button-main'
-						onClickAction={createNewIdea}
-					>
-						Create New Card
-					</Button>
-					{/* SORT DROPDOWN */}
-					<DropDownMenu
-						{...{
-							container: containerRef.current,
-							ideaCardCollection,
-							setIdeaCardCollection,
-						}}
-					/>
-				</div>
-			</div>
+			<Header
+				{...{
+					ideaCardCollection,
+					setIdeaCardCollection,
+					createNewIdea,
+					cardsContainer: containerRef.current,
+					flipState: flipStateRef.current,
+				}}
+			/>
 			{/* CARDS LIST */}
 			<div ref={containerRef} className='main__cards-container'>
-				{ideaCardCollection.length === 0 ? (
-					<div className='main__no-cards'>
-						<p>No cards in this collection</p>
-					</div>
-				) : (
-					ideaCardCollection.map((ideaCard) => {
-						return (
-							<IdeaCard
-								key={ideaCard.title}
-								{...{
-									ideaCard,
-									ideaCardCollection,
-									setIdeaCardCollection,
-								}}
-							/>
-						)
-					})
-				)}
+				<CardsList
+					{...{
+						ideaCardCollection,
+						setIdeaCardCollection,
+						flipState: flipStateRef.current,
+					}}
+				/>
 			</div>
 		</main>
 	)

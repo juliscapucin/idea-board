@@ -8,7 +8,7 @@ gsap.registerPlugin(Flip)
 import { IdeaCardType } from "../types"
 
 import { duplicatedTitleMessage } from "../lib/feedback-messages"
-import { formatDateAndTime } from "../lib/utils"
+import { formatDateAndTime, saveToLocalStorage } from "../lib/utils"
 import { useCardDrag } from "../hooks"
 import { Button, ButtonClose } from "./Buttons"
 
@@ -16,12 +16,14 @@ type IdeaCardProps = {
 	ideaCard: IdeaCardType
 	ideaCardCollection: IdeaCardType[]
 	setIdeaCardCollection: (newCollection: IdeaCardType[]) => void
+	flipState: ReturnType<typeof Flip.getState> | null
 }
 
 export default function IdeaCard({
 	ideaCard,
 	ideaCardCollection,
 	setIdeaCardCollection,
+	flipState,
 }: IdeaCardProps) {
 	const { title, description, dateCreated, dateCreatedRaw, dateEdited } =
 		ideaCard
@@ -84,9 +86,8 @@ export default function IdeaCard({
 			const updatedCollection = [...ideaCardCollection]
 			updatedCollection[cardToEditIndex] = editedCard
 
-			console.log(editedCard)
-
 			setIdeaCardCollection(updatedCollection)
+			saveToLocalStorage(updatedCollection)
 
 			setIsEditingTitle(false)
 			setIsEditingDescription(false)
@@ -94,10 +95,8 @@ export default function IdeaCard({
 	}
 
 	const deleteIdea = (title: string) => {
-		let state
-
 		if (ideaCardRef.current && ideaCardRef.current.parentElement) {
-			state = Flip.getState(ideaCardRef.current.parentElement.children)
+			flipState = Flip.getState(ideaCardRef.current.parentElement.children)
 		}
 
 		const updatedCollection = ideaCardCollection.filter((card) => {
@@ -105,13 +104,7 @@ export default function IdeaCard({
 		})
 
 		setIdeaCardCollection(updatedCollection)
-
-		if (state)
-			requestAnimationFrame(() => {
-				requestAnimationFrame(() => {
-					Flip.from(state, { duration: 0.5, ease: "power2.out" })
-				})
-			})
+		saveToLocalStorage(updatedCollection)
 	}
 
 	// FOCUS ON TITLE (NEW CARD)
@@ -139,14 +132,6 @@ export default function IdeaCard({
 	useEffect(() => {
 		setCharacterCount(newDescription.length)
 	}, [newDescription])
-
-	// SAVE NEW / UPDATED COLLECTION TO LOCAL STORAGE
-	useEffect(() => {
-		localStorage.setItem(
-			"ideaCardCollection",
-			JSON.stringify(ideaCardCollection)
-		)
-	}, [ideaCardCollection])
 
 	// DRAGGABLE
 	useCardDrag(ideaCardRef.current, ideaCardCollection, setIdeaCardCollection)

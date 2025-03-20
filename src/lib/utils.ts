@@ -1,3 +1,5 @@
+import { IdeaCardType } from "../types"
+
 const ensureTwoDigits = (value: number) => value.toString().padStart(2, "0") // Adds '0' to start if a number has only one digit
 
 const formatDateAndTime = () => {
@@ -12,7 +14,11 @@ const formatDateAndTime = () => {
 	return `${date}/${month}/${year} at ${time}`
 }
 
-export { formatDateAndTime }
+const saveToLocalStorage = (ideaCardCollection: IdeaCardType[]) => {
+	localStorage.setItem("ideaCardCollection", JSON.stringify(ideaCardCollection))
+}
+
+export { formatDateAndTime, saveToLocalStorage }
 
 // const formattedDate = dateCreated.toLocaleString("en-GB", {
 // 	day: "2-digit",

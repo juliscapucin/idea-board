@@ -5,6 +5,7 @@ import Flip from "gsap/Flip"
 import Draggable from "gsap/Draggable"
 
 import { IdeaCardType } from "../types"
+import { saveToLocalStorage } from "../lib/utils"
 
 const moveElement = (
 	arr: IdeaCardType[],
@@ -59,7 +60,6 @@ export default function useCardDrag(
 					// do hitTests while dragging
 					cards.forEach((card: Element, index: number) => {
 						if (card === this.target) isDragged = index // define the index of the element that's being dragged
-						console.log("dragged: ", isDragged)
 						// hitTest + overlap threshold
 						if (this.hitTest(card, "80%")) {
 							card.classList.add("highlight")
@@ -111,6 +111,9 @@ export default function useCardDrag(
 							isDragged,
 							isOverlapped
 						)
+
+						setIdeaCardCollection(newIdeaCardOrder)
+						saveToLocalStorage(newIdeaCardOrder)
 
 						// RESET INDEXES
 						isDragged = -1
