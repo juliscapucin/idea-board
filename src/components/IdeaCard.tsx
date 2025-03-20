@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import gsap from "gsap"
 import Flip from "gsap/Flip"
@@ -32,9 +32,6 @@ export default function IdeaCard({
 	const [isEditingTitle, setIsEditingTitle] = useState(false)
 	const [isEditingDescription, setIsEditingDescription] = useState(false)
 	const [showToast, setShowToast] = useState(false)
-	const [flipState, setFlipState] = useState<ReturnType<
-		typeof Flip.getState
-	> | null>(null)
 
 	const ideaCardRef = useRef<HTMLDivElement>(null)
 	const titleRef = useRef<HTMLInputElement>(null)
@@ -113,9 +110,8 @@ export default function IdeaCard({
 	}
 
 	const deleteIdea = (title: string) => {
-		if (ideaCardRef.current && ideaCardRef.current.parentElement) {
-			setFlipState(Flip.getState(ideaCardRef.current.parentElement.children))
-		}
+		if (!ideaCardRef.current || !ideaCardRef.current.parentElement) return
+		const state = Flip.getState(ideaCardRef.current.parentElement.children)
 
 		const updatedCollection = ideaCardCollection.filter((card) => {
 			if (card.title !== title) return card
@@ -123,17 +119,16 @@ export default function IdeaCard({
 
 		setIdeaCardCollection(updatedCollection)
 		saveToLocalStorage(updatedCollection)
-	}
 
-	// FLIP ANIMATION
-	useLayoutEffect(() => {
-		if (!flipState) return
-
-		Flip.from(flipState, {
-			duration: 0.5,
-			ease: "power2.out",
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				Flip.from(state, {
+					duration: 0.5,
+					ease: "power2.out",
+				})
+			})
 		})
-	}, [flipState])
+	}
 
 	// FOCUS ON TITLE (NEW CARD)
 	useEffect(() => {

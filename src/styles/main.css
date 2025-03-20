@@ -67,12 +67,14 @@ textarea:focus-visible {
 }
 
 .main__cards-container {
+	position: relative;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-start;
 	justify-content: flex-start;
 	gap: var(--space-md);
 	height: calc(100% - var(--header-height));
+	z-index: 1;
 }
 
 .main__header {

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import Flip from "gsap/Flip"
 
@@ -14,9 +14,6 @@ function App() {
 	const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCardType[]>(
 		[]
 	)
-	const [flipState, setFlipState] = useState<ReturnType<
-		typeof Flip.getState
-	> | null>(null)
 
 	const createNewIdea = () => {
 		// CHECK IF EMPTY CARD ALREADY EXISTS
@@ -27,7 +24,7 @@ function App() {
 			return
 		}
 		if (!containerRef.current) return
-		setFlipState(Flip.getState(containerRef.current.children))
+		const state = Flip.getState(containerRef.current.children)
 
 		setIdeaCardCollection([
 			{
@@ -36,17 +33,16 @@ function App() {
 			},
 			...ideaCardCollection,
 		])
-	}
 
-	// FLIP ANIMATION
-	useLayoutEffect(() => {
-		if (!flipState) return
-
-		Flip.from(flipState, {
-			duration: 0.5,
-			ease: "power2.out",
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				Flip.from(state, {
+					duration: 0.5,
+					ease: "power2.out",
+				})
+			})
 		})
-	}, [flipState])
+	}
 
 	// RETRIEVE CARDS FROM LOCAL STORAGE
 	useEffect(() => {

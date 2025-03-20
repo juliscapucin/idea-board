@@ -2,7 +2,7 @@
 	position: absolute;
 	top: 0;
 	right: 0;
-	z-index: 10;
+	z-index: 100;
 }
 
 .instructions__popup {
@@ -16,7 +16,6 @@
 	border-radius: var(--radius-md);
 	border: 1px solid var(--color-faded-medium);
 	text-align: left;
-	/* pointer-events: none; */
 }
 
 @media (max-width: 768px) {
