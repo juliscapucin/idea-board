@@ -1,3 +1,5 @@
 import useCardDrag from "./useCardDrag"
+import useCloseOnClickOutside from "./useCloseOnClickOutside"
+import usePopupAnimate from "./usePopupAnimate"
 
-export { useCardDrag }
+export { useCardDrag, useCloseOnClickOutside, usePopupAnimate }

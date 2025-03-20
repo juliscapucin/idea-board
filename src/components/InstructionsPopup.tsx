@@ -1,22 +1,29 @@
 import { useRef, useState } from "react"
 
 import { Button, ButtonClose } from "./Buttons"
-import usePopupAnimate from "../hooks/usePopupAnimate"
 import { IconHelp } from "./Icons"
+import { useCloseOnClickOutside, usePopupAnimate } from "../hooks"
 
 export default function InstructionsPopup() {
 	const [showInstructions, setShowInstructions] = useState(false)
 
+	const popupContainer = useRef(null)
 	const popupRef = useRef(null)
 
 	const handleClick = () => {
-		setShowInstructions(showInstructions ? false : true)
+		setShowInstructions(!showInstructions)
 	}
+
+	useCloseOnClickOutside(
+		popupContainer.current,
+		showInstructions,
+		setShowInstructions
+	)
 
 	usePopupAnimate(showInstructions, popupRef.current)
 
 	return (
-		<div className='instructions'>
+		<div ref={popupContainer} className='instructions'>
 			<Button onClickAction={handleClick}>
 				<IconHelp iconColor='secondary' />
 			</Button>

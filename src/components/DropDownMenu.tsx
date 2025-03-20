@@ -3,9 +3,10 @@ import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import Flip from "gsap/Flip"
 
-import usePopupAnimate from "../hooks/usePopupAnimate"
 import { IdeaCardType } from "../types"
 import { Button } from "./Buttons"
+import _Flip from "gsap/Flip"
+import { useCloseOnClickOutside, usePopupAnimate } from "../hooks"
 
 type DropDownMenuProps = {
 	container: HTMLElement | null
@@ -20,7 +21,9 @@ export default function DropDownMenu({
 }: DropDownMenuProps) {
 	const [showMenu, setShowMenu] = useState(false)
 	const [sortChoice, setSortChoice] = useState("")
+	const [flipState, setFlipState] = useState<any | null>(null) //TODO: fix any type
 
+	const dropDownContainerRef = useRef<HTMLDivElement | null>(null)
 	const dropDownRef = useRef<HTMLDivElement | null>(null)
 
 	const sort = (option: string) => {
@@ -28,7 +31,8 @@ export default function DropDownMenu({
 
 		gsap.registerPlugin(Flip)
 
-		const state = Flip.getState(container.children)
+		setFlipState(Flip.getState(container.children))
+
 		const sortedCollection = [...ideaCardCollection].sort((a, b) => {
 			if (option === "dateCreatedRaw" && a.dateCreatedRaw && b.dateCreatedRaw) {
 				return a.dateCreatedRaw - b.dateCreatedRaw
@@ -44,35 +48,27 @@ export default function DropDownMenu({
 			return 0
 		})
 		setIdeaCardCollection(sortedCollection)
-		requestAnimationFrame(() => {
-			requestAnimationFrame(() => {
-				Flip.from(state, { duration: 0.5, ease: "power2.out" })
-			})
-		})
 	}
+
+	// FLIP WHEN IDEA CARD COLLECTION CHANGES
+	useEffect(() => {
+		if (flipState)
+			requestAnimationFrame(() => {
+				Flip.from(flipState, { duration: 0.5, ease: "power2.out" })
+			})
+	}, [ideaCardCollection])
 
 	const handleClick = () => {
 		setShowMenu(!showMenu)
 	}
 
 	// CLICK OUTSIDE FUNCTIONALITY
-	function handleClickOutside(e: MouseEvent) {
-		if (!dropDownRef.current || !showMenu) return
-		console.log("click outside")
-		if (!dropDownRef.current.contains(e.target as Node)) setShowMenu(false)
-	}
-
-	useEffect(() => {
-		document.addEventListener("click", (e) => handleClickOutside(e))
-
-		return () =>
-			document.removeEventListener("click", (e) => handleClickOutside(e))
-	}, [])
+	useCloseOnClickOutside(dropDownContainerRef.current, showMenu, setShowMenu)
 
 	usePopupAnimate(showMenu, dropDownRef.current)
 
 	return (
-		<div className='dropdown'>
+		<div ref={dropDownContainerRef} className='dropdown'>
 			<Button
 				classes='dropdown__trigger button-main'
 				onClickAction={handleClick}

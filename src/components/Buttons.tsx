@@ -4,7 +4,7 @@ type ButtonProps = {
 	onClickAction: () => void
 	classes?: string
 	children?: React.ReactNode
-	iconColor: string
+	iconColor?: string
 	variant?: string
 }
 
@@ -15,7 +15,7 @@ export function ButtonClose({
 }: ButtonProps) {
 	return (
 		<button className={`button-close ${classes}`} onClick={onClickAction}>
-			<IconClose {...{ iconColor }} />
+			<IconClose {...{ iconColor: iconColor ? iconColor : "secondary" }} />
 		</button>
 	)
 }
