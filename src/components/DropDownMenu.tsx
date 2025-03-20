@@ -5,6 +5,7 @@ import Flip from "gsap/Flip"
 
 import usePopupAnimate from "../hooks/usePopupAnimate"
 import { IdeaCardType } from "../types"
+import { Button } from "./Buttons"
 
 type DropDownMenuProps = {
 	container: HTMLElement | null
@@ -72,9 +73,13 @@ export default function DropDownMenu({
 
 	return (
 		<div className='dropdown'>
-			<button className='dropdown__trigger button-main' onClick={handleClick}>
+			<Button
+				classes='dropdown__trigger button-main'
+				onClickAction={handleClick}
+				variant='faded'
+			>
 				Sort by: {sortChoice && ` ${sortChoice}`}
-			</button>
+			</Button>
 
 			<div
 				ref={dropDownRef}

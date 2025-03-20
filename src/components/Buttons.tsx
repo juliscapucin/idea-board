@@ -4,7 +4,7 @@ type ButtonProps = {
 	onClickAction: () => void
 	classes?: string
 	children?: React.ReactNode
-	iconColor?: string
+	iconColor: string
 	variant?: string
 }
 
@@ -33,7 +33,7 @@ export function Button({
 
 	return (
 		<button
-			className={`${variant && variantClasses[variant]} ${classes}`}
+			className={`button ${variant && variantClasses[variant]} ${classes}`}
 			onClick={onClickAction}
 		>
 			{children}
@@ -60,11 +60,12 @@ export function ButtonHover({
 	const variantClasses: Record<string, string> = {
 		primary: "button-main",
 		faded: "button-faded",
+		ghost: "button-ghost",
 	}
 
 	return (
 		<button
-			className={`${variant && variantClasses[variant]} ${classes}`}
+			className={`button ${variant && variantClasses[variant]} ${classes}`}
 			onMouseEnter={onMouseEnterAction}
 			onMouseLeave={onMouseLeaveAction}
 		>

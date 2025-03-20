@@ -12,12 +12,14 @@ button:focus-visible {
 	outline: 4px dotted var(--color-tertiary);
 }
 
-.button-main {
-	border: 1px solid var(--color-link);
-	background-color: var(--color-tertiary);
+.button {
 	border-radius: var(--radius-md);
 	padding: var(--space-xxs) var(--space-xs);
 	transition: background-color 0.3s;
+}
+
+.button-main {
+	background-color: var(--color-tertiary);
 }
 
 .button-main:hover {
@@ -27,8 +29,10 @@ button:focus-visible {
 
 .button-faded {
 	background-color: var(--color-faded-medium);
-	border-radius: var(--radius-md);
-	padding: var(--space-xs);
+}
+
+.button-ghost {
+	border: 1px solid var(--color-faded-medium);
 }
 
 .button-close {
