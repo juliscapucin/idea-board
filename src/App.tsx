@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 
 import Flip from "gsap/Flip"
 
@@ -39,7 +39,7 @@ function App() {
 	}
 
 	// FLIP ANIMATION
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!flipState) return
 
 		Flip.from(flipState, {

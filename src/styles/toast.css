@@ -1,10 +1,13 @@
 .toast {
-	width: 10rem;
-	height: 5rem;
-	background-color: var(--color-primary);
+	position: absolute;
+	top: 100%;
+	right: 5%;
+	padding: var(--space-xxs) var(--space-xs);
+	background-color: var(--color-secondary);
 	border: 1px solid var(--color-faded-medium);
+	border-radius: var(--radius-md);
 }
 
 .toast__text {
-	font-size: var(--text-sm);
+	font-size: var(--text-xs);
 }

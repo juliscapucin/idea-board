@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 
 import gsap from "gsap"
 import Flip from "gsap/Flip"
@@ -56,7 +56,7 @@ export default function DropDownMenu({
 	}
 
 	// FLIP ANIMATION
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!flipState) return
 
 		Flip.from(flipState, {

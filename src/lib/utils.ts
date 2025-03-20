@@ -15,7 +15,9 @@ const formatDateAndTime = () => {
 }
 
 const saveToLocalStorage = (ideaCardCollection: IdeaCardType[]) => {
-	localStorage.setItem("ideaCardCollection", JSON.stringify(ideaCardCollection))
+	const finalData = JSON.stringify(ideaCardCollection)
+
+	localStorage.setItem("ideaCardCollection", finalData)
 }
 
 export { formatDateAndTime, saveToLocalStorage }

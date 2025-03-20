@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 
 import gsap from "gsap"
 import Flip from "gsap/Flip"
@@ -10,6 +10,7 @@ import { IdeaCardType } from "../types"
 import { duplicatedTitleMessage } from "../lib/feedback-messages"
 import { formatDateAndTime, saveToLocalStorage } from "../lib/utils"
 import { useCardDrag } from "../hooks"
+import { Toast } from "../components"
 import { Button, ButtonClose } from "./Buttons"
 
 type IdeaCardProps = {
@@ -33,6 +34,7 @@ export default function IdeaCard({
 	const [characterCount, setCharacterCount] = useState(0)
 	const [isEditingTitle, setIsEditingTitle] = useState(false)
 	const [isEditingDescription, setIsEditingDescription] = useState(false)
+	const [showToast, setShowToast] = useState(false)
 	const [flipState, setFlipState] = useState<ReturnType<
 		typeof Flip.getState
 	> | null>(null)
@@ -88,7 +90,20 @@ export default function IdeaCard({
 			updatedCollection[cardToEditIndex] = editedCard
 
 			setIdeaCardCollection(updatedCollection)
-			saveToLocalStorage(updatedCollection)
+
+			// STORE DATA ON LOCAL STORAGE
+			const finalData = JSON.stringify(updatedCollection)
+			localStorage.setItem("ideaCardCollection", finalData)
+
+			// CHECK IF DATA WAS SAVED + SHOW TOAST
+			const storedData = localStorage.getItem("ideaCardCollection")
+			if (storedData === finalData) {
+				setShowToast(true)
+				console.log("saved")
+			} else {
+				console.log("not saved")
+				setShowToast(false)
+			}
 
 			setIsEditingTitle(false)
 			setIsEditingDescription(false)
@@ -109,7 +124,7 @@ export default function IdeaCard({
 	}
 
 	// FLIP ANIMATION
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!flipState) return
 
 		Flip.from(flipState, {
@@ -144,7 +159,7 @@ export default function IdeaCard({
 		setCharacterCount(newDescription.length)
 	}, [newDescription])
 
-	// DRAGGABLE
+	// DRAGGABLE FUNCTIONALITY
 	useCardDrag(ideaCardRef.current, ideaCardCollection, setIdeaCardCollection)
 
 	return (
@@ -229,6 +244,7 @@ export default function IdeaCard({
 					Last edited on: {dateEdited}
 				</p>
 			</div>
+			<Toast {...{ showToast, setShowToast }} />
 		</div>
 	)
 }
