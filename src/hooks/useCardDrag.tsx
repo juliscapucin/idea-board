@@ -29,17 +29,12 @@ export default function useCardDrag(
 	const [cards, setCards] = useState<Element[] | null>(null)
 	const [ideaCard, setIdeaCard] = useState<Element | null>(null)
 
-	// TODO: WAIT UNTIL THE REF BECOMES AVAILABLE (IS THERE A BETTER WAY?)
+	// WAIT UNTIL THE REF BECOMES AVAILABLE
 	useEffect(() => {
-		const checkRef = () => {
-			if (ideaCardRef.current && ideaCardRef.current.parentElement) {
-				setIdeaCard(ideaCardRef.current)
-				setCards([...ideaCardRef.current.parentElement.children])
-			} else {
-				requestAnimationFrame(checkRef) // check if ref is in dom right before the browser paints the next frame
-			}
+		if (ideaCardRef.current && ideaCardRef.current.parentElement) {
+			setIdeaCard(ideaCardRef.current)
+			setCards([...ideaCardRef.current.parentElement.children])
 		}
-		checkRef()
 	}, [])
 
 	useEffect(() => {
