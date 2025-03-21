@@ -36,7 +36,7 @@ export default function IdeaCard({
 	const ideaCardRef = useRef<HTMLDivElement>(null)
 	const titleRef = useRef<HTMLInputElement>(null)
 
-	const isSaved = dateCreated ? true : false
+	const isNewCard = !dateCreated ? true : false // If dateCreated is null, it's a new card
 	const characterCount = newDescription.length
 
 	const saveIdea = () => {
@@ -50,23 +50,23 @@ export default function IdeaCard({
 
 		let editedCard: IdeaCardType
 
-		// If saved previously, set Edited Date
-		if (isSaved) {
+		// If new card, set Created Date
+		if (isNewCard) {
+			editedCard = {
+				title: newTitle,
+				description: newDescription,
+				dateCreated: formatDateAndTime(),
+				dateCreatedRaw: Date.now(),
+				dateEdited: null,
+			}
+		} else {
+			// If saved previously, set Edited Date
 			editedCard = {
 				title: newTitle,
 				description: newDescription,
 				dateCreated,
 				dateCreatedRaw,
 				dateEdited: formatDateAndTime(),
-			}
-		} else {
-			// If not saved previously, set Created Date
-			editedCard = {
-				title: newTitle,
-				description: newDescription,
-				dateCreated: formatDateAndTime(),
-				dateCreatedRaw: Date.now(),
-				dateEdited: undefined,
 			}
 		}
 
@@ -130,12 +130,12 @@ export default function IdeaCard({
 		})
 	}
 
-	// FOCUS ON TITLE (NEW CARD)
+	// TITLE FOCUS ON NEW CARD
 	useEffect(() => {
-		if (!isSaved && titleRef.current) titleRef.current.focus()
-	}, [isSaved])
+		if (isNewCard && titleRef.current) titleRef.current.focus()
+	}, [isNewCard])
 
-	// SAVE ON CLICK OUTSIDE
+	// TODO: SAVE ON CLICK OUTSIDE
 	// useEffect(() => {
 	// 	if (!ideaCardRef.current || (!isEditingTitle && !isEditingDescription))
 	// 		return
@@ -164,7 +164,7 @@ export default function IdeaCard({
 
 			<div className='idea-card__fields'>
 				<label
-					className={`${isSaved ? "opacity-0" : "opacity-1"}`}
+					className={`${isNewCard ? "opacity-1" : "opacity-0"}`}
 					htmlFor='title'
 				>
 					Idea title
@@ -189,7 +189,7 @@ export default function IdeaCard({
 
 			<div>
 				<label
-					className={`${isSaved ? "opacity-0" : "opacity-1"}`} // if already saved once, no need for labels
+					className={`${isNewCard ? "opacity-1" : "opacity-0"}`} // if already saved once, no need for labels
 					htmlFor='description'
 				>
 					Description

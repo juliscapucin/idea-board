@@ -30,6 +30,9 @@ function App() {
 			{
 				title: "",
 				description: "",
+				dateCreated: null,
+				dateCreatedRaw: null,
+				dateEdited: null,
 			},
 			...ideaCardCollection,
 		])
