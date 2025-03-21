@@ -26,7 +26,7 @@ export default function IdeaCard({
 	setIdeaCardCollection,
 	cardIndex,
 }: IdeaCardProps) {
-	const { title, description, dateCreated, dateCreatedRaw, dateEdited } =
+	const { id, title, description, dateCreated, dateCreatedRaw, dateEdited } =
 		ideaCard
 
 	const [newTitle, setNewTitle] = useState(title)
@@ -40,6 +40,8 @@ export default function IdeaCard({
 
 	const isNewCard = !dateCreated ? true : false // If dateCreated is null, it's a new card
 	const characterCount = newDescription.length
+
+	const flipStateRef = useRef<ReturnType<typeof Flip.getState>>(null)
 
 	const saveIdea = () => {
 		const cardToEdit = ideaCardCollection.find(
@@ -55,6 +57,7 @@ export default function IdeaCard({
 		// If new card, set Created Date
 		if (isNewCard) {
 			editedCard = {
+				id,
 				title: newTitle,
 				description: newDescription,
 				dateCreated: formatDateAndTime(),
@@ -64,6 +67,7 @@ export default function IdeaCard({
 		} else {
 			// If saved previously, set Edited Date
 			editedCard = {
+				id,
 				title: newTitle,
 				description: newDescription,
 				dateCreated,
@@ -99,21 +103,20 @@ export default function IdeaCard({
 			// Check if data was saved + show toast
 			const storedData = localStorage.getItem("ideaCardCollection")
 			if (storedData === finalData) {
-				setShowToast(true)
-
 				setIsEditingTitle(false)
 				setIsEditingDescription(false)
 
-				//TODO: why does this trigger a component re-render only on title edits??
-				// Toast doesn't work...
 				setIdeaCardCollection(updatedCollection)
+				setShowToast(true)
 			}
 		}
 	}
 
 	const deleteIdea = (title: string) => {
 		if (!ideaCardRef.current || !ideaCardRef.current.parentElement) return
-		const state = Flip.getState(ideaCardRef.current.parentElement.children)
+		flipStateRef.current = Flip.getState(
+			ideaCardRef.current.parentElement.children
+		)
 
 		const updatedCollection = ideaCardCollection.filter((card) => {
 			if (card.title !== title) return card
@@ -121,16 +124,18 @@ export default function IdeaCard({
 
 		setIdeaCardCollection(updatedCollection)
 		saveToLocalStorage(updatedCollection)
-
-		requestAnimationFrame(() => {
-			requestAnimationFrame(() => {
-				Flip.from(state, {
-					duration: 0.5,
-					ease: "power2.out",
-				})
-			})
-		})
 	}
+
+	// FLIP ANIMATION
+	useEffect(() => {
+		if (!flipStateRef.current) return
+
+		Flip.from(flipStateRef.current!, {
+			duration: 0.5,
+			ease: "power2.out",
+			onComplete: () => (flipStateRef.current = null),
+		})
+	}, [ideaCardCollection])
 
 	// TITLE FOCUS ON NEW CARD
 	useEffect(() => {
@@ -236,7 +241,7 @@ export default function IdeaCard({
 					Last edited: {dateEdited}
 				</p>
 			</div>
-			{showToast && <Toast {...{ showToast, setShowToast }} />}
+			{showToast && <Toast {...{ setShowToast }} />}
 		</div>
 	)
 }

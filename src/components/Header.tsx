@@ -17,15 +17,11 @@ export default function Header({
 	cardsContainer,
 }: HeaderProps) {
 	return (
-		<div className='main__header'>
+		<div className='header'>
 			<InstructionsPopup />
-			<h1 className='main__title'>Idea Board</h1>
-			<div className='main__buttons'>
-				<Button
-					variant='primary'
-					classes='button-main'
-					onClickAction={createNewIdea}
-				>
+			<h1 className='header__title'>Idea Board</h1>
+			<div className='header__buttons'>
+				<Button variant='primary' onClickAction={createNewIdea}>
 					Create New Card
 				</Button>
 

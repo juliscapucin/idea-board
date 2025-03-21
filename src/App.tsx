@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 
 import Flip from "gsap/Flip"
 
@@ -13,6 +13,7 @@ import { IdeaCardType } from "./types"
 
 function App() {
 	const containerRef = useRef<HTMLDivElement>(null)
+	const flipStateRef = useRef<ReturnType<typeof Flip.getState>>(null)
 
 	const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCardType[]>(
 		[]
@@ -27,10 +28,11 @@ function App() {
 			return
 		}
 		if (!containerRef.current) return
-		const state = Flip.getState(containerRef.current.children)
+		flipStateRef.current = Flip.getState(containerRef.current.children)
 
 		setIdeaCardCollection([
 			{
+				id: crypto.randomUUID(), // needs to be UNIQUE and STABLE to be used as key
 				title: "",
 				description: "",
 				dateCreated: null,
@@ -39,16 +41,18 @@ function App() {
 			},
 			...ideaCardCollection,
 		])
-
-		requestAnimationFrame(() => {
-			requestAnimationFrame(() => {
-				Flip.from(state, {
-					duration: 0.5,
-					ease: "power2.out",
-				})
-			})
-		})
 	}
+
+	// FLIP ANIMATION
+	useEffect(() => {
+		if (!flipStateRef.current) return
+
+		Flip.from(flipStateRef.current!, {
+			duration: 0.5,
+			ease: "power2.out",
+			onComplete: () => (flipStateRef.current = null),
+		})
+	}, [ideaCardCollection])
 
 	// RETRIEVE CARDS FROM LOCAL STORAGE
 	useEffect(() => {
