@@ -1,15 +1,15 @@
-import Alert from "./alert"
+import Alert from "./Alert"
 import CardsList from "./CardsList"
-import DropDownMenu from "./DropDownMenu"
+import SortMenu from "./SortMenu"
 import Header from "./Header"
 import IdeaCard from "./IdeaCard"
 import InstructionsPopup from "./InstructionsPopup"
-import Toast from "./toast"
+import Toast from "./Toast"
 
 export {
 	Alert,
 	CardsList,
-	DropDownMenu,
+	SortMenu,
 	Header,
 	IdeaCard,
 	InstructionsPopup,

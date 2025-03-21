@@ -56,7 +56,7 @@
 	font-size: var(--text-xxs);
 	text-align: right;
 	margin-top: var(--space-xxs);
-	color: var(--color-faded-light);
+	color: var(--color-faded-medium);
 }
 
 .idea-card__dates {

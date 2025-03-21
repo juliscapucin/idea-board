@@ -29,6 +29,7 @@ export function Button({
 	const variantClasses: Record<string, string> = {
 		primary: "button-main",
 		faded: "button-faded",
+		ghost: "button-ghost",
 	}
 
 	return (

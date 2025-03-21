@@ -6,6 +6,7 @@ import Draggable from "gsap/Draggable"
 
 import { IdeaCardType } from "../types"
 import { saveToLocalStorage } from "../lib/utils"
+import { useSortMenuContext } from "../context"
 
 const moveElement = (
 	array: IdeaCardType[],
@@ -28,6 +29,8 @@ export default function useCardDrag(
 ) {
 	const [cards, setCards] = useState<Element[] | null>(null)
 	const [ideaCard, setIdeaCard] = useState<Element | null>(null)
+
+	const { setSortChoice } = useSortMenuContext() // To change sort menu when user drags a card
 
 	// WAIT UNTIL THE REF BECOMES AVAILABLE
 	useEffect(() => {
@@ -65,6 +68,8 @@ export default function useCardDrag(
 					})
 				},
 				onRelease: function () {
+					setSortChoice("") // Reset sort menu
+
 					const state = Flip.getState(cards)
 
 					// IF DRAG HITS ANY TARGET

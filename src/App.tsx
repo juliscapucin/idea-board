@@ -5,10 +5,11 @@ import { useEffect, useRef, useState } from "react"
 import Flip from "gsap/Flip"
 
 import { CardsList, Header } from "./components/"
+import { incompleteCardMessage } from "./lib/feedback-messages"
+
+import { SortContextProvider } from "./context"
 
 import { IdeaCardType } from "./types"
-
-import { incompleteCardMessage } from "./lib/feedback-messages"
 
 function App() {
 	const containerRef = useRef<HTMLDivElement>(null)
@@ -71,23 +72,25 @@ function App() {
 
 	return (
 		<main className='main'>
-			<Header
-				{...{
-					ideaCardCollection,
-					setIdeaCardCollection,
-					createNewIdea,
-					cardsContainer: containerRef.current,
-				}}
-			/>
-			{/* CARDS LIST */}
-			<div ref={containerRef} className='main__cards-container'>
-				<CardsList
+			<SortContextProvider>
+				<Header
 					{...{
 						ideaCardCollection,
 						setIdeaCardCollection,
+						createNewIdea,
+						cardsContainer: containerRef.current,
 					}}
 				/>
-			</div>
+				{/* CARDS LIST */}
+				<div ref={containerRef} className='main__cards-container'>
+					<CardsList
+						{...{
+							ideaCardCollection,
+							setIdeaCardCollection,
+						}}
+					/>
+				</div>
+			</SortContextProvider>
 		</main>
 	)
 }

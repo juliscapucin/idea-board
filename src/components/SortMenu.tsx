@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 
 import gsap from "gsap"
 import Flip from "gsap/Flip"
@@ -8,34 +8,36 @@ import { Button } from "./Buttons"
 import { useCloseOnClickOutside, usePopupAnimate } from "../hooks"
 import { saveToLocalStorage } from "../lib/utils"
 
-import { IdeaCardType } from "../types"
+import { useSortMenuContext } from "../context"
 
-type DropDownMenuProps = {
+import { IdeaCardType } from "../types"
+import { IconChevron } from "./Icons"
+
+type SortMenuProps = {
 	container: HTMLElement | null
 	ideaCardCollection: IdeaCardType[]
 	setIdeaCardCollection: (arg: IdeaCardType[]) => void
 }
 
-export default function DropDownMenu({
+export default function SortMenu({
 	container,
 	ideaCardCollection,
 	setIdeaCardCollection,
-}: DropDownMenuProps) {
+}: SortMenuProps) {
 	const [showMenu, setShowMenu] = useState(false)
-	const [sortChoice, setSortChoice] = useState("")
-	const [flipState, setFlipState] = useState<ReturnType<
-		typeof Flip.getState
-	> | null>(null)
+	// const [sortChoice, setSortChoice] = useState("")
 
-	const dropDownContainerRef = useRef<HTMLDivElement | null>(null)
-	const dropDownRef = useRef<HTMLDivElement | null>(null)
+	const sortMenuContainerRef = useRef<HTMLDivElement | null>(null)
+	const sortMenuRef = useRef<HTMLDivElement | null>(null)
+
+	const { sortChoice, setSortChoice } = useSortMenuContext()
 
 	const sort = (option: string) => {
 		if (!container) return
 
 		gsap.registerPlugin(Flip)
 
-		setFlipState(Flip.getState(container.children))
+		const state = Flip.getState(container.children)
 
 		const sortedCollection = [...ideaCardCollection].sort((a, b) => {
 			if (option === "dateCreatedRaw" && a.dateCreatedRaw && b.dateCreatedRaw) {
@@ -53,46 +55,46 @@ export default function DropDownMenu({
 		})
 		setIdeaCardCollection(sortedCollection)
 		saveToLocalStorage(sortedCollection)
-	}
 
-	// FLIP ANIMATION
-	useLayoutEffect(() => {
-		if (!flipState) return
-
-		Flip.from(flipState, {
-			duration: 0.5,
-			ease: "power2.out",
+		requestAnimationFrame(() => {
+			Flip.from(state, {
+				duration: 0.5,
+				ease: "power2.out",
+			})
 		})
-	}, [flipState])
+	}
 
 	const handleClick = () => {
 		setShowMenu(!showMenu)
 	}
 
 	// CLOSE ON CLICK OUTSIDE FUNCTIONALITY
-	useCloseOnClickOutside(dropDownContainerRef.current, showMenu, setShowMenu)
+	useCloseOnClickOutside(sortMenuContainerRef.current, showMenu, setShowMenu)
 
-	// ANIMATE DROPDOWN
-	usePopupAnimate(showMenu, dropDownRef.current)
+	// ANIMATE SORTMENU
+	usePopupAnimate(showMenu, sortMenuRef.current)
 
 	return (
-		<div ref={dropDownContainerRef} className='dropdown'>
+		<div ref={sortMenuContainerRef} className='sort-menu'>
 			<Button
-				classes='dropdown__trigger button-main'
+				classes='sort-menu__trigger button-main'
 				onClickAction={handleClick}
-				variant='faded'
+				variant='ghost'
 			>
-				Sort by: {sortChoice && ` ${sortChoice}`}
+				<div className='sort-menu__trigger-content'>
+					<span>Sort {sortChoice && `by: ${sortChoice}`}</span>
+					<IconChevron iconColor='secondary' />
+				</div>
 			</Button>
 
 			<div
-				ref={dropDownRef}
-				className={`dropdown__list ${
+				ref={sortMenuRef}
+				className={`sort-menu__list ${
 					!showMenu && "hidden pointer-events-none"
 				}`}
 			>
 				<button
-					className='dropdown__list-item'
+					className='sort-menu__list-item'
 					onClick={() => {
 						sort("title")
 						setSortChoice("Title")
@@ -102,7 +104,7 @@ export default function DropDownMenu({
 					Title
 				</button>
 				<button
-					className='dropdown__list-item'
+					className='sort-menu__list-item'
 					onClick={() => {
 						sort("dateCreatedRaw")
 						setSortChoice("Date Created")

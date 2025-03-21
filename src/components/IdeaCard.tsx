@@ -230,11 +230,9 @@ export default function IdeaCard({
 				)}
 			</div>
 			<div className='idea-card__dates'>
-				<p className={`${!dateCreated && "hidden"}`}>
-					Created on: {dateCreated}
-				</p>
+				<p className={`${!dateCreated && "hidden"}`}>Created: {dateCreated}</p>
 				<p className={`${!dateEdited && "hidden"}`}>
-					Last edited on: {dateEdited}
+					Last edited: {dateEdited}
 				</p>
 			</div>
 			<Toast {...{ showToast, setShowToast }} />

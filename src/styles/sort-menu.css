@@ -1,14 +1,21 @@
-.dropdown {
+.sort-menu {
 	position: relative;
 	width: 12rem;
 	text-align: left;
 }
 
-.dropdown__trigger {
+.sort-menu__trigger {
 	width: 100%;
 }
 
-.dropdown__list {
+.sort-menu__trigger-content {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.sort-menu__list {
 	position: absolute;
 	top: 100%;
 	left: 0;
@@ -21,7 +28,7 @@
 	z-index: 20;
 }
 
-.dropdown__list-item {
+.sort-menu__list-item {
 	border: none;
 	border-radius: var(--radius-md);
 	text-align: left;
@@ -29,6 +36,6 @@
 	margin: var(--space-xxs);
 }
 
-.dropdown__list-item:hover {
+.sort-menu__list-item:hover {
 	background-color: var(--color-faded-medium);
 }

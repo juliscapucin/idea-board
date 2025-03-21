@@ -1,4 +1,4 @@
-import { DropDownMenu, InstructionsPopup } from "../components"
+import { SortMenu, InstructionsPopup } from "../components"
 import { Button } from "./Buttons"
 
 import { IdeaCardType } from "../types"
@@ -28,9 +28,9 @@ export default function Header({
 				>
 					Create New Card
 				</Button>
-				{/* SORT DROPDOWN */}
 
-				<DropDownMenu
+				{/* SORT DROPDOWN */}
+				<SortMenu
 					{...{
 						container: cardsContainer,
 						ideaCardCollection,
