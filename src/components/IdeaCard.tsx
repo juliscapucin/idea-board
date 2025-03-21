@@ -159,7 +159,7 @@ export default function IdeaCard({
 			<ButtonClose
 				classes={"idea-card__close-button"}
 				onClickAction={() => deleteIdea(title)}
-				iconColor='faded-light'
+				iconColor='faded-dark'
 			/>
 
 			<div className='idea-card__fields'>

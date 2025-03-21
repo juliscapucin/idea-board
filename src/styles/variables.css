@@ -13,7 +13,7 @@
 	--color-secondary: #bfbfc2;
 	--color-tertiary: #646cff;
 
-	--color-faded-light: #74747a;
+	--color-faded-light: #adadb6;
 	--color-faded-medium: #48484b;
 	--color-faded-dark: #333336;
 
@@ -36,6 +36,7 @@
 	--space-xl: 4.8rem;
 
 	--radius-md: 8px;
+	--radius-circle: 50%;
 
 	--header-height: 10rem;
 

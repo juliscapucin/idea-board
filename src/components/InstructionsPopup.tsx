@@ -23,24 +23,24 @@ export default function InstructionsPopup() {
 	usePopupAnimate(showInstructions, popupRef.current)
 
 	return (
-		<div ref={popupContainer} className='instructions'>
+		<div ref={popupContainer} className='instructions-popup'>
 			<Button onClickAction={handleClick}>
 				<IconHelp iconColor='secondary' />
 			</Button>
 			<div
 				ref={popupRef}
-				className={`instructions__popup ${
+				className={`instructions-popup__content ${
 					!showInstructions && "hidden pointer-events-none"
 				}`}
 			>
 				<ButtonClose
-					classes={"instructions__button-close"}
+					classes={"instructions-popup__button-close"}
 					onClickAction={handleClick}
 					iconColor='secondary'
 				/>
 
-				<div className='instructions__content'>
-					<h2 className='instructions__title'>Task</h2>
+				<div className='instructions-popup__text'>
+					<h2 className='instructions-popup__title'>Task</h2>
 					<p>
 						Build an idea board that allows a user to create new ideas, edit
 						existing ideas or delete them. Each idea should be represented as a
@@ -61,7 +61,7 @@ export default function InstructionsPopup() {
 						completing in the COMMENTS.md file along with any other additonal
 						information we should be aware of when reviewing the code.
 					</p>
-					<h3 className='instructions__subtitle'>Required</h3>
+					<h3 className='instructions-popup__subtitle'>Required</h3>
 					<ul>
 						<li>Page should be fully responsive.</li>
 						<li>
@@ -76,7 +76,7 @@ export default function InstructionsPopup() {
 							Add the ability to sort ideas by creation date or alphabetically.
 						</li>
 					</ul>
-					<h3 className='instructions__subtitle'>Stretch</h3>
+					<h3 className='instructions-popup__subtitle'>Stretch</h3>
 					<ul>
 						<li>
 							Utilise the localStorage API to persist current state when the

@@ -39,4 +39,14 @@ button:focus-visible {
 	display: block;
 	width: 3rem;
 	height: 3rem;
+	border-radius: var(--radius-circle);
+	transition: background-color 0.3s;
+}
+
+.button-close:hover {
+	background-color: var(--color-faded-medium);
+
+	* {
+		background-color: var(--color-secondary);
+	}
 }
