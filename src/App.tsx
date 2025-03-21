@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useRef, useState } from "react"
 
 import Flip from "gsap/Flip"
@@ -49,6 +51,7 @@ function App() {
 
 	// RETRIEVE CARDS FROM LOCAL STORAGE
 	useEffect(() => {
+		console.log("initial local storage")
 		const getLocalStorage = localStorage.getItem("ideaCardCollection")
 		getLocalStorage && setIdeaCardCollection(JSON.parse(getLocalStorage))
 	}, [])

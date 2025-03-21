@@ -153,7 +153,8 @@ export default function IdeaCard({
 	// }, [ideaCardRef, isEditingDescription, isEditingTitle])
 
 	// DRAGGABLE FUNCTIONALITY
-	useCardDrag(ideaCardRef.current, ideaCardCollection, setIdeaCardCollection)
+
+	useCardDrag(ideaCardRef, ideaCardCollection, setIdeaCardCollection)
 
 	return (
 		<div ref={ideaCardRef} className='idea-card'>

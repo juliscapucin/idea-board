@@ -8,21 +8,11 @@ import { IdeaCardType } from "../types"
 import { saveToLocalStorage } from "../lib/utils"
 
 const moveElement = (
-	arr: IdeaCardType[],
+	array: IdeaCardType[],
 	fromIndex: number,
 	toIndex: number
 ) => {
-	if (
-		fromIndex < 0 ||
-		toIndex < 0 ||
-		fromIndex >= arr.length ||
-		toIndex >= arr.length
-	) {
-		console.warn("Invalid indices:", { fromIndex, toIndex })
-		return arr // Return original array if indices are invalid
-	}
-
-	const newArray = [...arr] // Clone the array to avoid mutation
+	const newArray = [...array] // Clone the array to avoid mutation
 	const movedElement = { ...newArray[fromIndex] } // Clone the moved element
 
 	newArray.splice(fromIndex, 1) // Remove element
@@ -32,20 +22,28 @@ const moveElement = (
 }
 
 export default function useCardDrag(
-	ideaCard: HTMLDivElement | null,
+	ideaCardRef: React.RefObject<HTMLDivElement | null>,
 	ideaCardCollection: IdeaCardType[],
 	setIdeaCardCollection: (arg: IdeaCardType[]) => void
 ) {
 	const [cards, setCards] = useState<Element[] | null>(null)
+	const [ideaCard, setIdeaCard] = useState<Element | null>(null)
+
+	// TODO: WAIT UNTIL THE REF BECOMES AVAILABLE (IS THERE A BETTER WAY?)
+	useEffect(() => {
+		const checkRef = () => {
+			if (ideaCardRef.current && ideaCardRef.current.parentElement) {
+				setIdeaCard(ideaCardRef.current)
+				setCards([...ideaCardRef.current.parentElement.children])
+			} else {
+				requestAnimationFrame(checkRef) // check if ref is in dom right before the browser paints the next frame
+			}
+		}
+		checkRef()
+	}, [])
 
 	useEffect(() => {
-		if (!ideaCard || !ideaCard.parentElement) return
-		console.log("set cards")
-		setCards([...ideaCard!.parentElement!.children])
-	}, [ideaCardCollection])
-
-	useEffect(() => {
-		if (!cards) return
+		if (!cards || !ideaCard) return
 
 		gsap.registerPlugin(Draggable)
 		gsap.registerPlugin(Flip)
