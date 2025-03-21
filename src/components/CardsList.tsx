@@ -18,7 +18,7 @@ export default function CardsList({
 		ideaCardCollection.map((ideaCard, index) => {
 			return (
 				<IdeaCard
-					key={ideaCard.title}
+					key={`ideaCard-${index}`}
 					{...{
 						ideaCard,
 						ideaCardCollection,

@@ -77,7 +77,7 @@ export default function SortMenu({
 	return (
 		<div ref={sortMenuContainerRef} className='sort-menu'>
 			<Button
-				classes='sort-menu__trigger button-main'
+				classes='sort-menu__trigger'
 				onClickAction={handleClick}
 				variant='ghost'
 			>

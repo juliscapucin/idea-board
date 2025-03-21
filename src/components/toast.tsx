@@ -3,17 +3,13 @@ import { useEffect, useRef } from "react"
 import gsap from "gsap"
 
 type ToastProps = {
-	showToast: boolean
 	setShowToast: (arg: boolean) => void
 }
 
-export default function Toast({ showToast, setShowToast }: ToastProps) {
+export default function Toast({ setShowToast }: ToastProps) {
 	const toastRef = useRef(null)
 
 	useEffect(() => {
-		console.log("toast")
-		if (!showToast) return
-
 		const ctx = gsap.context(() => {
 			const tl = gsap.timeline()
 			tl.to(toastRef.current, {
@@ -30,7 +26,7 @@ export default function Toast({ showToast, setShowToast }: ToastProps) {
 		})
 
 		return () => ctx.revert()
-	}, [showToast])
+	}, [])
 
 	return (
 		<div ref={toastRef} className='toast'>

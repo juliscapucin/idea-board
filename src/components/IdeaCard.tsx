@@ -104,7 +104,8 @@ export default function IdeaCard({
 				setIsEditingTitle(false)
 				setIsEditingDescription(false)
 
-				//TODO: why this triggers a component re-render only on title edits??
+				//TODO: why does this trigger a component re-render only on title edits??
+				// Toast doesn't work...
 				setIdeaCardCollection(updatedCollection)
 			}
 		}
@@ -235,7 +236,7 @@ export default function IdeaCard({
 					Last edited: {dateEdited}
 				</p>
 			</div>
-			<Toast {...{ showToast, setShowToast }} />
+			{showToast && <Toast {...{ showToast, setShowToast }} />}
 		</div>
 	)
 }

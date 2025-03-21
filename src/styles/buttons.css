@@ -13,8 +13,8 @@ button:focus-visible {
 }
 
 .button {
-	border-radius: var(--radius-md);
-	padding: var(--space-xxs) var(--space-xs);
+	border-radius: var(--radius-lg);
+	padding: var(--space-xs) var(--space-sm);
 	transition: background-color 0.3s;
 }
 
