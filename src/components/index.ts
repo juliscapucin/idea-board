@@ -3,7 +3,6 @@ import CardsList from "./CardsList"
 import DropDownMenu from "./DropDownMenu"
 import Header from "./Header"
 import IdeaCard from "./IdeaCard"
-import IdeaCardForm from "./IdeaCardForm"
 import InstructionsPopup from "./InstructionsPopup"
 import Toast from "./toast"
 
@@ -13,7 +12,6 @@ export {
 	DropDownMenu,
 	Header,
 	IdeaCard,
-	IdeaCardForm,
 	InstructionsPopup,
 	Toast,
 }

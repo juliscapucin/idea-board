@@ -40,8 +40,9 @@ export default function useCardDrag(
 
 	useEffect(() => {
 		if (!ideaCard || !ideaCard.parentElement) return
+		console.log("set cards")
 		setCards([...ideaCard!.parentElement!.children])
-	}, [ideaCard, ideaCardCollection])
+	}, [ideaCardCollection])
 
 	useEffect(() => {
 		if (!cards) return

@@ -11,7 +11,7 @@ export default function Toast({ showToast, setShowToast }: ToastProps) {
 	const toastRef = useRef(null)
 
 	useEffect(() => {
-		console.log(showToast)
+		console.log("toast")
 		if (!showToast) return
 
 		const ctx = gsap.context(() => {
