@@ -27,7 +27,7 @@
 }
 
 .highlight {
-	border: dotted 2px darkblue;
+	outline: dotted 3px var(--color-tertiary);
 }
 
 .opacity-0 {

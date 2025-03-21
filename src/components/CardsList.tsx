@@ -15,7 +15,7 @@ export default function CardsList({
 			<p>No cards in this collection</p>
 		</div>
 	) : (
-		ideaCardCollection.map((ideaCard) => {
+		ideaCardCollection.map((ideaCard, index) => {
 			return (
 				<IdeaCard
 					key={ideaCard.title}
@@ -23,6 +23,7 @@ export default function CardsList({
 						ideaCard,
 						ideaCardCollection,
 						setIdeaCardCollection,
+						cardIndex: index,
 					}}
 				/>
 			)

@@ -17,12 +17,14 @@ type IdeaCardProps = {
 	ideaCard: IdeaCardType
 	ideaCardCollection: IdeaCardType[]
 	setIdeaCardCollection: (newCollection: IdeaCardType[]) => void
+	cardIndex: number
 }
 
 export default function IdeaCard({
 	ideaCard,
 	ideaCardCollection,
 	setIdeaCardCollection,
+	cardIndex,
 }: IdeaCardProps) {
 	const { title, description, dateCreated, dateCreatedRaw, dateEdited } =
 		ideaCard
@@ -81,7 +83,6 @@ export default function IdeaCard({
 			alert(duplicatedTitleMessage)
 			setNewTitle(title) // if new title exists, revert to original title
 			titleRef.current && titleRef.current.focus()
-			console.log("hello")
 			return
 		}
 
@@ -165,7 +166,7 @@ export default function IdeaCard({
 			<div className='idea-card__fields'>
 				<label
 					className={`${isNewCard ? "opacity-1" : "opacity-0"}`}
-					htmlFor='title'
+					htmlFor={`title-${cardIndex}`}
 				>
 					Idea title
 				</label>
@@ -173,8 +174,8 @@ export default function IdeaCard({
 					className='idea-card__title'
 					ref={titleRef}
 					value={newTitle}
-					id='title'
-					name='title'
+					id={`title-${cardIndex}`}
+					name={`title-${cardIndex}`}
 					placeholder='My Best Idea'
 					minLength={2}
 					maxLength={50}
@@ -190,15 +191,15 @@ export default function IdeaCard({
 			<div>
 				<label
 					className={`${isNewCard ? "opacity-1" : "opacity-0"}`} // if already saved once, no need for labels
-					htmlFor='description'
+					htmlFor={`description-${cardIndex}`}
 				>
 					Description
 				</label>
 				<textarea
 					className='idea-card__description'
 					value={newDescription}
-					id='description'
-					name='description'
+					id={`description-${cardIndex}`}
+					name={`description-${cardIndex}`}
 					placeholder='Idea description here'
 					minLength={2}
 					maxLength={140}
