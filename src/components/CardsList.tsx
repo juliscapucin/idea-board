@@ -1,5 +1,5 @@
 import { IdeaCardType } from "../types"
-import { IdeaCard } from "../components"
+import { Card } from "../components"
 
 type CardsListProps = {
 	ideaCardCollection: IdeaCardType[]
@@ -11,13 +11,13 @@ export default function CardsList({
 	setIdeaCardCollection,
 }: CardsListProps) {
 	return ideaCardCollection.length === 0 ? (
-		<div className='main__no-cards'>
+		<div className='cards-list__no-cards'>
 			<p>No cards in this collection</p>
 		</div>
 	) : (
 		ideaCardCollection.map((ideaCard, index) => {
 			return (
-				<IdeaCard
+				<Card
 					key={`ideaCard-${ideaCard.id}`}
 					{...{
 						ideaCard,

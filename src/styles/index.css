@@ -6,8 +6,9 @@
 @import "icons.css";
 @import "buttons.css";
 
+@import "card.css";
+@import "cards-list.css";
 @import "header.css";
-@import "idea-card.css";
 @import "instructions-popup.css";
 @import "sort-menu.css";
 @import "toast.css";

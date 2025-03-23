@@ -33,9 +33,7 @@ export default function useCardDrag(
 
 	const { setSortChoice } = useSortMenuContext() // To change sort menu when user drags a card
 
-	console.log(ideaCardCollection)
-
-	// WAIT UNTIL THE REF BECOMES AVAILABLE
+	// WAIT UNTIL THE REF + CARD DATA BECOME AVAILABLE
 	useEffect(() => {
 		if (
 			!isNewCard &&
@@ -45,8 +43,6 @@ export default function useCardDrag(
 			setIdeaCard(ideaCardRef.current)
 			setCards([...ideaCardRef.current.parentElement.children])
 		}
-		console.log("set cards")
-		console.log(ideaCardCollection)
 	}, [isNewCard])
 
 	useEffect(() => {

@@ -46,7 +46,6 @@ function App() {
 	// FLIP ANIMATION
 	useEffect(() => {
 		if (!flipStateRef.current) return
-		console.log("create card")
 
 		Flip.from(flipStateRef.current!, {
 			duration: 0.5,
@@ -87,7 +86,7 @@ function App() {
 					}}
 				/>
 				{/* CARDS LIST */}
-				<div ref={containerRef} className='main__cards-container'>
+				<div ref={containerRef} className='cards-list__container'>
 					<CardsList
 						{...{
 							ideaCardCollection,

@@ -10,7 +10,7 @@ import { IdeaCardType } from "../types"
 import { duplicatedTitleMessage } from "../lib/feedback-messages"
 import { formatDateAndTime, saveToLocalStorage } from "../lib/utils"
 import { useCardDrag } from "../hooks"
-import { Toast } from "../components"
+import { Toast } from "."
 import { Button, ButtonClose } from "./Buttons"
 
 type IdeaCardProps = {
@@ -20,7 +20,7 @@ type IdeaCardProps = {
 	cardIndex: number
 }
 
-export default function IdeaCard({
+export default function Card({
 	ideaCard,
 	ideaCardCollection,
 	setIdeaCardCollection,
@@ -159,22 +159,24 @@ export default function IdeaCard({
 	useCardDrag(ideaCardRef, ideaCardCollection, setIdeaCardCollection, isNewCard)
 
 	return (
-		<div ref={ideaCardRef} className='idea-card'>
+		<div ref={ideaCardRef} className='card'>
 			<ButtonClose
-				classes={"idea-card__close-button"}
+				classes={"card__close-button"}
 				onClickAction={() => deleteIdea(title)}
 				iconColor='faded-dark'
 			/>
 
-			<div className='idea-card__fields'>
+			<div className='card__fields'>
 				<label
-					className={`${isNewCard ? "opacity-1" : "opacity-0"}`}
+					className={`card__input-label ${
+						isNewCard ? "opacity-1" : "opacity-0"
+					}`}
 					htmlFor={`title-${cardIndex}`}
 				>
 					Idea title
 				</label>
 				<input
-					className='idea-card__title'
+					className='card__title'
 					ref={titleRef}
 					value={newTitle}
 					id={`title-${cardIndex}`}
@@ -193,13 +195,15 @@ export default function IdeaCard({
 
 			<div>
 				<label
-					className={`${isNewCard ? "opacity-1" : "opacity-0"}`} // if already saved once, no need for labels
+					className={`card__input-label ${
+						isNewCard ? "opacity-1" : "opacity-0"
+					}`} // if already saved once, no need for labels
 					htmlFor={`description-${cardIndex}`}
 				>
 					Description
 				</label>
 				<textarea
-					className='idea-card__description'
+					className='card__description'
 					value={newDescription}
 					id={`description-${cardIndex}`}
 					name={`description-${cardIndex}`}
@@ -215,7 +219,7 @@ export default function IdeaCard({
 				/>
 
 				<p
-					className={`idea-card__countdown ${
+					className={`card__countdown ${
 						// Show character count if user is editing description
 						isEditingDescription ? "opacity-1" : "opacity-0"
 					}`}
@@ -224,14 +228,14 @@ export default function IdeaCard({
 				</p>
 			</div>
 
-			<div className='idea-card__buttons'>
+			<div className='card__buttons'>
 				{(isEditingTitle || isEditingDescription) && (
 					<Button variant='primary' onClickAction={saveIdea}>
 						Save
 					</Button>
 				)}
 			</div>
-			<div className='idea-card__dates'>
+			<div className='card__dates'>
 				<p className={`${!dateCreated && "hidden"}`}>Created: {dateCreated}</p>
 				<p className={`${!dateEdited && "hidden"}`}>
 					Last edited: {dateEdited}

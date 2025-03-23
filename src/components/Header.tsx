@@ -22,7 +22,7 @@ export default function Header({
 			<h1 className='header__title'>Idea Board</h1>
 			<div className='header__buttons'>
 				<Button variant='primary' onClickAction={createNewIdea}>
-					Create New Card
+					Add Card
 				</Button>
 
 				{/* SORT DROPDOWN */}
