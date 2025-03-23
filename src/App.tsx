@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import Flip from "gsap/Flip"
 
@@ -46,6 +46,7 @@ function App() {
 	// FLIP ANIMATION
 	useEffect(() => {
 		if (!flipStateRef.current) return
+		console.log("create card")
 
 		Flip.from(flipStateRef.current!, {
 			duration: 0.5,

@@ -25,20 +25,29 @@ const moveElement = (
 export default function useCardDrag(
 	ideaCardRef: React.RefObject<HTMLDivElement | null>,
 	ideaCardCollection: IdeaCardType[],
-	setIdeaCardCollection: (arg: IdeaCardType[]) => void
+	setIdeaCardCollection: (arg: IdeaCardType[]) => void,
+	isNewCard: boolean
 ) {
 	const [cards, setCards] = useState<Element[] | null>(null)
 	const [ideaCard, setIdeaCard] = useState<Element | null>(null)
 
 	const { setSortChoice } = useSortMenuContext() // To change sort menu when user drags a card
 
+	console.log(ideaCardCollection)
+
 	// WAIT UNTIL THE REF BECOMES AVAILABLE
 	useEffect(() => {
-		if (ideaCardRef.current && ideaCardRef.current.parentElement) {
+		if (
+			!isNewCard &&
+			ideaCardRef.current &&
+			ideaCardRef.current.parentElement
+		) {
 			setIdeaCard(ideaCardRef.current)
 			setCards([...ideaCardRef.current.parentElement.children])
 		}
-	}, [])
+		console.log("set cards")
+		console.log(ideaCardCollection)
+	}, [isNewCard])
 
 	useEffect(() => {
 		if (!cards || !ideaCard) return
@@ -82,6 +91,13 @@ export default function useCardDrag(
 						else
 							cards[isOverlapped].insertAdjacentElement("afterend", this.target)
 
+						// EDIT ORDER IN DATA ARRAY
+						const newIdeaCardOrder = moveElement(
+							ideaCardCollection,
+							isDragged,
+							isOverlapped
+						)
+
 						if (state) {
 							requestAnimationFrame(() => {
 								Flip.from(state, {
@@ -107,13 +123,6 @@ export default function useCardDrag(
 							if (card.classList.contains("highlight"))
 								card.classList.remove("highlight")
 						})
-
-						// EDIT ORDER IN DATA ARRAY
-						const newIdeaCardOrder = moveElement(
-							ideaCardCollection,
-							isDragged,
-							isOverlapped
-						)
 
 						// RESET INDEXES
 						isDragged = -1

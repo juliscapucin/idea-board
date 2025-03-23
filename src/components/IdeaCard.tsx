@@ -35,13 +35,11 @@ export default function IdeaCard({
 	const [isEditingDescription, setIsEditingDescription] = useState(false)
 	const [showToast, setShowToast] = useState(false)
 
-	const ideaCardRef = useRef<HTMLDivElement>(null)
+	const ideaCardRef = useRef<HTMLDivElement | null>(null)
 	const titleRef = useRef<HTMLInputElement>(null)
 
 	const isNewCard = !dateCreated ? true : false // If dateCreated is null, it's a new card
 	const characterCount = newDescription.length
-
-	const flipStateRef = useRef<ReturnType<typeof Flip.getState>>(null)
 
 	const saveIdea = () => {
 		const cardToEdit = ideaCardCollection.find(
@@ -96,6 +94,8 @@ export default function IdeaCard({
 			const updatedCollection = [...ideaCardCollection]
 			updatedCollection[cardToEditIndex] = editedCard
 
+			setIdeaCardCollection(updatedCollection)
+
 			// Store updated data on local storage
 			const finalData = JSON.stringify(updatedCollection)
 			localStorage.setItem("ideaCardCollection", finalData)
@@ -106,7 +106,6 @@ export default function IdeaCard({
 				setIsEditingTitle(false)
 				setIsEditingDescription(false)
 
-				setIdeaCardCollection(updatedCollection)
 				setShowToast(true)
 			}
 		}
@@ -114,28 +113,26 @@ export default function IdeaCard({
 
 	const deleteIdea = (title: string) => {
 		if (!ideaCardRef.current || !ideaCardRef.current.parentElement) return
-		flipStateRef.current = Flip.getState(
-			ideaCardRef.current.parentElement.children
-		)
+		const state = Flip.getState(ideaCardRef.current.parentElement.children)
 
 		const updatedCollection = ideaCardCollection.filter((card) => {
 			if (card.title !== title) return card
 		})
 
-		setIdeaCardCollection(updatedCollection)
 		saveToLocalStorage(updatedCollection)
-	}
+		setIdeaCardCollection(updatedCollection)
 
-	// FLIP ANIMATION
-	useEffect(() => {
-		if (!flipStateRef.current) return
+		console.log("delete idea")
 
-		Flip.from(flipStateRef.current!, {
-			duration: 0.5,
-			ease: "power2.out",
-			onComplete: () => (flipStateRef.current = null),
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				Flip.from(state, {
+					duration: 0.5,
+					ease: "power2.out",
+				})
+			})
 		})
-	}, [ideaCardCollection])
+	}
 
 	// TITLE FOCUS ON NEW CARD
 	useEffect(() => {
@@ -159,8 +156,7 @@ export default function IdeaCard({
 	// }, [ideaCardRef, isEditingDescription, isEditingTitle])
 
 	// DRAGGABLE FUNCTIONALITY
-
-	useCardDrag(ideaCardRef, ideaCardCollection, setIdeaCardCollection)
+	useCardDrag(ideaCardRef, ideaCardCollection, setIdeaCardCollection, isNewCard)
 
 	return (
 		<div ref={ideaCardRef} className='idea-card'>
