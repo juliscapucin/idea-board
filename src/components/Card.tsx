@@ -7,7 +7,12 @@ gsap.registerPlugin(Flip)
 
 import { IdeaCardType } from "../types"
 
-import { duplicatedTitleMessage } from "../lib/feedback-messages"
+import {
+	duplicatedTitleMessage,
+	emptyDescriptionMessage,
+	emptyTitleMessage,
+} from "../lib/alert-messages"
+
 import { formatDateAndTime, saveToLocalStorage } from "../lib/utils"
 import { useCardDrag } from "../hooks"
 import { Alert, Toast } from "../components"
@@ -60,6 +65,8 @@ export default function Card({
 
 		let editedCard: IdeaCardType
 
+		console.log(newTitle)
+
 		// If new card, set Created Date
 		if (isNewCard) {
 			editedCard = {
@@ -82,23 +89,52 @@ export default function Card({
 			}
 		}
 
-		// CHECK FOR DUPLICATED TITLE
+		// CHECK FOR EMPTY / DUPLICATED TITLE
 		if (
 			title !== newTitle && // if Title has been edited
+			editedCard
+		) {
+			// Duplicated title
+			if (
+				ideaCardCollection.find(
+					(card) => card.title.toLowerCase() === editedCard.title.toLowerCase()
+				)
+			) {
+				setAlertMessage(duplicatedTitleMessage)
+				setShowAlert(true)
+				setNewTitle("") // revert to original title
+				setIsEditingTitle(false)
+				return
+			}
+
+			// Empty title
+			if (newTitle.length < 2) {
+				console.log(newTitle)
+				setAlertMessage(emptyTitleMessage)
+				setShowAlert(true)
+				setNewTitle(title) // revert to original title
+				setIsEditingTitle(false)
+				return
+			}
+		} else if (
+			// CHECK FOR EMTPY DESCRIPTION
+			description !== newDescription && // if Description has been edited
 			editedCard &&
-			ideaCardCollection.find(
-				(card) => card.title.toLowerCase() === editedCard.title.toLowerCase()
-			)
+			newDescription.length < 2
 		) {
 			// ALERT POPUP
-			setAlertMessage(duplicatedTitleMessage)
+			setAlertMessage(emptyDescriptionMessage)
 			setShowAlert(true)
-			setNewTitle(title) // if new title exists, revert to original title
+			setNewDescription(description) // revert to original description
+			setIsEditingDescription(false)
 			return
 		}
 
-		// SAVE AND SHOW TOAST
-		if ((title !== newTitle || description !== newDescription) && editedCard) {
+		if (
+			// SAVE AND SHOW TOAST
+			(title !== newTitle || description !== newDescription) &&
+			editedCard
+		) {
 			// Create a new array with updated data
 			const updatedCollection = [...ideaCardCollection]
 			updatedCollection[cardToEditIndex] = editedCard

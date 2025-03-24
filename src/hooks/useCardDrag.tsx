@@ -36,6 +36,7 @@ export default function useCardDrag(
 
 	// WAIT UNTIL THE REF + CARD DATA BECOME AVAILABLE
 	useEffect(() => {
+		if (showAlert) return
 		if (
 			!isNewCard &&
 			ideaCardRef.current &&
@@ -47,7 +48,7 @@ export default function useCardDrag(
 	}, [isNewCard])
 
 	useEffect(() => {
-		if (!cards || !ideaCard || showAlert) return
+		if (!cards || !ideaCard) return
 
 		gsap.registerPlugin(Draggable)
 		gsap.registerPlugin(Flip)

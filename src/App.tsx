@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import Flip from "gsap/Flip"
 
 import { CardsList, Header } from "./components/"
-import { incompleteCardMessage } from "./lib/feedback-messages"
+import { incompleteCardMessage } from "./lib/alert-messages"
 
 import { SortContextProvider } from "./context"
 
