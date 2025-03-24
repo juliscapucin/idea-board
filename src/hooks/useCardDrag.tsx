@@ -26,7 +26,8 @@ export default function useCardDrag(
 	ideaCardRef: React.RefObject<HTMLDivElement | null>,
 	ideaCardCollection: IdeaCardType[],
 	setIdeaCardCollection: (arg: IdeaCardType[]) => void,
-	isNewCard: boolean
+	isNewCard: boolean,
+	showAlert: boolean
 ) {
 	const [cards, setCards] = useState<Element[] | null>(null)
 	const [ideaCard, setIdeaCard] = useState<Element | null>(null)
@@ -46,7 +47,7 @@ export default function useCardDrag(
 	}, [isNewCard])
 
 	useEffect(() => {
-		if (!cards || !ideaCard) return
+		if (!cards || !ideaCard || showAlert) return
 
 		gsap.registerPlugin(Draggable)
 		gsap.registerPlugin(Flip)

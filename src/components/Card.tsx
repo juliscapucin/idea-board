@@ -10,7 +10,7 @@ import { IdeaCardType } from "../types"
 import { duplicatedTitleMessage } from "../lib/feedback-messages"
 import { formatDateAndTime, saveToLocalStorage } from "../lib/utils"
 import { useCardDrag } from "../hooks"
-import { Toast } from "."
+import { Alert, Toast } from "../components"
 import { Button, ButtonClose } from "./Buttons"
 import { useSortMenuContext } from "../context"
 
@@ -35,6 +35,8 @@ export default function Card({
 	const [isEditingTitle, setIsEditingTitle] = useState(false)
 	const [isEditingDescription, setIsEditingDescription] = useState(false)
 	const [showToast, setShowToast] = useState(false)
+	const [showAlert, setShowAlert] = useState(false)
+	const [alertMessage, setAlertMessage] = useState("")
 
 	const ideaCardRef = useRef<HTMLDivElement | null>(null)
 	const titleRef = useRef<HTMLInputElement>(null)
@@ -88,7 +90,10 @@ export default function Card({
 				(card) => card.title.toLowerCase() === editedCard.title.toLowerCase()
 			)
 		) {
-			alert(duplicatedTitleMessage)
+			// ALERT POPUP
+			// alert(duplicatedTitleMessage)
+			setAlertMessage(duplicatedTitleMessage)
+			setShowAlert(true)
 			setNewTitle(title) // if new title exists, revert to original title
 			titleRef.current && titleRef.current.focus()
 			return
@@ -145,9 +150,13 @@ export default function Card({
 		if (isNewCard && titleRef.current) titleRef.current.focus()
 	}, [isNewCard])
 
-	// TODO: SAVE ON CLICK OUTSIDE
+	// SAVE ON CLICK OUTSIDE
 	useEffect(() => {
-		if (!ideaCardRef.current || (!isEditingTitle && !isEditingDescription))
+		if (
+			!ideaCardRef.current ||
+			showAlert || // If handling an error alert
+			(!isEditingTitle && !isEditingDescription)
+		)
 			return
 
 		const saveOnClickOutside = (e: MouseEvent) => {
@@ -162,10 +171,17 @@ export default function Card({
 	}, [isEditingDescription, isEditingTitle])
 
 	// DRAGGABLE FUNCTIONALITY
-	useCardDrag(ideaCardRef, ideaCardCollection, setIdeaCardCollection, isNewCard)
+	useCardDrag(
+		ideaCardRef,
+		ideaCardCollection,
+		setIdeaCardCollection,
+		isNewCard,
+		showAlert
+	)
 
 	return (
 		<div ref={ideaCardRef} className='card'>
+			<Alert {...{ showAlert, setShowAlert, alertMessage }} />
 			<ButtonClose
 				classes={"card__close-button"}
 				onClickAction={() => deleteIdea(title)}
