@@ -16,7 +16,7 @@ import {
 
 import { formatDateAndTime, saveToLocalStorage } from "../lib/utils"
 import { useCardDrag } from "../hooks"
-import { Alert, CharacterCountdown, Toast } from "../components"
+import { Alert, CharacterCountdown, ToastPopup } from "../components"
 import { Button, ButtonClose } from "./Buttons"
 import { useSortMenuContext } from "../context"
 
@@ -302,7 +302,7 @@ export default function Card({
 				<p className={`${!dateUpdated && "hidden"}`}>Updated: {dateUpdated}</p>
 				<p className={`${!dateCreated && "hidden"}`}>Created: {dateCreated}</p>
 			</div>
-			{showToast && <Toast {...{ setShowToast }} />}
+			{showToast && <ToastPopup {...{ setShowToast }} />}
 		</div>
 	)
 }
