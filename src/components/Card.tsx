@@ -12,6 +12,7 @@ import { formatDateAndTime, saveToLocalStorage } from "../lib/utils"
 import { useCardDrag } from "../hooks"
 import { Toast } from "."
 import { Button, ButtonClose } from "./Buttons"
+import { useSortMenuContext } from "../context"
 
 type IdeaCardProps = {
 	ideaCard: IdeaCardType
@@ -41,7 +42,12 @@ export default function Card({
 	const isNewCard = !dateCreated ? true : false // If dateCreated is null, it's a new card
 	const characterCount = newDescription.length
 
+	const { setSortChoice } = useSortMenuContext()
+
 	const saveIdea = () => {
+		// RESET SORT MENU
+		setSortChoice("")
+
 		const cardToEdit = ideaCardCollection.find(
 			(card) => card.title === title || card.description === description
 		)
@@ -140,20 +146,20 @@ export default function Card({
 	}, [isNewCard])
 
 	// TODO: SAVE ON CLICK OUTSIDE
-	// useEffect(() => {
-	// 	if (!ideaCardRef.current || (!isEditingTitle && !isEditingDescription))
-	// 		return
+	useEffect(() => {
+		if (!ideaCardRef.current || (!isEditingTitle && !isEditingDescription))
+			return
 
-	// 	const saveOnClickOutside = (e: Event) => {
-	// 		if (!ideaCardRef.current!.contains(e.target)) {
-	// 			saveIdea()
-	// 		}
-	// 	}
+		const saveOnClickOutside = (e: MouseEvent) => {
+			if (!ideaCardRef.current!.contains(e.target as Node)) {
+				saveIdea()
+			}
+		}
 
-	// 	document.addEventListener("click", saveOnClickOutside)
+		document.addEventListener("click", saveOnClickOutside)
 
-	// 	return () => document.removeEventListener("click", saveOnClickOutside)
-	// }, [ideaCardRef, isEditingDescription, isEditingTitle])
+		return () => document.removeEventListener("click", saveOnClickOutside)
+	}, [isEditingDescription, isEditingTitle])
 
 	// DRAGGABLE FUNCTIONALITY
 	useCardDrag(ideaCardRef, ideaCardCollection, setIdeaCardCollection, isNewCard)
