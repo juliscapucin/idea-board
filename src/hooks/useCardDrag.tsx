@@ -26,8 +26,7 @@ export default function useCardDrag(
 	ideaCardRef: React.RefObject<HTMLDivElement | null>,
 	ideaCardCollection: IdeaCardType[],
 	setIdeaCardCollection: (arg: IdeaCardType[]) => void,
-	isNewCard: boolean,
-	showAlert: boolean
+	isNewCard: boolean
 ) {
 	const [cards, setCards] = useState<Element[] | null>(null)
 	const [ideaCard, setIdeaCard] = useState<Element | null>(null)
@@ -36,7 +35,6 @@ export default function useCardDrag(
 
 	// WAIT UNTIL THE REF + CARD DATA BECOME AVAILABLE
 	useEffect(() => {
-		if (showAlert) return
 		if (
 			!isNewCard &&
 			ideaCardRef.current &&

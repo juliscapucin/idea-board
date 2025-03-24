@@ -8,6 +8,7 @@ gsap.registerPlugin(Flip)
 import { IdeaCardType } from "../types"
 
 import {
+	duplicatedDescriptionMessage,
 	duplicatedTitleMessage,
 	emptyDescriptionMessage,
 	emptyTitleMessage,
@@ -99,7 +100,7 @@ export default function Card({
 			) {
 				setAlertMessage(duplicatedTitleMessage)
 				setShowAlert(true)
-				setNewTitle("") // revert to original title
+				setNewTitle(title) // revert to original title
 				setIsEditingTitle(false)
 				return
 			}
@@ -113,17 +114,33 @@ export default function Card({
 				return
 			}
 		} else if (
-			// CHECK FOR EMTPY DESCRIPTION
+			// CHECK FOR EMTPY / DUPLICATED DESCRIPTION
 			description !== newDescription && // if Description has been edited
-			editedCard &&
-			newDescription.length < 2
+			editedCard
 		) {
-			// ALERT POPUP
-			setAlertMessage(emptyDescriptionMessage)
-			setShowAlert(true)
-			setNewDescription(description) // revert to original description
-			setIsEditingDescription(false)
-			return
+			// Empty description
+			if (newDescription.length < 2) {
+				setAlertMessage(emptyDescriptionMessage)
+				setShowAlert(true)
+				setNewDescription(description) // revert to original description
+				setIsEditingDescription(false)
+				return
+			}
+
+			// Duplicated description
+			if (
+				ideaCardCollection.find(
+					(card) =>
+						card.description.toLowerCase() ===
+						editedCard.description.toLowerCase()
+				)
+			) {
+				setAlertMessage(duplicatedDescriptionMessage)
+				setShowAlert(true)
+				setNewDescription(description) // revert to original description
+				setIsEditingDescription(false)
+				return
+			}
 		}
 
 		if (
@@ -134,6 +151,8 @@ export default function Card({
 			// Create a new array with updated data
 			const updatedCollection = [...ideaCardCollection]
 			updatedCollection[cardToEditIndex] = editedCard
+
+			console.log(cardToEditIndex)
 
 			setIdeaCardCollection(updatedCollection)
 
@@ -199,13 +218,7 @@ export default function Card({
 	// }, [isEditingDescription, isEditingTitle])
 
 	// DRAGGABLE FUNCTIONALITY
-	useCardDrag(
-		ideaCardRef,
-		ideaCardCollection,
-		setIdeaCardCollection,
-		isNewCard,
-		showAlert
-	)
+	useCardDrag(ideaCardRef, ideaCardCollection, setIdeaCardCollection, isNewCard)
 
 	return (
 		<div ref={ideaCardRef} className='card'>
