@@ -6,8 +6,6 @@
 
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
 
 	--color-primary: #242424;
 	--color-primary-rgb: 0, 112, 243;
