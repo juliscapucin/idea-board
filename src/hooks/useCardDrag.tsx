@@ -8,11 +8,22 @@ import { IdeaCardType } from "../types"
 import { saveToLocalStorage } from "../lib/utils"
 import { useSortMenuContext } from "../context"
 
+// TODO: fix this
 const moveElement = (
 	array: IdeaCardType[],
 	fromIndex: number,
 	toIndex: number
 ) => {
+	if (
+		fromIndex < 0 ||
+		fromIndex >= array.length ||
+		toIndex < 0 ||
+		toIndex >= array.length
+	) {
+		console.log("bad index")
+		return
+	}
+
 	const newArray = [...array] // Clone the array to avoid mutation
 	const movedElement = { ...newArray[fromIndex] } // Clone the moved element
 
@@ -75,10 +86,10 @@ export default function useCardDrag(
 				onRelease: function () {
 					setSortChoice("") // Reset sort menu
 
-					const state = Flip.getState(cards)
-
 					// IF DRAG HITS ANY TARGET
 					if (isOverlapped >= 0) {
+						const state = Flip.getState(cards)
+
 						if (isDragged > isOverlapped)
 							cards[isOverlapped].insertAdjacentElement(
 								"beforebegin",
@@ -86,27 +97,6 @@ export default function useCardDrag(
 							)
 						else
 							cards[isOverlapped].insertAdjacentElement("afterend", this.target)
-
-						// EDIT ORDER IN DATA ARRAY
-						const newIdeaCardOrder = moveElement(
-							ideaCardCollection,
-							isDragged,
-							isOverlapped
-						)
-
-						if (state) {
-							requestAnimationFrame(() => {
-								Flip.from(state, {
-									duration: 0.5,
-									ease: "power2.out",
-									onComplete: () => {
-										// SAVE REORDERED ARRAY
-										setIdeaCardCollection(newIdeaCardOrder)
-										saveToLocalStorage(newIdeaCardOrder)
-									},
-								})
-							})
-						}
 
 						// REMOVE DRAG TRANSFORMS
 						gsap.set(this.target, {
@@ -120,9 +110,33 @@ export default function useCardDrag(
 								card.classList.remove("highlight")
 						})
 
-						// RESET INDEXES
-						isDragged = -1
-						isOverlapped = -1
+						const newIdeaCardOrder = moveElement(
+							ideaCardCollection,
+							isDragged,
+							isOverlapped
+						)
+
+						// EDIT ORDER IN DATA ARRAY
+						if (newIdeaCardOrder) {
+							setIdeaCardCollection(newIdeaCardOrder)
+							saveToLocalStorage(newIdeaCardOrder)
+						}
+
+						if (state) {
+							requestAnimationFrame(() => {
+								Flip.from(state, {
+									duration: 0.5,
+									ease: "power2.out",
+									onComplete: () => {
+										// RESET INDEXES
+										isDragged = -1
+										isOverlapped = -1
+									},
+								})
+							})
+
+							setCards([...ideaCard!.parentElement!.children])
+						}
 					} else {
 						// IF DRAG DOESN'T HIT ANY TARGET, MOVE BACK TO ORIGINAL POSITION
 						gsap.to(this.target, {
