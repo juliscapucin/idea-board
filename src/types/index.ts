@@ -4,7 +4,7 @@ type IdeaCardType = {
 	[key: string]: string | null | number
 	dateCreatedRaw: number | null
 	dateCreated: string | null
-	dateEdited: string | null
+	dateUpdated: string | null
 }
 
 export type { IdeaCardType }

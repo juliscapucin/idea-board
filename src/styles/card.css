@@ -66,4 +66,5 @@
 .card__dates {
 	font-size: var(--text-xxs);
 	color: var(--color-faded-medium);
+	margin: 0 0 var(--space-xs) var(--space-xs);
 }

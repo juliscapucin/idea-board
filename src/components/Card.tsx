@@ -26,7 +26,7 @@ export default function Card({
 	setIdeaCardCollection,
 	cardIndex,
 }: IdeaCardProps) {
-	const { id, title, description, dateCreated, dateCreatedRaw, dateEdited } =
+	const { id, title, description, dateCreated, dateCreatedRaw, dateUpdated } =
 		ideaCard
 
 	const [newTitle, setNewTitle] = useState(title)
@@ -60,7 +60,7 @@ export default function Card({
 				description: newDescription,
 				dateCreated: formatDateAndTime(),
 				dateCreatedRaw: Date.now(),
-				dateEdited: null,
+				dateUpdated: null,
 			}
 		} else {
 			// If saved previously, set Edited Date
@@ -70,7 +70,7 @@ export default function Card({
 				description: newDescription,
 				dateCreated,
 				dateCreatedRaw,
-				dateEdited: formatDateAndTime(),
+				dateUpdated: formatDateAndTime(),
 			}
 		}
 
@@ -236,10 +236,8 @@ export default function Card({
 				)}
 			</div>
 			<div className='card__dates'>
+				<p className={`${!dateUpdated && "hidden"}`}>Updated: {dateUpdated}</p>
 				<p className={`${!dateCreated && "hidden"}`}>Created: {dateCreated}</p>
-				<p className={`${!dateEdited && "hidden"}`}>
-					Last edited: {dateEdited}
-				</p>
 			</div>
 			{showToast && <Toast {...{ setShowToast }} />}
 		</div>
