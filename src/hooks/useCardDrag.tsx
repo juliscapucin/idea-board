@@ -27,6 +27,8 @@ const moveElement = (
 	const newArray = [...array] // Clone the array to avoid mutation
 	const movedElement = { ...newArray[fromIndex] } // Clone the moved element
 
+	console.log(toIndex)
+
 	newArray.splice(fromIndex, 1) // Remove element
 	newArray.splice(toIndex, 0, movedElement) // Insert at new position
 
@@ -90,13 +92,13 @@ export default function useCardDrag(
 					if (isOverlapped >= 0) {
 						const state = Flip.getState(cards)
 
-						if (isDragged > isOverlapped)
-							cards[isOverlapped].insertAdjacentElement(
-								"beforebegin",
-								this.target
-							)
-						else
-							cards[isOverlapped].insertAdjacentElement("afterend", this.target)
+						// if (isDragged > isOverlapped)
+						// 	cards[isOverlapped].insertAdjacentElement(
+						// 		"beforebegin",
+						// 		this.target
+						// 	)
+						// else
+						// 	cards[isOverlapped].insertAdjacentElement("afterend", this.target)
 
 						// REMOVE DRAG TRANSFORMS
 						gsap.set(this.target, {
@@ -134,9 +136,8 @@ export default function useCardDrag(
 									},
 								})
 							})
-
-							setCards([...ideaCard!.parentElement!.children])
 						}
+						setCards([...ideaCard!.parentElement!.children])
 					} else {
 						// IF DRAG DOESN'T HIT ANY TARGET, MOVE BACK TO ORIGINAL POSITION
 						gsap.to(this.target, {
@@ -146,7 +147,6 @@ export default function useCardDrag(
 						})
 
 						if (!ideaCard || !ideaCard.parentElement) return
-						// cards = [...ideaCard!.parentElement!.children]
 
 						isDragged = -1
 						isOverlapped = -1
