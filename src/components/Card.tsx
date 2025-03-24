@@ -113,7 +113,9 @@ export default function Card({
 				setIsEditingTitle(false)
 				return
 			}
-		} else if (
+		}
+
+		if (
 			// CHECK FOR EMTPY / DUPLICATED DESCRIPTION
 			description !== newDescription && // if Description has been edited
 			editedCard
@@ -152,7 +154,7 @@ export default function Card({
 			const updatedCollection = [...ideaCardCollection]
 			updatedCollection[cardToEditIndex] = editedCard
 
-			console.log(cardToEditIndex)
+			console.log("saved")
 
 			setIdeaCardCollection(updatedCollection)
 
