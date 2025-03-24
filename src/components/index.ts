@@ -5,7 +5,7 @@ import CharacterCountdown from "./CharacterCountdown"
 import Header from "./Header"
 import InstructionsPopup from "./InstructionsPopup"
 import SortMenu from "./SortMenu"
-import ToastPopup from "./ToastPopup"
+import Toast from "./Toast"
 
 export {
 	Alert,
@@ -15,5 +15,5 @@ export {
 	Header,
 	InstructionsPopup,
 	SortMenu,
-	ToastPopup,
+	Toast,
 }
