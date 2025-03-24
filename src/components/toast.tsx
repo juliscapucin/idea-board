@@ -10,7 +10,6 @@ export default function Toast({ setShowToast }: ToastProps) {
 	const toastRef = useRef(null)
 
 	useEffect(() => {
-		console.log("toast")
 		const ctx = gsap.context(() => {
 			const tl = gsap.timeline()
 			tl.to(toastRef.current, {

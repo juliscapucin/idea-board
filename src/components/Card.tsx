@@ -64,8 +64,6 @@ export default function Card({
 
 		let editedCard: IdeaCardType
 
-		console.log(newTitle)
-
 		// If new card, set Created Date
 		if (isNewCard) {
 			editedCard = {
@@ -108,7 +106,6 @@ export default function Card({
 
 			// Empty title
 			if (newTitle.length < 2) {
-				console.log(newTitle)
 				setAlertMessage(emptyTitleMessage)
 				setShowAlert(true)
 				setNewTitle(title) // revert to original title
@@ -165,8 +162,6 @@ export default function Card({
 
 		saveToLocalStorage(updatedCollection)
 		setIdeaCardCollection(updatedCollection)
-
-		console.log("delete idea")
 
 		requestAnimationFrame(() => {
 			requestAnimationFrame(() => {
