@@ -22,6 +22,10 @@
 	background-color: var(--color-faded-dark);
 }
 
+.color-danger {
+	color: var(--color-danger) !important;
+}
+
 .hidden {
 	visibility: hidden;
 }

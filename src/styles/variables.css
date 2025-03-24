@@ -21,6 +21,9 @@
 	--color-text-light: #ffffff;
 	--color-text-dark: #1a1a1a;
 
+	--color-danger: #e30000;
+	--color-success: #05822d;
+
 	--color-link: #646cff;
 	--color-link-hover: #535bf2;
 	--color-transparent: rgba(255, 255, 255, 0);

@@ -15,7 +15,7 @@ import {
 
 import { formatDateAndTime, saveToLocalStorage } from "../lib/utils"
 import { useCardDrag } from "../hooks"
-import { Alert, Toast } from "../components"
+import { Alert, CharacterCountdown, Toast } from "../components"
 import { Button, ButtonClose } from "./Buttons"
 import { useSortMenuContext } from "../context"
 
@@ -47,7 +47,6 @@ export default function Card({
 	const titleRef = useRef<HTMLInputElement>(null)
 
 	const isNewCard = !dateCreated ? true : false // If dateCreated is null, it's a new card
-	const characterCount = newDescription.length
 
 	const { setSortChoice } = useSortMenuContext()
 
@@ -281,14 +280,7 @@ export default function Card({
 					}}
 				/>
 
-				<p
-					className={`card__countdown ${
-						// Show character count if user is editing description
-						isEditingDescription ? "opacity-1" : "opacity-0"
-					}`}
-				>
-					{characterCount} of 140 characters
-				</p>
+				<CharacterCountdown {...{ newDescription, isEditingDescription }} />
 			</div>
 
 			<div className='card__buttons'>

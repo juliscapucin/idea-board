@@ -38,12 +38,12 @@ textarea {
 
 input:user-invalid,
 textarea:user-invalid {
-	border: 2px solid red;
+	border: 2px solid var(--color-danger);
 }
 
 input:user-valid,
 textarea:user-valid {
-	border: 2px solid lime;
+	border: 2px solid var(--color-success);
 }
 
 textarea {
