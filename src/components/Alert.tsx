@@ -5,27 +5,34 @@ type AlertProps = {
 	showAlert: boolean
 	setShowAlert: (arg: boolean) => void
 	alertMessage: string
+	titleRef: HTMLInputElement | null
 }
 
 export default function Alert({
 	showAlert,
 	setShowAlert,
 	alertMessage,
+	titleRef,
 }: AlertProps) {
 	const alertRef = useRef(null)
 
 	const handleClick = () => {
 		setShowAlert(false)
+		titleRef?.focus()
 	}
 
 	useEffect(() => {
 		if (!showAlert || alertRef.current) return
 
 		const ctx = gsap.context(() => {
-			gsap.to(alertRef.current, {
-				opacity: 1,
-				duration: 0.5,
-			})
+			gsap.fromTo(
+				alertRef.current,
+				{ opacity: 0 },
+				{
+					opacity: 1,
+					duration: 0.5,
+				}
+			)
 		})
 
 		return () => ctx.revert()
@@ -35,9 +42,9 @@ export default function Alert({
 		<div ref={alertRef} className={`alert ${!showAlert && "hidden"}`}>
 			<div className='alert__overlay'>
 				<div className='alert__popup'>
-					<div>
+					<div className='alert__content'>
 						<h1>Alert</h1>
-						<p>{alertMessage}</p>
+						<p className='alert__message'>{alertMessage}</p>
 						<Button onClickAction={handleClick} variant='primary'>
 							OK
 						</Button>

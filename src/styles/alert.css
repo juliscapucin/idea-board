@@ -9,7 +9,8 @@
 .alert__overlay {
 	width: 100%;
 	height: 100%;
-	background-color: rgba(var(--color-primary-rgb) / 0.4);
+	/* background-color: rgba(var(--color-primary-rgb) / 0.8); */
+	background-color: var(--color-faded-medium);
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -24,4 +25,17 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.alert__content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: var(--space-xs);
+}
+
+.alert__message {
+	text-align: center;
+	text-wrap: balance;
 }

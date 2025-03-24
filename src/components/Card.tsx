@@ -91,11 +91,9 @@ export default function Card({
 			)
 		) {
 			// ALERT POPUP
-			// alert(duplicatedTitleMessage)
 			setAlertMessage(duplicatedTitleMessage)
 			setShowAlert(true)
 			setNewTitle(title) // if new title exists, revert to original title
-			titleRef.current && titleRef.current.focus()
 			return
 		}
 
@@ -150,25 +148,25 @@ export default function Card({
 		if (isNewCard && titleRef.current) titleRef.current.focus()
 	}, [isNewCard])
 
-	// SAVE ON CLICK OUTSIDE
-	useEffect(() => {
-		if (
-			!ideaCardRef.current ||
-			showAlert || // If handling an error alert
-			(!isEditingTitle && !isEditingDescription)
-		)
-			return
+	// TODO: SAVE ON CLICK OUTSIDE
+	// useEffect(() => {
+	// 	if (
+	// 		!ideaCardRef.current ||
+	// 		showAlert || // If handling an error alert
+	// 		(!isEditingTitle && !isEditingDescription)
+	// 	)
+	// 		return
 
-		const saveOnClickOutside = (e: MouseEvent) => {
-			if (!ideaCardRef.current!.contains(e.target as Node)) {
-				saveIdea()
-			}
-		}
+	// 	const saveOnClickOutside = (e: MouseEvent) => {
+	// 		if (!ideaCardRef.current!.contains(e.target as Node)) {
+	// 			saveIdea()
+	// 		}
+	// 	}
 
-		document.addEventListener("click", saveOnClickOutside)
+	// 	document.addEventListener("click", saveOnClickOutside)
 
-		return () => document.removeEventListener("click", saveOnClickOutside)
-	}, [isEditingDescription, isEditingTitle])
+	// 	return () => document.removeEventListener("click", saveOnClickOutside)
+	// }, [isEditingDescription, isEditingTitle])
 
 	// DRAGGABLE FUNCTIONALITY
 	useCardDrag(
@@ -181,7 +179,14 @@ export default function Card({
 
 	return (
 		<div ref={ideaCardRef} className='card'>
-			<Alert {...{ showAlert, setShowAlert, alertMessage }} />
+			<Alert
+				{...{
+					showAlert,
+					setShowAlert,
+					alertMessage,
+					titleRef: titleRef.current,
+				}}
+			/>
 			<ButtonClose
 				classes={"card__close-button"}
 				onClickAction={() => deleteIdea(title)}
