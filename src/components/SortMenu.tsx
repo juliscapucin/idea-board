@@ -25,7 +25,6 @@ export default function SortMenu({
 	setIdeaCardCollection,
 }: SortMenuProps) {
 	const [showMenu, setShowMenu] = useState(false)
-	// const [sortChoice, setSortChoice] = useState("")
 
 	const sortMenuContainerRef = useRef<HTMLDivElement | null>(null)
 	const sortMenuRef = useRef<HTMLDivElement | null>(null)
@@ -83,7 +82,10 @@ export default function SortMenu({
 			>
 				<div className='sort-menu__trigger-content'>
 					<span>Sort {sortChoice && `by: ${sortChoice}`}</span>
-					<IconChevron iconColor='secondary' />
+					<IconChevron
+						iconColor='secondary'
+						classes={`transform-200 ${showMenu && "rotate-180"}`}
+					/>
 				</div>
 			</Button>
 

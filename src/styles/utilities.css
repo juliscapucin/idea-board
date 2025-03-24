@@ -50,6 +50,10 @@
 	transform: rotate(-45deg);
 }
 
+.rotate-180 {
+	transform: rotate(180deg);
+}
+
 .text-left {
 	text-align: left;
 }
@@ -68,4 +72,12 @@
 
 .text-faded-medium {
 	color: var(--color-faded-medium);
+}
+
+.transform-200 {
+	transition: transform 0.2s ease-in-out;
+}
+
+.transform-300 {
+	transition: transform 0.3s ease-in-out;
 }

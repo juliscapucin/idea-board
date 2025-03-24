@@ -16,10 +16,16 @@ export function IconClose({ iconColor }: { iconColor: string }) {
 	)
 }
 
-export function IconChevron({ iconColor }: { iconColor: string }) {
+export function IconChevron({
+	iconColor,
+	classes,
+}: {
+	iconColor: string
+	classes: string
+}) {
 	const colorClass = `text-${iconColor}`
 	return (
-		<div className={`icon-chevron__container ${colorClass}`}>
+		<div className={`icon-chevron__container ${colorClass} ${classes}`}>
 			<svg
 				width='17'
 				height='9'
