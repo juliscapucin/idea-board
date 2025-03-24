@@ -43,7 +43,7 @@ export default function Alert({
 			<div className='alert__overlay'>
 				<div className='alert__popup'>
 					<div className='alert__content'>
-						<h1>Alert</h1>
+						<h2>Oops!</h2>
 						<p className='alert__message'>{alertMessage}</p>
 						<Button onClickAction={handleClick} variant='primary'>
 							OK

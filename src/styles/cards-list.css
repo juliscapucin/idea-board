@@ -6,6 +6,7 @@
 	min-height: calc(100svh - var(--header-height) - 4 * var(--space-md));
 	background-color: var(--color-faded-dark);
 	border-radius: var(--radius-lg);
+	padding: var(--space-sm);
 	z-index: 1;
 }
 
