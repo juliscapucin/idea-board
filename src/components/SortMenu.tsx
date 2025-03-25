@@ -10,13 +10,13 @@ import { saveToLocalStorage } from "../lib/utils"
 
 import { useSortMenuContext } from "../context"
 
-import { IdeaCardType } from "../types"
+import { IdeaCard } from "../types"
 import { IconChevron } from "./Icons"
 
 type SortMenuProps = {
 	container: HTMLElement | null
-	ideaCardCollection: IdeaCardType[]
-	setIdeaCardCollection: (arg: IdeaCardType[]) => void
+	ideaCardCollection: IdeaCard[]
+	setIdeaCardCollection: (arg: IdeaCard[]) => void
 }
 
 export default function SortMenu({

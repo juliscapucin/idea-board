@@ -1,10 +1,10 @@
-import { IdeaCardType } from "../types"
+import { IdeaCard } from "../types"
 import { Card } from "../components"
 import { useSortMenuContext } from "../context"
 
 type CardsListProps = {
-	ideaCardCollection: IdeaCardType[]
-	setIdeaCardCollection: (arg: IdeaCardType[]) => void
+	ideaCardCollection: IdeaCard[]
+	setIdeaCardCollection: (arg: IdeaCard[]) => void
 }
 
 export default function CardsList({

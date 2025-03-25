@@ -2,27 +2,25 @@ import { useEffect, useRef } from "react"
 import { Button } from "./Buttons"
 
 type AlertProps = {
-	showAlert: boolean
-	setShowAlert: (arg: boolean) => void
-	alertMessage: string
+	alertMessage: string | null
+	setAlertMessage: (arg: string | null) => void
 	titleRef: HTMLInputElement | null
 }
 
 export default function Alert({
-	showAlert,
-	setShowAlert,
 	alertMessage,
+	setAlertMessage,
 	titleRef,
 }: AlertProps) {
 	const alertRef = useRef(null)
 
 	const handleClick = () => {
-		setShowAlert(false)
+		setAlertMessage(null)
 		titleRef?.focus()
 	}
 
 	useEffect(() => {
-		if (!showAlert || alertRef.current) return
+		if (!alertMessage || alertRef.current) return
 
 		const ctx = gsap.context(() => {
 			gsap.fromTo(
@@ -36,10 +34,10 @@ export default function Alert({
 		})
 
 		return () => ctx.revert()
-	}, [showAlert])
+	}, [alertMessage])
 
 	return (
-		<div ref={alertRef} className={`alert ${!showAlert && "hidden"}`}>
+		<div ref={alertRef} className={`alert ${!alertMessage && "hidden"}`}>
 			<div className='alert__overlay'>
 				<div className='alert__popup'>
 					<div className='alert__content'>

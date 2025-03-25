@@ -5,26 +5,95 @@ import Flip from "gsap/Flip"
 
 gsap.registerPlugin(Flip)
 
-import { IdeaCardType } from "../types"
+import { IdeaCard } from "../types"
 
 import {
-	duplicatedDescriptionMessage,
-	duplicatedTitleMessage,
 	emptyDescriptionMessage,
 	emptyTitleMessage,
 } from "../lib/alert-messages"
 
 import { formatDateAndTime, saveToLocalStorage } from "../lib/utils"
-import { useCardDrag } from "../hooks"
 import { Alert, CharacterCountdown, Toast } from "../components"
 import { Button, ButtonClose } from "./Buttons"
 import { useSortMenuContext } from "../context"
 
 type IdeaCardProps = {
-	ideaCard: IdeaCardType
-	ideaCardCollection: IdeaCardType[]
-	setIdeaCardCollection: (newCollection: IdeaCardType[]) => void
+	ideaCard: IdeaCard
+	ideaCardCollection: IdeaCard[]
+	setIdeaCardCollection: (newCollection: IdeaCard[]) => void
 	cardIndex: number
+}
+
+// SAVE IDEA
+const saveIdea = (
+	ideaCardCollection: IdeaCard[],
+	setIdeaCardCollection: (arg: IdeaCard[]) => void,
+	setSortChoice: (arg: string) => void,
+	id: string,
+	newTitle: string,
+	setNewTitle: (arg: string) => void,
+	newDescription: string,
+	setNewDescription: (arg: string) => void,
+	title: string,
+	description: string,
+	dateCreated: number | null,
+	setAlertMessage: (arg: string) => void
+) => {
+	// RESET SORT MENU
+	setSortChoice("")
+
+	const cardToEdit = ideaCardCollection.find((card) => card.id === id)
+
+	if (!cardToEdit) return
+
+	const cardToEditIndex = ideaCardCollection.indexOf(cardToEdit)
+
+	let updatedCard: IdeaCard
+
+	updatedCard = {
+		id,
+		title: newTitle,
+		description: newDescription,
+		dateCreated: dateCreated ? dateCreated : Date.now(), // If it hasn't been saved yet, set Created Date
+		dateUpdated: dateCreated ? null : Date.now(), // If already been saved, set Updated Date
+	}
+
+	// CHECK FOR EMPTY TITLE
+	if (
+		title !== newTitle && // if Title has been updated
+		updatedCard
+	) {
+		if (newTitle.length < 2) {
+			setAlertMessage(emptyTitleMessage)
+			setNewTitle(title) // revert to original title
+			return
+		}
+	}
+
+	if (
+		// CHECK FOR EMTPY DESCRIPTION
+		description !== newDescription && // if Description has been updated
+		updatedCard
+	) {
+		// Empty description
+		if (newDescription.length < 2) {
+			setAlertMessage(emptyDescriptionMessage)
+			setNewDescription(description) // revert to original description
+			return
+		}
+	}
+
+	if (
+		// SAVE
+		(title !== newTitle || description !== newDescription) &&
+		updatedCard
+	) {
+		// Create a new array with updated data
+		const updatedCollection = [...ideaCardCollection]
+		updatedCollection[cardToEditIndex] = updatedCard
+
+		setIdeaCardCollection(updatedCollection)
+	}
 }
 
 export default function Card({
@@ -33,145 +102,22 @@ export default function Card({
 	setIdeaCardCollection,
 	cardIndex,
 }: IdeaCardProps) {
-	const { id, title, description, dateCreated, dateCreatedRaw, dateUpdated } =
-		ideaCard
+	const { id, title, description, dateCreated, dateUpdated } = ideaCard
 
 	const [newTitle, setNewTitle] = useState(title)
 	const [newDescription, setNewDescription] = useState(description)
-	const [isEditingTitle, setIsEditingTitle] = useState(false)
-	const [isEditingDescription, setIsEditingDescription] = useState(false)
 	const [showToast, setShowToast] = useState(false)
-	const [showAlert, setShowAlert] = useState(false)
-	const [alertMessage, setAlertMessage] = useState("")
+	const [alertMessage, setAlertMessage] = useState<string | null>(null)
+
+	const isEditingDescription = description === newDescription ? false : true
+	const isEditingTitle = title === newTitle ? false : true
 
 	const ideaCardRef = useRef<HTMLDivElement | null>(null)
 	const titleRef = useRef<HTMLInputElement>(null)
 
-	const isNewCard = !dateCreated ? true : false // If dateCreated is null, it's a new card
+	const isNewCard = dateCreated ? false : true // If it has a dateCreated value, it's not a new card
 
 	const { setSortChoice } = useSortMenuContext()
-
-	const saveIdea = () => {
-		// RESET SORT MENU
-		setSortChoice("")
-
-		const cardToEdit = ideaCardCollection.find(
-			(card) => card.title === title || card.description === description
-		)
-
-		if (!cardToEdit) return
-
-		const cardToEditIndex = ideaCardCollection.indexOf(cardToEdit)
-
-		let editedCard: IdeaCardType
-
-		// If new card, set Created Date
-		if (isNewCard) {
-			editedCard = {
-				id,
-				title: newTitle,
-				description: newDescription,
-				dateCreated: formatDateAndTime(),
-				dateCreatedRaw: Date.now(),
-				dateUpdated: null,
-			}
-		} else {
-			// If saved previously, set Edited Date
-			editedCard = {
-				id,
-				title: newTitle,
-				description: newDescription,
-				dateCreated,
-				dateCreatedRaw,
-				dateUpdated: formatDateAndTime(),
-			}
-		}
-
-		// CHECK FOR EMPTY / DUPLICATED TITLE
-		if (
-			title !== newTitle && // if Title has been edited
-			editedCard
-		) {
-			// Duplicated title
-			if (
-				ideaCardCollection.find(
-					(card) => card.title.toLowerCase() === editedCard.title.toLowerCase()
-				)
-			) {
-				setAlertMessage(duplicatedTitleMessage)
-				setShowAlert(true)
-				setNewTitle(title) // revert to original title
-				setIsEditingTitle(false)
-				return
-			}
-
-			// Empty title
-			if (newTitle.length < 2) {
-				setAlertMessage(emptyTitleMessage)
-				setShowAlert(true)
-				setNewTitle(title) // revert to original title
-				setIsEditingTitle(false)
-				return
-			}
-		}
-
-		if (
-			// CHECK FOR EMTPY / DUPLICATED DESCRIPTION
-			description !== newDescription && // if Description has been edited
-			editedCard
-		) {
-			// Empty description
-			if (newDescription.length < 2) {
-				setAlertMessage(emptyDescriptionMessage)
-				setShowAlert(true)
-				setNewDescription(description) // revert to original description
-				setIsEditingDescription(false)
-				return
-			}
-
-			// Duplicated description
-			if (
-				ideaCardCollection.find(
-					(card) =>
-						card.description.toLowerCase() ===
-						editedCard.description.toLowerCase()
-				)
-			) {
-				setAlertMessage(duplicatedDescriptionMessage)
-				setShowAlert(true)
-				setNewDescription(description) // revert to original description
-				setIsEditingDescription(false)
-				return
-			}
-		}
-
-		if (
-			// SAVE AND SHOW TOAST
-			(title !== newTitle || description !== newDescription) &&
-			editedCard
-		) {
-			// Create a new array with updated data
-			const updatedCollection = [...ideaCardCollection]
-			updatedCollection[cardToEditIndex] = editedCard
-
-			console.log("saved")
-
-			setIdeaCardCollection(updatedCollection)
-
-			// Store updated data on local storage
-			const finalData = JSON.stringify(updatedCollection)
-			localStorage.setItem("ideaCardCollection", finalData)
-
-			// Check if data was saved + show toast
-			const storedData = localStorage.getItem("ideaCardCollection")
-			if (storedData === finalData) {
-				setIsEditingTitle(false)
-				setIsEditingDescription(false)
-
-				setShowToast(true)
-			}
-		}
-	}
 
 	const deleteIdea = (title: string) => {
 		if (!ideaCardRef.current || !ideaCardRef.current.parentElement) return
@@ -197,7 +143,7 @@ export default function Card({
 	// TITLE FOCUS ON NEW CARD
 	useEffect(() => {
 		if (isNewCard && titleRef.current) titleRef.current.focus()
-	}, [isNewCard])
+	}, [titleRef])
 
 	// TODO: SAVE ON CLICK OUTSIDE
 	// useEffect(() => {
@@ -219,16 +165,12 @@ export default function Card({
 	// 	return () => document.removeEventListener("click", saveOnClickOutside)
 	// }, [isEditingDescription, isEditingTitle])
 
-	// DRAGGABLE FUNCTIONALITY
-	useCardDrag(ideaCardRef, ideaCardCollection, setIdeaCardCollection, isNewCard)
-
 	return (
 		<div ref={ideaCardRef} className='card'>
 			<Alert
 				{...{
-					showAlert,
-					setShowAlert,
 					alertMessage,
+					setAlertMessage,
 					titleRef: titleRef.current,
 				}}
 			/>
@@ -260,7 +202,6 @@ export default function Card({
 					required
 					onChange={(e) => {
 						setNewTitle(e.target.value)
-						setIsEditingTitle(true)
 					}}
 				/>
 			</div>
@@ -286,7 +227,6 @@ export default function Card({
 					required
 					onChange={(e) => {
 						setNewDescription(e.target.value)
-						setIsEditingDescription(true)
 					}}
 				/>
 
@@ -295,14 +235,36 @@ export default function Card({
 
 			<div className='card__buttons'>
 				{(isEditingTitle || isEditingDescription) && (
-					<Button variant='primary' onClickAction={saveIdea}>
+					<Button
+						variant='primary'
+						onClickAction={() =>
+							saveIdea(
+								ideaCardCollection,
+								setIdeaCardCollection,
+								setSortChoice,
+								id,
+								newTitle,
+								setNewTitle,
+								newDescription,
+								setNewDescription,
+								title,
+								description,
+								dateCreated,
+								setAlertMessage
+							)
+						}
+					>
 						Save
 					</Button>
 				)}
 			</div>
 			<div className='card__dates'>
-				<p className={`${!dateUpdated && "hidden"}`}>Updated: {dateUpdated}</p>
-				<p className={`${!dateCreated && "hidden"}`}>Created: {dateCreated}</p>
+				<p className={`${!dateUpdated && "hidden"}`}>
+					Updated: {dateUpdated ? `${formatDateAndTime(dateUpdated)}` : "-"}
+				</p>
+				<p className={`${!dateCreated && "hidden"}`}>
+					Created: {dateCreated ? `${formatDateAndTime(dateCreated)}` : "-"}
+				</p>
 			</div>
 			{showToast && <Toast {...{ setShowToast }} />}
 		</div>

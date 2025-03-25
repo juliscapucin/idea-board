@@ -1,10 +1,10 @@
-type IdeaCardType = {
+type IdeaCard = {
+	id: string
 	title: string
 	description: string
-	[key: string]: string | null | number
-	dateCreatedRaw: number | null
-	dateCreated: string | null
-	dateUpdated: string | null
+	// [key: string]: string | null | number
+	dateCreated: number | null
+	dateUpdated: number | null
 }
 
-export type { IdeaCardType }
+export type { IdeaCard }

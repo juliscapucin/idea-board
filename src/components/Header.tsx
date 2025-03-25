@@ -1,11 +1,11 @@
 import { SortMenu, InstructionsPopup } from "../components"
 import { Button } from "./Buttons"
 
-import { IdeaCardType } from "../types"
+import { IdeaCard } from "../types"
 
 type HeaderProps = {
-	ideaCardCollection: IdeaCardType[]
-	setIdeaCardCollection: (arg: IdeaCardType[]) => void
+	ideaCardCollection: IdeaCard[]
+	setIdeaCardCollection: (arg: IdeaCard[]) => void
 	createNewIdea: () => void
 	cardsContainer: HTMLDivElement | null
 }

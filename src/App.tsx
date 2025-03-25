@@ -9,15 +9,13 @@ import { incompleteCardMessage } from "./lib/alert-messages"
 
 import { SortContextProvider } from "./context"
 
-import { IdeaCardType } from "./types"
+import { IdeaCard } from "./types"
 
 function App() {
 	const containerRef = useRef<HTMLDivElement>(null)
 	const flipStateRef = useRef<ReturnType<typeof Flip.getState>>(null)
 
-	const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCardType[]>(
-		[]
-	)
+	const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCard[]>([])
 
 	const createNewIdea = () => {
 		// CHECK IF EMPTY CARD ALREADY EXISTS
@@ -36,7 +34,6 @@ function App() {
 				title: "",
 				description: "",
 				dateCreated: null,
-				dateCreatedRaw: null,
 				dateUpdated: null,
 			},
 			...ideaCardCollection,
