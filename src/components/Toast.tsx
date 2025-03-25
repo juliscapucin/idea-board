@@ -10,6 +10,8 @@ export default function Toast({ setShowToast }: ToastProps) {
 	const toastRef = useRef(null)
 
 	useEffect(() => {
+		if (!setShowToast) return
+
 		const ctx = gsap.context(() => {
 			const tl = gsap.timeline()
 			tl.to(toastRef.current, {
@@ -26,7 +28,7 @@ export default function Toast({ setShowToast }: ToastProps) {
 		})
 
 		return () => ctx.revert()
-	}, [])
+	}, [setShowToast])
 
 	return (
 		<div ref={toastRef} className='toast'>

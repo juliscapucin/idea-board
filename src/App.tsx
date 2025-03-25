@@ -48,7 +48,7 @@ function App() {
 	// RETRIEVE CARDS FROM LOCAL STORAGE
 	useEffect(() => {
 		const cards = localStorage.getItem("ideaCardCollection")
-		cards && setIdeaCardCollection(JSON.parse(cards))
+		if (cards) setIdeaCardCollection(JSON.parse(cards))
 
 		setIsFirstLoad(false)
 	}, [])

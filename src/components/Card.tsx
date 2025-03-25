@@ -72,7 +72,7 @@ export default function Card({
 	// TITLE FOCUS ON NEW CARD
 	useEffect(() => {
 		if (isNewCard && titleRef.current) titleRef.current.focus()
-	}, [titleRef])
+	}, [titleRef, isNewCard])
 
 	// TODO: SAVE ON CLICK OUTSIDE
 	// useEffect(() => {
