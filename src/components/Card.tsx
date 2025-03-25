@@ -2,85 +2,22 @@ import { useEffect, useRef, useState } from "react"
 
 import { IdeaCard } from "../types"
 
-import { emptyTitleMessage } from "../lib/alert-messages"
-
 import { formatDateAndTime } from "../lib/utils"
 import { Alert, CharacterCountdown, Toast } from "../components"
 import { Button, ButtonClose } from "./Buttons"
 import { useSortMenuContext } from "../context"
+import { saveIdea } from "../lib/saveIdea"
 
 type IdeaCardProps = {
 	ideaCard: IdeaCard
 	ideaCardCollection: IdeaCard[]
 	setIdeaCardCollection: (newCollection: IdeaCard[]) => void
-	cardIndex: number
-}
-
-// SAVE IDEA
-const saveIdea = (
-	ideaCardCollection: IdeaCard[],
-	setIdeaCardCollection: (arg: IdeaCard[]) => void,
-	setSortChoice: (arg: string) => void,
-	id: string,
-	newTitle: string,
-	setNewTitle: (arg: string) => void,
-	newDescription: string,
-	title: string,
-	description: string,
-	dateCreated: number | null,
-	setAlertMessage: (arg: string) => void,
-	setShowToast: (arg: boolean) => void
-) => {
-	// RESET SORT MENU
-	setSortChoice("")
-
-	const cardToEdit = ideaCardCollection.find((card) => card.id === id)
-
-	if (!cardToEdit) return
-
-	const cardToEditIndex = ideaCardCollection.indexOf(cardToEdit)
-
-	let updatedCard: IdeaCard
-
-	updatedCard = {
-		id,
-		title: newTitle,
-		description: newDescription,
-		dateCreated: dateCreated ? dateCreated : Date.now(), // If it hasn't been saved yet, set Created Date
-		dateUpdated: dateCreated ? null : Date.now(), // If already been saved, set Updated Date
-	}
-
-	// CHECK FOR EMPTY TITLE
-	if (
-		title !== newTitle && // if Title has been updated
-		updatedCard
-	) {
-		if (newTitle.length < 2) {
-			setAlertMessage(emptyTitleMessage)
-			setNewTitle(title) // revert to original title
-			return
-		}
-	}
-
-	if (
-		// SAVE
-		(title !== newTitle || description !== newDescription) &&
-		updatedCard
-	) {
-		// Create a new array with updated data
-		const updatedCollection = [...ideaCardCollection]
-		updatedCollection[cardToEditIndex] = updatedCard
-
-		setIdeaCardCollection(updatedCollection)
-		setShowToast(true)
-	}
 }
 
 export default function Card({
 	ideaCard,
 	ideaCardCollection,
 	setIdeaCardCollection,
-	cardIndex,
 }: IdeaCardProps) {
 	const { id, title, description, dateCreated, dateUpdated } = ideaCard
 
@@ -98,6 +35,29 @@ export default function Card({
 	const isNewCard = dateCreated ? false : true // If it has a dateCreated value, it's not a new card
 
 	const { setSortChoice } = useSortMenuContext()
+
+	const handleSaveIdea = () => {
+		setSortChoice("") // Reset sort menu
+
+		const result = saveIdea({
+			id,
+			newTitle,
+			newDescription,
+			collection: ideaCardCollection,
+			dateCreated,
+			title,
+			description,
+		})
+
+		if (result.status === "error") {
+			setAlertMessage(result.message)
+			setNewTitle(title) // Revert title if invalid
+			return
+		}
+
+		setIdeaCardCollection(result.updatedCollection)
+		setShowToast(true)
+	}
 
 	const deleteIdea = (title: string) => {
 		if (!ideaCardRef.current || !ideaCardRef.current.parentElement) return
@@ -153,7 +113,7 @@ export default function Card({
 					className={`card__input-label ${
 						isNewCard ? "opacity-1" : "opacity-0"
 					}`}
-					htmlFor={`title-${cardIndex}`}
+					htmlFor={`title-${title}`}
 				>
 					Idea title
 				</label>
@@ -161,8 +121,8 @@ export default function Card({
 					className='card__title'
 					ref={titleRef}
 					value={newTitle}
-					id={`title-${cardIndex}`}
-					name={`title-${cardIndex}`}
+					id={`title-${title}`}
+					name={`title-${title}`}
 					placeholder='My Best Idea'
 					minLength={2}
 					maxLength={50}
@@ -178,15 +138,15 @@ export default function Card({
 					className={`card__input-label ${
 						isNewCard ? "opacity-1" : "opacity-0"
 					}`} // if already saved once, no need for labels
-					htmlFor={`description-${cardIndex}`}
+					htmlFor={`description-${title}`}
 				>
 					Description
 				</label>
 				<textarea
 					className='card__description'
 					value={newDescription}
-					id={`description-${cardIndex}`}
-					name={`description-${cardIndex}`}
+					id={`description-${title}`}
+					name={`description-${title}`}
 					placeholder='Idea description here'
 					minLength={2}
 					maxLength={140}
@@ -201,25 +161,7 @@ export default function Card({
 			</div>
 			<div className='card__buttons'>
 				{(isEditingTitle || isEditingDescription) && (
-					<Button
-						variant='primary'
-						onClickAction={() =>
-							saveIdea(
-								ideaCardCollection,
-								setIdeaCardCollection,
-								setSortChoice,
-								id,
-								newTitle,
-								setNewTitle,
-								newDescription,
-								title,
-								description,
-								dateCreated,
-								setAlertMessage,
-								setShowToast
-							)
-						}
-					>
+					<Button variant='primary' onClickAction={handleSaveIdea}>
 						Save
 					</Button>
 				)}
