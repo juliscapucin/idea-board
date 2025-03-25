@@ -1,12 +1,8 @@
 import { useRef, useState } from "react"
 
-import gsap from "gsap"
-import Flip from "gsap/Flip"
-
 import { Button } from "./Buttons"
 
 import { useCloseOnClickOutside, usePopupAnimate } from "../hooks"
-import { saveToLocalStorage } from "../lib/utils"
 
 import { useSortMenuContext } from "../context"
 
@@ -14,13 +10,11 @@ import { IdeaCard } from "../types"
 import { IconChevron } from "./Icons"
 
 type SortMenuProps = {
-	container: HTMLElement | null
 	ideaCardCollection: IdeaCard[]
 	setIdeaCardCollection: (arg: IdeaCard[]) => void
 }
 
 export default function SortMenu({
-	container,
 	ideaCardCollection,
 	setIdeaCardCollection,
 }: SortMenuProps) {
@@ -32,15 +26,9 @@ export default function SortMenu({
 	const { sortChoice, setSortChoice } = useSortMenuContext()
 
 	const sort = (option: string) => {
-		if (!container) return
-
-		gsap.registerPlugin(Flip)
-
-		const state = Flip.getState(container.children)
-
 		const sortedCollection = [...ideaCardCollection].sort((a, b) => {
-			if (option === "dateCreatedRaw" && a.dateCreatedRaw && b.dateCreatedRaw) {
-				return a.dateCreatedRaw - b.dateCreatedRaw
+			if (option === "dateCreated" && a.dateCreated && b.dateCreated) {
+				return a.dateCreated - b.dateCreated
 			} else if (option === "title" && a.title && b.title) {
 				if (a.title < b.title) {
 					return -1
@@ -53,14 +41,6 @@ export default function SortMenu({
 			return 0
 		})
 		setIdeaCardCollection(sortedCollection)
-		saveToLocalStorage(sortedCollection)
-
-		requestAnimationFrame(() => {
-			Flip.from(state, {
-				duration: 0.5,
-				ease: "power2.out",
-			})
-		})
 	}
 
 	const handleClick = () => {

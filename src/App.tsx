@@ -2,18 +2,18 @@
 
 import { useEffect, useRef, useState } from "react"
 
-import Flip from "gsap/Flip"
-
 import { CardsList, Header } from "./components/"
 import { incompleteCardMessage } from "./lib/alert-messages"
 
 import { SortContextProvider } from "./context"
 
 import { IdeaCard } from "./types"
+import { saveToLocalStorage } from "./lib/utils"
 
 function App() {
+	const [isFirstLoad, setIsFirstLoad] = useState(true)
+
 	const containerRef = useRef<HTMLDivElement>(null)
-	const flipStateRef = useRef<ReturnType<typeof Flip.getState>>(null)
 
 	const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCard[]>([])
 
@@ -25,8 +25,6 @@ function App() {
 			alert(incompleteCardMessage)
 			return
 		}
-		if (!containerRef.current) return
-		flipStateRef.current = Flip.getState(containerRef.current.children)
 
 		setIdeaCardCollection([
 			{
@@ -40,21 +38,19 @@ function App() {
 		])
 	}
 
-	// FLIP ANIMATION
+	// SAVE TO LOCAL STORAGE + TOAST ON EVERY COLLECTION UPDATE
 	useEffect(() => {
-		if (!flipStateRef.current) return
+		if (isFirstLoad) return
 
-		Flip.from(flipStateRef.current!, {
-			duration: 0.5,
-			ease: "power2.out",
-			onComplete: () => (flipStateRef.current = null),
-		})
-	}, [ideaCardCollection])
+		saveToLocalStorage(ideaCardCollection)
+	}, [ideaCardCollection, isFirstLoad])
 
 	// RETRIEVE CARDS FROM LOCAL STORAGE
 	useEffect(() => {
-		const getLocalStorage = localStorage.getItem("ideaCardCollection")
-		getLocalStorage && setIdeaCardCollection(JSON.parse(getLocalStorage))
+		const cards = localStorage.getItem("ideaCardCollection")
+		cards && setIdeaCardCollection(JSON.parse(cards))
+
+		setIsFirstLoad(false)
 	}, [])
 
 	//TODO CREATE IDEA CARD ON ENTER KEYDOWN
@@ -74,20 +70,15 @@ function App() {
 		<main className='main'>
 			<SortContextProvider>
 				<Header
-					{...{
-						ideaCardCollection,
-						setIdeaCardCollection,
-						createNewIdea,
-						cardsContainer: containerRef.current,
-					}}
+					ideaCardCollection={ideaCardCollection}
+					setIdeaCardCollection={setIdeaCardCollection}
+					createNewIdea={createNewIdea}
 				/>
 				{/* CARDS LIST */}
 				<div ref={containerRef} className='cards-list__container'>
 					<CardsList
-						{...{
-							ideaCardCollection,
-							setIdeaCardCollection,
-						}}
+						ideaCardCollection={ideaCardCollection}
+						setIdeaCardCollection={setIdeaCardCollection}
 					/>
 				</div>
 			</SortContextProvider>

@@ -1,18 +1,10 @@
 import { useEffect, useRef, useState } from "react"
 
-import gsap from "gsap"
-import Flip from "gsap/Flip"
-
-gsap.registerPlugin(Flip)
-
 import { IdeaCard } from "../types"
 
-import {
-	emptyDescriptionMessage,
-	emptyTitleMessage,
-} from "../lib/alert-messages"
+import { emptyTitleMessage } from "../lib/alert-messages"
 
-import { formatDateAndTime, saveToLocalStorage } from "../lib/utils"
+import { formatDateAndTime } from "../lib/utils"
 import { Alert, CharacterCountdown, Toast } from "../components"
 import { Button, ButtonClose } from "./Buttons"
 import { useSortMenuContext } from "../context"
@@ -33,11 +25,11 @@ const saveIdea = (
 	newTitle: string,
 	setNewTitle: (arg: string) => void,
 	newDescription: string,
-	setNewDescription: (arg: string) => void,
 	title: string,
 	description: string,
 	dateCreated: number | null,
-	setAlertMessage: (arg: string) => void
+	setAlertMessage: (arg: string) => void,
+	setShowToast: (arg: boolean) => void
 ) => {
 	// RESET SORT MENU
 	setSortChoice("")
@@ -71,19 +63,6 @@ const saveIdea = (
 	}
 
 	if (
-		// CHECK FOR EMTPY DESCRIPTION
-		description !== newDescription && // if Description has been updated
-		updatedCard
-	) {
-		// Empty description
-		if (newDescription.length < 2) {
-			setAlertMessage(emptyDescriptionMessage)
-			setNewDescription(description) // revert to original description
-			return
-		}
-	}
-
-	if (
 		// SAVE
 		(title !== newTitle || description !== newDescription) &&
 		updatedCard
@@ -93,6 +72,7 @@ const saveIdea = (
 		updatedCollection[cardToEditIndex] = updatedCard
 
 		setIdeaCardCollection(updatedCollection)
+		setShowToast(true)
 	}
 }
 
@@ -121,23 +101,12 @@ export default function Card({
 
 	const deleteIdea = (title: string) => {
 		if (!ideaCardRef.current || !ideaCardRef.current.parentElement) return
-		const state = Flip.getState(ideaCardRef.current.parentElement.children)
 
 		const updatedCollection = ideaCardCollection.filter((card) => {
 			if (card.title !== title) return card
 		})
 
-		saveToLocalStorage(updatedCollection)
 		setIdeaCardCollection(updatedCollection)
-
-		requestAnimationFrame(() => {
-			requestAnimationFrame(() => {
-				Flip.from(state, {
-					duration: 0.5,
-					ease: "power2.out",
-				})
-			})
-		})
 	}
 
 	// TITLE FOCUS ON NEW CARD
@@ -179,7 +148,6 @@ export default function Card({
 				onClickAction={() => deleteIdea(title)}
 				iconColor='faded-dark'
 			/>
-
 			<div className='card__fields'>
 				<label
 					className={`card__input-label ${
@@ -205,7 +173,6 @@ export default function Card({
 					}}
 				/>
 			</div>
-
 			<div>
 				<label
 					className={`card__input-label ${
@@ -232,7 +199,6 @@ export default function Card({
 
 				<CharacterCountdown {...{ newDescription, isEditingDescription }} />
 			</div>
-
 			<div className='card__buttons'>
 				{(isEditingTitle || isEditingDescription) && (
 					<Button
@@ -246,11 +212,11 @@ export default function Card({
 								newTitle,
 								setNewTitle,
 								newDescription,
-								setNewDescription,
 								title,
 								description,
 								dateCreated,
-								setAlertMessage
+								setAlertMessage,
+								setShowToast
 							)
 						}
 					>
@@ -265,7 +231,7 @@ export default function Card({
 				<p className={`${!dateCreated && "hidden"}`}>
 					Created: {dateCreated ? `${formatDateAndTime(dateCreated)}` : "-"}
 				</p>
-			</div>
+			</div>{" "}
 			{showToast && <Toast {...{ setShowToast }} />}
 		</div>
 	)

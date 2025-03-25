@@ -7,14 +7,12 @@ type HeaderProps = {
 	ideaCardCollection: IdeaCard[]
 	setIdeaCardCollection: (arg: IdeaCard[]) => void
 	createNewIdea: () => void
-	cardsContainer: HTMLDivElement | null
 }
 
 export default function Header({
 	ideaCardCollection,
 	setIdeaCardCollection,
 	createNewIdea,
-	cardsContainer,
 }: HeaderProps) {
 	return (
 		<div className='header'>
@@ -28,7 +26,6 @@ export default function Header({
 				{/* SORT DROPDOWN */}
 				<SortMenu
 					{...{
-						container: cardsContainer,
 						ideaCardCollection,
 						setIdeaCardCollection,
 					}}

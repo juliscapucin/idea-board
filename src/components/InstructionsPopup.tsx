@@ -2,7 +2,7 @@ import { useRef, useState } from "react"
 
 import { Button, ButtonClose } from "./Buttons"
 import { IconHelp } from "./Icons"
-import { useCloseOnClickOutside, usePopupAnimate } from "../hooks"
+import { useCloseOnClickOutside } from "../hooks"
 
 export default function InstructionsPopup() {
 	const [showInstructions, setShowInstructions] = useState(false)
@@ -19,8 +19,6 @@ export default function InstructionsPopup() {
 		showInstructions,
 		setShowInstructions
 	)
-
-	usePopupAnimate(showInstructions, popupRef.current)
 
 	return (
 		<div ref={popupContainer} className='instructions-popup'>
