@@ -27,7 +27,7 @@ export default function SortMenu({
     const { sortChoice, setSortChoice } = useSortMenuContext();
 
     const handleSort = (option: SortOption) => {
-        if (!sortChoice) return;
+        console.log("sort");
 
         const sortedCollection = sortIdeas(option, ideaCardCollection);
         setIdeaCardCollection(sortedCollection);

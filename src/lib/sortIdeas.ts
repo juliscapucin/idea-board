@@ -11,11 +11,11 @@ export const sortIdeas = (
             sortedCollection.sort((a, b) => a.title.localeCompare(b.title));
             break;
         case "Date":
-            sortedCollection.sort((a, b) =>
-                a.dateCreated && b.dateCreated
-                    ? a.dateCreated - b.dateCreated
-                    : 0
-            );
+            sortedCollection.sort((a, b) => {
+                const dateA = a.dateCreated ?? 0; // if hasn't been saved, set date to 0
+                const dateB = b.dateCreated ?? 0; // " "
+                return dateA - dateB;
+            });
             break;
         default:
             // no sorting needed
