@@ -1,89 +1,68 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react";
 
-import { CardsList, Header } from "./components/"
-import { incompleteCardMessage } from "./lib/alert-messages"
+import { CardsList, Header } from "./components/";
 
-import { SortContextProvider } from "./context"
+import { SortContextProvider } from "./context";
 
-import { IdeaCard } from "./types"
-import { saveToLocalStorage } from "./lib/utils"
+import { IdeaCard } from "./types";
+import { saveToLocalStorage } from "./lib/utils";
+import { createIdea } from "./lib/createIdea";
+// import { useFlipAnimation } from "./hooks";
 
 function App() {
-	const [isFirstLoad, setIsFirstLoad] = useState(true)
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
 
-	const containerRef = useRef<HTMLDivElement>(null)
+    const containerRef = useRef<HTMLDivElement>(null);
 
-	const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCard[]>([])
+    const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCard[]>(
+        []
+    );
 
-	const createNewIdea = () => {
-		// CHECK IF EMPTY CARD ALREADY EXISTS
-		const duplicatedTitle = ideaCardCollection.find((card) => card.title === "")
+    const handleCreateIdea = () => {
+        console.log("handle create idea");
+        setIdeaCardCollection(createIdea(ideaCardCollection));
+    };
 
-		if (duplicatedTitle) {
-			alert(incompleteCardMessage)
-			return
-		}
+    // SAVE TO LOCAL STORAGE + TOAST ON EVERY COLLECTION UPDATE
+    useEffect(() => {
+        if (isFirstLoad) return;
 
-		setIdeaCardCollection([
-			{
-				id: crypto.randomUUID(), // needs to be UNIQUE and STABLE to be used as key
-				title: "",
-				description: "",
-				dateCreated: null,
-				dateUpdated: null,
-			},
-			...ideaCardCollection,
-		])
-	}
+        saveToLocalStorage(ideaCardCollection);
+    }, [ideaCardCollection, isFirstLoad]);
 
-	// SAVE TO LOCAL STORAGE + TOAST ON EVERY COLLECTION UPDATE
-	useEffect(() => {
-		if (isFirstLoad) return
+    // RETRIEVE CARDS FROM LOCAL STORAGE
+    useEffect(() => {
+        const cards = localStorage.getItem("ideaCardCollection");
+        if (cards) setIdeaCardCollection(JSON.parse(cards));
 
-		saveToLocalStorage(ideaCardCollection)
-	}, [ideaCardCollection, isFirstLoad])
+        setIsFirstLoad(false);
+    }, []);
 
-	// RETRIEVE CARDS FROM LOCAL STORAGE
-	useEffect(() => {
-		const cards = localStorage.getItem("ideaCardCollection")
-		if (cards) setIdeaCardCollection(JSON.parse(cards))
+    //   ANIMATION
+    //   useFlipAnimation(ideaCardCollection, () =>
+    //       containerRef.current ? Array.from(containerRef.current.children) : null
+    //   );
 
-		setIsFirstLoad(false)
-	}, [])
-
-	//TODO CREATE IDEA CARD ON ENTER KEYDOWN
-	// useEffect(() => {
-	// 	const handleKeyDown = (e: KeyboardEvent) => {
-	// 		if (e.key == "Enter") createIdea()
-	// 	}
-
-	// 	document.addEventListener("keydown", handleKeyDown)
-
-	// 	return () => {
-	// 		document.removeEventListener("keydown", handleKeyDown)
-	// 	}
-	// }, [])
-
-	return (
-		<main className='main'>
-			<SortContextProvider>
-				<Header
-					ideaCardCollection={ideaCardCollection}
-					setIdeaCardCollection={setIdeaCardCollection}
-					createNewIdea={createNewIdea}
-				/>
-				{/* CARDS LIST */}
-				<div ref={containerRef} className='cards-list__container'>
-					<CardsList
-						ideaCardCollection={ideaCardCollection}
-						setIdeaCardCollection={setIdeaCardCollection}
-					/>
-				</div>
-			</SortContextProvider>
-		</main>
-	)
+    return (
+        <main className='main'>
+            <SortContextProvider>
+                <Header
+                    ideaCardCollection={ideaCardCollection}
+                    setIdeaCardCollection={setIdeaCardCollection}
+                    createNewIdea={handleCreateIdea}
+                />
+                {/* CARDS LIST */}
+                <div ref={containerRef} className='cards-list__container'>
+                    <CardsList
+                        ideaCardCollection={ideaCardCollection}
+                        setIdeaCardCollection={setIdeaCardCollection}
+                    />
+                </div>
+            </SortContextProvider>
+        </main>
+    );
 }
 
-export default App
+export default App;

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { IdeaCard } from "../types";
 
@@ -19,15 +19,12 @@ export default function Card({
     ideaCardCollection,
     setIdeaCardCollection,
 }: IdeaCardProps) {
-    const { id, title, description, dateCreated, dateUpdated } = ideaCard;
+    const { title, description, dateCreated, dateUpdated } = ideaCard;
 
     const [newTitle, setNewTitle] = useState(title);
     const [newDescription, setNewDescription] = useState(description);
     const [showToast, setShowToast] = useState(false);
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
-
-    const isEditingDescription = description !== newDescription;
-    const isEditingTitle = title !== newTitle;
 
     const ideaCardRef = useRef<HTMLDivElement | null>(null);
     const titleRef = useRef<HTMLInputElement>(null);
@@ -36,28 +33,38 @@ export default function Card({
 
     const { setSortChoice } = useSortMenuContext();
 
-    const handleSaveIdea = () => {
-        setSortChoice(""); // Reset sort menu
-
-        const result = saveIdea({
-            id,
+    const cardState = useMemo(
+        // Arguments to be passed to saveIdea function
+        () => ({
+            ...ideaCard,
             newTitle,
             newDescription,
             collection: ideaCardCollection,
-            dateCreated,
-            title,
-            description,
-        });
+        }),
+        [ideaCard, newTitle, newDescription, ideaCardCollection]
+    );
+
+    const handleSaveIdea = useCallback(() => {
+        setSortChoice(""); // Reset sort menu
+
+        const result = saveIdea(cardState);
 
         if (result.status === "error") {
             setAlertMessage(result.message);
-            setNewTitle(title); // Revert title if invalid
+            setNewTitle(cardState.title); // Revert title if invalid
             return;
         }
 
         setIdeaCardCollection(result.updatedCollection);
         setShowToast(true);
-    };
+    }, [
+        cardState,
+        setSortChoice,
+        setAlertMessage,
+        setNewTitle,
+        setIdeaCardCollection,
+        setShowToast,
+    ]);
 
     const deleteIdea = (title: string) => {
         if (!ideaCardRef.current || !ideaCardRef.current.parentElement) return;
@@ -73,6 +80,23 @@ export default function Card({
     useEffect(() => {
         if (isNewCard && titleRef.current) titleRef.current.focus();
     }, [titleRef, isNewCard]);
+
+    //TODO SAVE IDEA CARD ON ENTER KEYDOWN
+    useEffect(() => {
+        if (!ideaCardRef.current) return;
+
+        const ideaCardElement = ideaCardRef.current;
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key == "Enter") handleSaveIdea();
+        };
+
+        ideaCardElement.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            ideaCardElement.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [handleSaveIdea]);
 
     // TODO: SAVE ON CLICK OUTSIDE
     // useEffect(() => {
@@ -97,11 +121,9 @@ export default function Card({
     return (
         <div ref={ideaCardRef} className='card'>
             <Alert
-                {...{
-                    alertMessage,
-                    setAlertMessage,
-                    titleRef: titleRef.current,
-                }}
+                alertMessage={alertMessage}
+                setAlertMessage={setAlertMessage}
+                titleRef={titleRef.current}
             />
             <ButtonClose
                 classes={"card__close-button"}
@@ -158,11 +180,13 @@ export default function Card({
                 />
 
                 <CharacterCountdown
-                    {...{ newDescription, isEditingDescription }}
+                    newDescription={newDescription}
+                    isEditingDescription={description !== newDescription}
                 />
             </div>
             <div className='card__buttons'>
-                {(isEditingTitle || isEditingDescription) && (
+                {/* SHOW SAVE BUTTON IF CARD IS BEING EDITED */}
+                {(title !== newTitle || description !== description) && (
                     <Button variant='primary' onClickAction={handleSaveIdea}>
                         Save
                     </Button>

@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 
 import { Button } from "./Buttons";
 
-import { useCloseOnClickOutside, usePopupAnimate } from "../hooks";
+import { useCloseOnClickOutside, usePopupAnimation } from "../hooks";
 
 import { useSortMenuContext } from "../context";
 
@@ -27,8 +27,6 @@ export default function SortMenu({
     const { sortChoice, setSortChoice } = useSortMenuContext();
 
     const handleSort = (option: SortOption) => {
-        console.log("sort");
-
         const sortedCollection = sortIdeas(option, ideaCardCollection);
         setIdeaCardCollection(sortedCollection);
         setShowMenu(false);
@@ -38,8 +36,8 @@ export default function SortMenu({
     // CLOSE ON CLICK OUTSIDE FUNCTIONALITY
     useCloseOnClickOutside(sortMenuContainerRef.current, showMenu, setShowMenu);
 
-    // ANIMATE SORTMENU
-    usePopupAnimate(showMenu, sortMenuRef.current);
+    // ANIMATION
+    usePopupAnimation(showMenu, sortMenuRef.current);
 
     return (
         <div ref={sortMenuContainerRef} className='sort-menu'>

@@ -1,4 +1,5 @@
-import useCloseOnClickOutside from "./useCloseOnClickOutside"
-import usePopupAnimate from "./usePopupAnimate"
+import useCloseOnClickOutside from "./useCloseOnClickOutside";
+import { useFlipAnimation } from "./useFlipAnimation";
+import usePopupAnimation from "./usePopupAnimation";
 
-export { useCloseOnClickOutside, usePopupAnimate }
+export { useCloseOnClickOutside, useFlipAnimation, usePopupAnimation };
