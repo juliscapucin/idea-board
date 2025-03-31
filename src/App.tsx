@@ -12,12 +12,11 @@ import { createIdea, saveToLocalStorage } from "./lib";
 
 function App() {
     const [isFirstLoad, setIsFirstLoad] = useState(true);
-
-    const containerRef = useRef<HTMLDivElement>(null);
-
     const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCard[]>(
         []
     );
+
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
     // CREATE NEW IDEA
     const handleCreateIdea = () => {
@@ -38,11 +37,6 @@ function App() {
 
         setIsFirstLoad(false);
     }, []);
-
-    //   ANIMATION
-    //   useFlipAnimation(ideaCardCollection, () =>
-    //       containerRef.current ? Array.from(containerRef.current.children) : null
-    //   );
 
     return (
         <main className='main'>

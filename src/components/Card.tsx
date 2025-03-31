@@ -171,7 +171,7 @@ export default function Card({
             </div>
             <div className='card__buttons'>
                 {/* SHOW SAVE BUTTON IF CARD IS BEING EDITED */}
-                {(title !== newTitle || description !== description) && (
+                {(title !== newTitle || description !== newDescription) && (
                     <Button variant='primary' onClickAction={handleSaveIdea}>
                         Save
                     </Button>
@@ -186,7 +186,7 @@ export default function Card({
                     Created:{" "}
                     {dateCreated ? `${formatDateAndTime(dateCreated)}` : "-"}
                 </p>
-            </div>{" "}
+            </div>
             {showToast && <Toast setShowToast={setShowToast} />}
         </div>
     );
