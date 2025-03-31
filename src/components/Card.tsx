@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 
 import { IdeaCard } from "../types";
 
@@ -85,7 +86,6 @@ export default function Card({
 
         const ideaCardElement = ideaCardRef.current;
 
-        // SAVE ON CLICK OUTSIDE
         const handleClickOutside = (e: MouseEvent) => {
             if (
                 (title !== newTitle || description !== newDescription) &&
@@ -104,90 +104,108 @@ export default function Card({
     }, [handleSaveIdea]);
 
     return (
-        <div ref={ideaCardRef} className='card'>
-            <Alert
-                alertMessage={alertMessage}
-                setAlertMessage={setAlertMessage}
-                titleRef={titleRef.current}
-            />
-            {/* DELETE BUTTON */}
-            <ButtonClose
-                classes={"card__close-button"}
-                onClickAction={() => handleDeleteIdea(id)}
-                iconColor='faded-dark'
-            />
-            <div className='card__fields'>
-                <label
-                    className={`card__input-label ${
-                        isNewCard ? "opacity-1" : "opacity-0"
-                    }`}
-                    htmlFor={`title-${title}`}
-                >
-                    Idea title
-                </label>
-                <input
-                    className='card__title'
-                    ref={titleRef}
-                    value={newTitle}
-                    id={`title-${title}`}
-                    name={`title-${title}`}
-                    placeholder='My Best Idea'
-                    minLength={2}
-                    maxLength={50}
-                    type='text'
-                    required
-                    onChange={(e) => {
-                        setNewTitle(e.target.value);
-                    }}
+        <AnimatePresence>
+            <motion.div
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                key={`card-${id}`}
+                ref={ideaCardRef}
+                className='card'
+            >
+                <Alert
+                    alertMessage={alertMessage}
+                    setAlertMessage={setAlertMessage}
+                    titleRef={titleRef.current}
                 />
-            </div>
-            <div>
-                <label
-                    className={`card__input-label ${
-                        isNewCard ? "opacity-1" : "opacity-0"
-                    }`} // if already saved once, no need for labels
-                    htmlFor={`description-${title}`}
-                >
-                    Description
-                </label>
-                <textarea
-                    className='card__description'
-                    value={newDescription}
-                    id={`description-${title}`}
-                    name={`description-${title}`}
-                    placeholder='Idea description here'
-                    minLength={2}
-                    maxLength={140}
-                    rows={4}
-                    onChange={(e) => {
-                        setNewDescription(e.target.value);
-                    }}
+                {/* DELETE BUTTON */}
+                <ButtonClose
+                    classes={"card__close-button"}
+                    onClickAction={() => handleDeleteIdea(id)}
+                    iconColor='faded-dark'
                 />
+                <div className='card__fields'>
+                    <label
+                        className={`card__input-label ${
+                            isNewCard ? "opacity-1" : "opacity-0"
+                        }`}
+                        htmlFor={`title-${title}`}
+                    >
+                        Idea title
+                    </label>
+                    <input
+                        className='card__title'
+                        ref={titleRef}
+                        value={newTitle}
+                        id={`title-${title}`}
+                        name={`title-${title}`}
+                        placeholder='My Best Idea'
+                        minLength={2}
+                        maxLength={50}
+                        type='text'
+                        required
+                        onChange={(e) => {
+                            setNewTitle(e.target.value);
+                        }}
+                    />
+                </div>
+                <div>
+                    <label
+                        className={`card__input-label ${
+                            isNewCard ? "opacity-1" : "opacity-0"
+                        }`} // if already saved once, no need for labels
+                        htmlFor={`description-${title}`}
+                    >
+                        Description
+                    </label>
+                    <textarea
+                        className='card__description'
+                        value={newDescription}
+                        id={`description-${title}`}
+                        name={`description-${title}`}
+                        placeholder='Idea description here'
+                        minLength={2}
+                        maxLength={140}
+                        rows={4}
+                        onChange={(e) => {
+                            setNewDescription(e.target.value);
+                        }}
+                    />
 
-                <CharacterCountdown
-                    newDescription={newDescription}
-                    isEditingDescription={description !== newDescription}
-                />
-            </div>
-            <div className='card__buttons'>
-                {/* SHOW SAVE BUTTON IF CARD IS BEING EDITED */}
-                {(title !== newTitle || description !== newDescription) && (
-                    <Button variant='primary' onClickAction={handleSaveIdea}>
-                        Save
-                    </Button>
-                )}
-            </div>
-            <div className='card__dates'>
-                <p className={`${!dateUpdated && "hidden"}`}>
-                    Updated:{" "}
-                    {dateUpdated ? `${formatDateAndTime(dateUpdated)}` : "-"}
-                </p>
-                <p className={`${!dateCreated && "hidden"}`}>
-                    Created:{" "}
-                    {dateCreated ? `${formatDateAndTime(dateCreated)}` : "-"}
-                </p>
-            </div>
-            {showToast && <Toast setShowToast={setShowToast} />}
-        </div>
+                    <CharacterCountdown
+                        newDescription={newDescription}
+                        isEditingDescription={description !== newDescription}
+                    />
+                </div>
+                {/* SAVE BUTTON */}
+                <div className='card__buttons'>
+                    {(title !== newTitle || description !== newDescription) && ( // show if card is being edited
+                        <Button
+                            variant='primary'
+                            onClickAction={handleSaveIdea}
+                        >
+                            Save
+                        </Button>
+                    )}
+                </div>
+                <div className='card__dates'>
+                    <p className={`${!dateUpdated && "hidden"}`}>
+                        Updated:{" "}
+                        {dateUpdated
+                            ? `${formatDateAndTime(dateUpdated)}`
+                            : "-"}
+                    </p>
+                    <p className={`${!dateCreated && "hidden"}`}>
+                        Created:{" "}
+                        {dateCreated
+                            ? `${formatDateAndTime(dateCreated)}`
+                            : "-"}
+                    </p>
+                </div>
+                {showToast && <Toast setShowToast={setShowToast} />}
+            </motion.div>
+        </AnimatePresence>
     );
 }

@@ -27,11 +27,9 @@ export default function CardsList({
             return (
                 <Card
                     key={`ideaCard-${ideaCard.id}`}
-                    {...{
-                        ideaCard,
-                        ideaCardCollection,
-                        setIdeaCardCollection,
-                    }}
+                    ideaCard={ideaCard}
+                    ideaCardCollection={ideaCardCollection}
+                    setIdeaCardCollection={setIdeaCardCollection}
                 />
             );
         })
