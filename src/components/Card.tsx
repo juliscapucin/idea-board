@@ -6,7 +6,7 @@ import { formatDateAndTime } from "../lib/utils";
 import { Alert, CharacterCountdown, Toast } from "../components";
 import { Button, ButtonClose } from "./Buttons";
 import { useSortMenuContext } from "../context";
-import { saveIdea } from "../lib/saveIdea";
+import { saveIdea, deleteIdea } from "../lib";
 
 type IdeaCardProps = {
     ideaCard: IdeaCard;
@@ -19,7 +19,7 @@ export default function Card({
     ideaCardCollection,
     setIdeaCardCollection,
 }: IdeaCardProps) {
-    const { title, description, dateCreated, dateUpdated } = ideaCard;
+    const { id, title, description, dateCreated, dateUpdated } = ideaCard;
 
     const [newTitle, setNewTitle] = useState(title);
     const [newDescription, setNewDescription] = useState(description);
@@ -67,12 +67,9 @@ export default function Card({
         setShowToast,
     ]);
 
-    const deleteIdea = (title: string) => {
-        if (!ideaCardRef.current || !ideaCardRef.current.parentElement) return;
-
-        const updatedCollection = ideaCardCollection.filter((card) => {
-            if (card.title !== title) return card;
-        });
+    // DELETE
+    const handleDeleteIdea = (id: string) => {
+        const updatedCollection = deleteIdea(id, ideaCardCollection);
 
         setIdeaCardCollection(updatedCollection);
     };
@@ -116,7 +113,7 @@ export default function Card({
             {/* DELETE BUTTON */}
             <ButtonClose
                 classes={"card__close-button"}
-                onClickAction={() => deleteIdea(title)}
+                onClickAction={() => handleDeleteIdea(id)}
                 iconColor='faded-dark'
             />
             <div className='card__fields'>

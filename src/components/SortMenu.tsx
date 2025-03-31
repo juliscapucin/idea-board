@@ -8,7 +8,7 @@ import { useSortMenuContext } from "../context";
 
 import { IdeaCard, SortOption } from "../types";
 import { IconChevron } from "./Icons";
-import { sortIdeas } from "../lib/sortIdeas";
+import { sortIdeas } from "../lib";
 
 type SortMenuProps = {
     ideaCardCollection: IdeaCard[];
