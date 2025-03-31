@@ -2,7 +2,7 @@
 
 A simple, animated idea management app that lets you create, edit, and organize your thoughts — all saved in your browser's local storage.
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge)](https://juliscapucin-idea-board.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/just%20the%20message-646CFF)](https://juliscapucin-idea-board.vercel.app/)
 
 ## ✨ Features
 
@@ -13,13 +13,14 @@ A simple, animated idea management app that lets you create, edit, and organize 
 - Smooth animations with GSAP Flip
 - Autosave and "saved" toast notification
 - Clean, responsive UI
+- BEM-style class naming for CSS
 
 ## 🛠 Tech Stack
 
 - [React](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [GSAP](https://greensock.com/gsap/) (Flip, Draggable)
-- [CSS]
+- [CSS–BEM] (https://getbem.com/)
 - Custom React hooks and context API
 
 ## 🚀 Getting Started
@@ -36,13 +37,21 @@ npm run dev
 ## 📁 Project Structure
 
 /components → UI components
+
 /hooks → Custom hooks (dragging, animation, etc.)
+
 /lib → Utilities and shared logic
+
 /context → Global context (e.g. sorting)
+
 /types → TypeScript interfaces
+
+/styles → CSS styling
 
 ## 🔮 Planned Features
 
 Tags and filtering
+
 Dark mode
+
 Keyboard navigation improvements
