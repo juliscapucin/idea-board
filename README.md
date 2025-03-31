@@ -2,7 +2,7 @@
 
 A simple, animated idea management app that lets you create, edit, and organize your thoughts — all saved in your browser's local storage.
 
-[![Live Demo](https://img.shields.io/badge/just%20the%20message-646CFF)](https://juliscapucin-idea-board.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-646CFF)](https://juliscapucin-idea-board.vercel.app/)
 
 ## ✨ Features
 
