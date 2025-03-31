@@ -81,42 +81,29 @@ export default function Card({
         if (isNewCard && titleRef.current) titleRef.current.focus();
     }, [titleRef, isNewCard]);
 
-    //TODO SAVE IDEA CARD ON ENTER KEYDOWN
+    // SAVE IDEA ON CLICK OUTSIDE
     useEffect(() => {
         if (!ideaCardRef.current) return;
 
         const ideaCardElement = ideaCardRef.current;
 
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key == "Enter") handleSaveIdea();
+        // SAVE ON CLICK OUTSIDE
+        const handleClickOutside = (e: MouseEvent) => {
+            if (
+                (title !== newTitle || description !== newDescription) &&
+                !ideaCardElement.contains(e.target as Node)
+            ) {
+                handleSaveIdea();
+            }
         };
 
-        ideaCardElement.addEventListener("keydown", handleKeyDown);
+        document.addEventListener("click", handleClickOutside);
 
         return () => {
-            ideaCardElement.removeEventListener("keydown", handleKeyDown);
+            document.removeEventListener("click", handleClickOutside);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [handleSaveIdea]);
-
-    // TODO: SAVE ON CLICK OUTSIDE
-    // useEffect(() => {
-    // 	if (
-    // 		!ideaCardRef.current ||
-    // 		showAlert || // If handling an error alert
-    // 		(!isEditingTitle && !isEditingDescription)
-    // 	)
-    // 		return
-
-    // 	const saveOnClickOutside = (e: MouseEvent) => {
-    // 		if (!ideaCardRef.current!.contains(e.target as Node)) {
-    // 			saveIdea()
-    // 		}
-    // 	}
-
-    // 	document.addEventListener("click", saveOnClickOutside)
-
-    // 	return () => document.removeEventListener("click", saveOnClickOutside)
-    // }, [isEditingDescription, isEditingTitle])
 
     return (
         <div ref={ideaCardRef} className='card'>
