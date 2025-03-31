@@ -44,6 +44,7 @@ export default function Card({
         [ideaCard, newTitle, newDescription, ideaCardCollection]
     );
 
+    // SAVE
     const handleSaveIdea = useCallback(() => {
         setSortChoice(""); // Reset sort menu
 
@@ -112,6 +113,7 @@ export default function Card({
                 setAlertMessage={setAlertMessage}
                 titleRef={titleRef.current}
             />
+            {/* DELETE BUTTON */}
             <ButtonClose
                 classes={"card__close-button"}
                 onClickAction={() => deleteIdea(title)}
@@ -160,7 +162,6 @@ export default function Card({
                     minLength={2}
                     maxLength={140}
                     rows={4}
-                    required
                     onChange={(e) => {
                         setNewDescription(e.target.value);
                     }}
@@ -189,7 +190,7 @@ export default function Card({
                     {dateCreated ? `${formatDateAndTime(dateCreated)}` : "-"}
                 </p>
             </div>{" "}
-            {showToast && <Toast {...{ setShowToast }} />}
+            {showToast && <Toast setShowToast={setShowToast} />}
         </div>
     );
 }

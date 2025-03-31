@@ -7,8 +7,7 @@ import { CardsList, Header } from "./components/";
 import { SortContextProvider } from "./context";
 
 import { IdeaCard } from "./types";
-import { saveToLocalStorage } from "./lib/utils";
-import { createIdea } from "./lib/createIdea";
+import { createIdea, saveToLocalStorage } from "./lib";
 // import { useFlipAnimation } from "./hooks";
 
 function App() {
@@ -20,12 +19,12 @@ function App() {
         []
     );
 
+    // CREATE NEW IDEA
     const handleCreateIdea = () => {
-        console.log("handle create idea");
         setIdeaCardCollection(createIdea(ideaCardCollection));
     };
 
-    // SAVE TO LOCAL STORAGE + TOAST ON EVERY COLLECTION UPDATE
+    // SAVE TO LOCAL STORAGE
     useEffect(() => {
         if (isFirstLoad) return;
 
