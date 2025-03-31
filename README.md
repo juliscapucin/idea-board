@@ -1,4 +1,4 @@
-# 💡 IdeaCard App
+# 💡 IdeaBoard App
 
 A simple, animated idea management app that lets you create, edit, and organize your thoughts — all saved in your browser's local storage.
 
@@ -20,7 +20,7 @@ A simple, animated idea management app that lets you create, edit, and organize 
 - [React](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [GSAP](https://greensock.com/gsap/) (Flip, Draggable)
-- [CSS–BEM] (https://getbem.com/)
+- [CSS+BEM](https://getbem.com/) (Uses BEM for CSS class naming)
 - Custom React hooks and context API
 
 ## 🚀 Getting Started
@@ -28,7 +28,7 @@ A simple, animated idea management app that lets you create, edit, and organize 
 Clone the project and install dependencies:
 
 ```bash
-git clone https://github.com/your-username/idea-card-app.git
+git clone https://github.com/juliscapucin/idea-board.git
 cd idea-card-app
 npm install
 npm run dev
@@ -50,8 +50,6 @@ npm run dev
 
 ## 🔮 Planned Features
 
-Tags and filtering
-
-Dark mode
-
-Keyboard navigation improvements
+- Tags and filtering
+- Dark mode
+- Keyboard navigation improvements
