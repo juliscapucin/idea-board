@@ -8,18 +8,16 @@ A simple, animated idea management app that lets you create, edit, and organize 
 
 - Create, edit and delete ideas
 - LocalStorage persistence (no backend required)
-- Reorder cards with drag & drop
 - Sort by title or creation date
-- Smooth animations with GSAP Flip
+- Smooth animations with Motion
 - Autosave and "saved" toast notification
 - Clean, responsive UI
-- BEM-style class naming for CSS
 
 ## 🛠 Tech Stack
 
 - [React](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
-- [GSAP](https://greensock.com/gsap/) (Flip, Draggable)
+- [Motion](https://motion.dev/docs/react-quick-start)
 - [CSS+BEM](https://getbem.com/) (Uses BEM for CSS class naming)
 - Custom React hooks and context API
 

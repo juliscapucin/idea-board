@@ -106,12 +106,15 @@ export default function Card({
     return (
         <AnimatePresence>
             <motion.div
-                layout
-                animate={{ backgroundColor: showToast ? "#20de16" : undefined }}
-                transition={{ duration: 0.3 }}
+                className='card'
+                layout // Framer Motion settings
+                animate={{
+                    scale: showToast ? 1.05 : 1,
+                    rotate: showToast ? -0.5 : 0,
+                }}
+                transition={{ duration: 0.2, ease: ["easeInOut"] }}
                 key={`card-${id}`}
                 ref={ideaCardRef}
-                className='card'
             >
                 <Alert
                     alertMessage={alertMessage}

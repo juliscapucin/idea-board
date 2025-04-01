@@ -45,11 +45,6 @@
     border: 2px solid var(--color-danger);
 }
 
-.card__title:user-valid,
-.card__description:user-valid {
-    border: 2px solid var(--color-success);
-}
-
 .card__description {
     resize: none;
 }
@@ -59,9 +54,10 @@
     outline: 1px solid var(--color-primary);
 }
 
-.card__title:valid,
-.card__description:valid {
+.card__title,
+.card__description {
     border: 1px solid var(--color-transparent);
+    transition: all 0.3 ease-in-out;
 }
 
 .card__input-label {
