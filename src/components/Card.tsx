@@ -9,8 +9,6 @@ import { Button, ButtonClose } from "./Buttons";
 
 type IdeaCardProps = {
     ideaCard: IdeaCard;
-    ideaCardCollection: IdeaCard[];
-    setIdeaCardCollection: (newCollection: IdeaCard[]) => void;
     onSave: (
         newTitle: string,
         newDescription: string

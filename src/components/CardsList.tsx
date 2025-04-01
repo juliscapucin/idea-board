@@ -48,7 +48,9 @@ export default function CardsList({
             };
         }
 
+        // Update collection
         setIdeaCardCollection(result.updatedCollection);
+
         return { status: "success" };
     };
 
@@ -71,8 +73,6 @@ export default function CardsList({
                         <Card
                             key={`ideaCard-${card.id}`}
                             ideaCard={card}
-                            ideaCardCollection={ideaCardCollection}
-                            setIdeaCardCollection={setIdeaCardCollection}
                             onSave={(newTitle, newDescription) =>
                                 handleSaveIdea(card, newTitle, newDescription)
                             }

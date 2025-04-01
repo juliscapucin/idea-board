@@ -1,36 +1,26 @@
-import { SortMenu, InstructionsPopup } from "../components"
-import { Button } from "./Buttons"
-
-import { IdeaCard } from "../types"
+import { SortMenu, InstructionsPopup } from "../components";
+import { Button } from "./Buttons";
+import { SortOption } from "../types";
 
 type HeaderProps = {
-	ideaCardCollection: IdeaCard[]
-	setIdeaCardCollection: (arg: IdeaCard[]) => void
-	createNewIdea: () => void
-}
+    onSort: (option: SortOption) => SortOption;
+    createNewIdea: () => void;
+};
 
-export default function Header({
-	ideaCardCollection,
-	setIdeaCardCollection,
-	createNewIdea,
-}: HeaderProps) {
-	return (
-		<div className='header'>
-			<InstructionsPopup />
-			<h1 className='header__title'>Idea Board</h1>
-			<div className='header__buttons'>
-				<Button variant='primary' onClickAction={createNewIdea}>
-					Add Card
-				</Button>
+export default function Header({ onSort, createNewIdea }: HeaderProps) {
+    return (
+        <div className='header'>
+            <InstructionsPopup />
+            <h1 className='header__title'>Idea Board</h1>
+            <div className='header__buttons'>
+                {/* ADD NEW IDEA */}
+                <Button variant='primary' onClickAction={createNewIdea}>
+                    New Idea
+                </Button>
 
-				{/* SORT DROPDOWN */}
-				<SortMenu
-					{...{
-						ideaCardCollection,
-						setIdeaCardCollection,
-					}}
-				/>
-			</div>
-		</div>
-	)
+                {/* SORT DROPDOWN */}
+                <SortMenu onSort={(option) => onSort(option)} />
+            </div>
+        </div>
+    );
 }

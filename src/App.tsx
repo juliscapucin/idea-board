@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 
 import { CardsList, Header } from "./components/";
 
-import { IdeaCard } from "./types";
-import { createIdea, saveToLocalStorage } from "./lib";
+import { IdeaCard, SortOption } from "./types";
+import { createIdea, saveToLocalStorage, sortIdeas } from "./lib";
 // import { useFlipAnimation } from "./hooks";
 
 function App() {
@@ -17,6 +17,14 @@ function App() {
     // CREATE NEW IDEA
     const handleCreateIdea = () => {
         setIdeaCardCollection(createIdea(ideaCardCollection));
+    };
+
+    // SORT IDEAS
+    const handleSort = (option: SortOption) => {
+        const sortedCollection = sortIdeas(option, ideaCardCollection);
+        setIdeaCardCollection(sortedCollection);
+
+        return option;
     };
 
     // SAVE TO LOCAL STORAGE
@@ -37,9 +45,8 @@ function App() {
     return (
         <main className='main'>
             <Header
-                ideaCardCollection={ideaCardCollection}
-                setIdeaCardCollection={setIdeaCardCollection}
                 createNewIdea={handleCreateIdea}
+                onSort={(option: SortOption) => handleSort(option)}
             />
             <CardsList
                 ideaCardCollection={ideaCardCollection}

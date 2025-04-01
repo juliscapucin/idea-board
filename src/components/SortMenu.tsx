@@ -3,36 +3,29 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { useCloseOnClickOutside } from "../hooks";
 
-import { useSortMenuContext } from "../context";
-
-import { sortIdeas } from "../lib";
 import { popupAnimation } from "../lib/animations";
 
 import { Button } from "./Buttons";
 import { IconChevron } from "./Icons";
-
-import { IdeaCard, SortOption } from "../types";
+import { SortOption } from "../types";
 
 type SortMenuProps = {
-    ideaCardCollection: IdeaCard[];
-    setIdeaCardCollection: (arg: IdeaCard[]) => void;
+    onSort: (option: SortOption) => SortOption;
 };
 
-export default function SortMenu({
-    ideaCardCollection,
-    setIdeaCardCollection,
-}: SortMenuProps) {
+export default function SortMenu({ onSort }: SortMenuProps) {
     const [showMenu, setShowMenu] = useState(false);
+    const [sortChoice, setSortChoice] = useState<SortOption | null>(null);
 
     const sortMenuContainerRef = useRef<HTMLDivElement | null>(null);
 
-    const { sortChoice, setSortChoice } = useSortMenuContext();
-
     const handleSort = (option: SortOption) => {
-        const sortedCollection = sortIdeas(option, ideaCardCollection);
-        setIdeaCardCollection(sortedCollection);
-        setShowMenu(false);
-        setSortChoice(option);
+        const sortState = onSort(option);
+
+        if (sortState) {
+            setSortChoice(sortState);
+            setShowMenu(false);
+        }
     };
 
     // CLOSE ON CLICK OUTSIDE FUNCTIONALITY
