@@ -1,14 +1,17 @@
 import { useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
-import { Button } from "./Buttons";
-
-import { useCloseOnClickOutside, usePopupAnimation } from "../hooks";
+import { useCloseOnClickOutside } from "../hooks";
 
 import { useSortMenuContext } from "../context";
 
-import { IdeaCard, SortOption } from "../types";
-import { IconChevron } from "./Icons";
 import { sortIdeas } from "../lib";
+import { popupAnimation } from "../lib/animations";
+
+import { Button } from "./Buttons";
+import { IconChevron } from "./Icons";
+
+import { IdeaCard, SortOption } from "../types";
 
 type SortMenuProps = {
     ideaCardCollection: IdeaCard[];
@@ -22,7 +25,6 @@ export default function SortMenu({
     const [showMenu, setShowMenu] = useState(false);
 
     const sortMenuContainerRef = useRef<HTMLDivElement | null>(null);
-    const sortMenuRef = useRef<HTMLDivElement | null>(null);
 
     const { sortChoice, setSortChoice } = useSortMenuContext();
 
@@ -35,9 +37,6 @@ export default function SortMenu({
 
     // CLOSE ON CLICK OUTSIDE FUNCTIONALITY
     useCloseOnClickOutside(sortMenuContainerRef.current, showMenu, setShowMenu);
-
-    // ANIMATION
-    usePopupAnimation(showMenu, sortMenuRef.current);
 
     return (
         <div ref={sortMenuContainerRef} className='sort-menu'>
@@ -55,29 +54,39 @@ export default function SortMenu({
                 </div>
             </Button>
 
-            <div
-                ref={sortMenuRef}
-                className={`sort-menu__list ${
-                    !showMenu && "hidden pointer-events-none"
-                }`}
-            >
-                <button
-                    className='sort-menu__list-item'
-                    onClick={() => {
-                        handleSort("Title");
-                    }}
-                >
-                    Title
-                </button>
-                <button
-                    className='sort-menu__list-item'
-                    onClick={() => {
-                        handleSort("Date");
-                    }}
-                >
-                    Date Created
-                </button>
-            </div>
+            <AnimatePresence>
+                {showMenu && (
+                    <motion.div
+                        className='sort-menu__list'
+                        initial='initial'
+                        animate='animate'
+                        exit='exit'
+                        variants={{
+                            initial: popupAnimation.initial,
+                            animate: popupAnimation.animate,
+                            exit: popupAnimation.exit,
+                        }}
+                        transition={popupAnimation.transition}
+                    >
+                        <button
+                            className='sort-menu__list-item'
+                            onClick={() => {
+                                handleSort("Title");
+                            }}
+                        >
+                            Title
+                        </button>
+                        <button
+                            className='sort-menu__list-item'
+                            onClick={() => {
+                                handleSort("Date");
+                            }}
+                        >
+                            Date Created
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

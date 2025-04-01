@@ -8,12 +8,7 @@ type AlertProps = {
     titleRef: HTMLInputElement | null;
 };
 
-const animationSettings = {
-    initial: { opacity: 0, scale: 0.95 },
-    animate: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.95 },
-    transition: { duration: 0.3, ease: [0, 0.71, 0.2, 1.01] },
-};
+import { popupAnimation } from "../lib/animations";
 
 export default function Alert({
     alertMessage,
@@ -34,11 +29,11 @@ export default function Alert({
                     animate='animate'
                     exit='exit'
                     variants={{
-                        initial: animationSettings.initial,
-                        animate: animationSettings.animate,
-                        exit: animationSettings.exit,
+                        initial: popupAnimation.initial,
+                        animate: popupAnimation.animate,
+                        exit: popupAnimation.exit,
                     }}
-                    transition={animationSettings.transition}
+                    transition={popupAnimation.transition}
                     key='alert'
                 >
                     <div className='alert__overlay'>
