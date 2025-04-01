@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { CardsList, Header } from "./components/";
 
@@ -13,8 +13,6 @@ function App() {
     const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCard[]>(
         []
     );
-
-    const containerRef = useRef<HTMLDivElement | null>(null);
 
     // CREATE NEW IDEA
     const handleCreateIdea = () => {
@@ -43,13 +41,10 @@ function App() {
                 setIdeaCardCollection={setIdeaCardCollection}
                 createNewIdea={handleCreateIdea}
             />
-            {/* CARDS LIST */}
-            <div ref={containerRef} className='cards-list__container'>
-                <CardsList
-                    ideaCardCollection={ideaCardCollection}
-                    setIdeaCardCollection={setIdeaCardCollection}
-                />
-            </div>
+            <CardsList
+                ideaCardCollection={ideaCardCollection}
+                setIdeaCardCollection={setIdeaCardCollection}
+            />
         </main>
     );
 }

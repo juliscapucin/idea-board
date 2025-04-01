@@ -2,10 +2,6 @@ body {
     padding: var(--space-md);
 }
 
-h1 {
-    font-size: var(--text-xl);
-}
-
 @media (prefers-color-scheme: light) {
     :root {
         color: var(--color-text-dark);

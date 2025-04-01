@@ -1,19 +1,21 @@
 .header {
-	position: relative;
-	width: 100%;
-	height: var(--header-height);
-	margin-bottom: var(--space-lg);
+    position: relative;
+    width: 100%;
+    height: var(--header-height);
+    margin-bottom: var(--space-lg);
 }
 
 .header__title {
-	display: block;
-	width: 100%;
-	text-align: left;
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-size: var(--text-xl);
+    text-transform: uppercase;
 }
 
 .header__buttons {
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	margin: var(--space-lg) 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: var(--space-lg) 0;
 }
