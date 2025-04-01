@@ -107,10 +107,8 @@ export default function Card({
         <AnimatePresence>
             <motion.div
                 layout
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+                animate={{ backgroundColor: showToast ? "#20de16" : undefined }}
+                transition={{ duration: 0.3 }}
                 key={`card-${id}`}
                 ref={ideaCardRef}
                 className='card'

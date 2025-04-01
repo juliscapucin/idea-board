@@ -9,23 +9,23 @@ export default function Toast({ setShowToast }: ToastProps) {
     const controls = useAnimation();
 
     useEffect(() => {
-        // Entrance animation
-        controls.start({
-            y: "-180%",
-            transition: { duration: 0.1, ease: "easeOut" },
-        });
+        const sequence = async () => {
+            await controls.start({
+                y: "-150%",
+                transition: { duration: 0.3, ease: "easeOut" },
+            });
+            await controls.start({
+                x: "200%",
+                transition: {
+                    duration: 0.2,
+                    ease: "easeIn",
+                    delay: 1, // delay before exit
+                },
+            });
+            setShowToast(false);
+        };
 
-        // Exit animation after delay
-        const timer = setTimeout(() => {
-            controls
-                .start({
-                    x: "200%",
-                    transition: { duration: 0.1, ease: "easeIn" },
-                })
-                .then(() => setShowToast(false));
-        }, 1000);
-
-        return () => clearTimeout(timer);
+        sequence();
     }, [controls, setShowToast]);
 
     return (
