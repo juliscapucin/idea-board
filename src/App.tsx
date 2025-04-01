@@ -10,6 +10,7 @@ import { createIdea, saveToLocalStorage, sortIdeas } from "./lib";
 
 function App() {
     const [isFirstLoad, setIsFirstLoad] = useState(true);
+    const [sortChoice, setSortChoice] = useState<SortOption | null>(null);
     const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCard[]>(
         []
     );
@@ -17,14 +18,17 @@ function App() {
     // CREATE NEW IDEA
     const handleCreateIdea = () => {
         setIdeaCardCollection(createIdea(ideaCardCollection));
+        handleSort(null);
     };
 
     // SORT IDEAS
-    const handleSort = (option: SortOption) => {
-        const sortedCollection = sortIdeas(option, ideaCardCollection);
-        setIdeaCardCollection(sortedCollection);
+    const handleSort = (option: SortOption | null) => {
+        if (option) {
+            const sortedCollection = sortIdeas(option, ideaCardCollection);
+            setIdeaCardCollection(sortedCollection);
+        }
 
-        return option;
+        setSortChoice(option);
     };
 
     // SAVE TO LOCAL STORAGE
@@ -46,11 +50,13 @@ function App() {
         <main className='main'>
             <Header
                 createNewIdea={handleCreateIdea}
-                onSort={(option: SortOption) => handleSort(option)}
+                onSort={(option: SortOption | null) => handleSort(option)}
+                sortChoice={sortChoice}
             />
             <CardsList
                 ideaCardCollection={ideaCardCollection}
                 setIdeaCardCollection={setIdeaCardCollection}
+                setSortChoice={setSortChoice}
             />
         </main>
     );

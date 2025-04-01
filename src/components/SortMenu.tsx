@@ -10,22 +10,19 @@ import { IconChevron } from "./Icons";
 import { SortOption } from "../types";
 
 type SortMenuProps = {
-    onSort: (option: SortOption) => SortOption;
+    onSort: (option: SortOption | null) => void;
+    sortChoice: SortOption | null;
 };
 
-export default function SortMenu({ onSort }: SortMenuProps) {
+export default function SortMenu({ onSort, sortChoice }: SortMenuProps) {
     const [showMenu, setShowMenu] = useState(false);
-    const [sortChoice, setSortChoice] = useState<SortOption | null>(null);
 
     const sortMenuContainerRef = useRef<HTMLDivElement | null>(null);
 
     const handleSort = (option: SortOption) => {
-        const sortState = onSort(option);
+        onSort(option);
 
-        if (sortState) {
-            setSortChoice(sortState);
-            setShowMenu(false);
-        }
+        setShowMenu(false);
     };
 
     // CLOSE ON CLICK OUTSIDE FUNCTIONALITY

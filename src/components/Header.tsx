@@ -3,11 +3,16 @@ import { Button } from "./Buttons";
 import { SortOption } from "../types";
 
 type HeaderProps = {
-    onSort: (option: SortOption) => SortOption;
+    onSort: (option: SortOption | null) => void;
     createNewIdea: () => void;
+    sortChoice: SortOption | null;
 };
 
-export default function Header({ onSort, createNewIdea }: HeaderProps) {
+export default function Header({
+    onSort,
+    createNewIdea,
+    sortChoice,
+}: HeaderProps) {
     return (
         <div className='header'>
             <InstructionsPopup />
@@ -19,7 +24,10 @@ export default function Header({ onSort, createNewIdea }: HeaderProps) {
                 </Button>
 
                 {/* SORT DROPDOWN */}
-                <SortMenu onSort={(option) => onSort(option)} />
+                <SortMenu
+                    onSort={(option) => onSort(option)}
+                    sortChoice={sortChoice}
+                />
             </div>
         </div>
     );

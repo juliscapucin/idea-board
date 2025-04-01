@@ -19,7 +19,7 @@ A simple, animated idea management app that lets you create, edit, and organize 
 - [TypeScript](https://www.typescriptlang.org/)
 - [Motion](https://motion.dev/docs/react-quick-start)
 - [CSS+BEM](https://getbem.com/) (Uses BEM for CSS class naming)
-- Custom React hooks and context API
+- Custom React hooks
 
 ## 🚀 Getting Started
 
@@ -39,8 +39,6 @@ npm run dev
 /hooks → Custom hooks (dragging, animation, etc.)
 
 /lib → Utilities and shared logic
-
-/context → Global context (e.g. sorting)
 
 /types → TypeScript interfaces
 

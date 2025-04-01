@@ -1,26 +1,24 @@
 import { useEffect } from "react";
 
-import { useSortMenuContext } from "../context";
-
 import { deleteIdea, saveIdea } from "../lib";
 
 import { Card } from "../components";
 
-import { IdeaCard } from "../types";
+import { IdeaCard, SortOption } from "../types";
 
 type CardsListProps = {
     ideaCardCollection: IdeaCard[];
     setIdeaCardCollection: (arg: IdeaCard[]) => void;
+    setSortChoice: (arg: SortOption | null) => void;
 };
 
 export default function CardsList({
     ideaCardCollection,
     setIdeaCardCollection,
+    setSortChoice,
 }: CardsListProps) {
-    const { setSortChoice } = useSortMenuContext();
-
     useEffect(() => {
-        if (ideaCardCollection.length === 0) setSortChoice(""); // Clear sort menu choice if collection is empty
+        if (ideaCardCollection.length === 0) setSortChoice(null); // Clear sort menu choice if collection is empty
     }, [setSortChoice, ideaCardCollection]);
 
     // SAVE
@@ -31,7 +29,7 @@ export default function CardsList({
     ):
         | { status: "success" }
         | { status: "error"; message?: string; previousTitle?: string } => {
-        setSortChoice(""); // Reset sort menu
+        setSortChoice(null); // Reset sort menu
 
         const result = saveIdea({
             card,
