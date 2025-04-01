@@ -25,7 +25,7 @@ export default function Alert({
             {alertMessage && (
                 <motion.div
                     className='alert'
-                    initial='initial'
+                    initial='initial' // Framer Motion settings
                     animate='animate'
                     exit='exit'
                     variants={{

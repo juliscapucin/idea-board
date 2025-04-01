@@ -58,7 +58,7 @@ export default function SortMenu({
                 {showMenu && (
                     <motion.div
                         className='sort-menu__list'
-                        initial='initial'
+                        initial='initial' // Framer Motion settings
                         animate='animate'
                         exit='exit'
                         variants={{
