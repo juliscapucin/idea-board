@@ -2,13 +2,10 @@ import { IdeaCard } from "../types";
 import { emptyTitleMessage } from "../lib/alert-messages";
 
 type SaveIdeaArgs = {
-    id: string;
+    card: IdeaCard;
     newTitle: string;
     newDescription: string;
-    collection: IdeaCard[];
-    dateCreated: number | null;
-    title: string;
-    description: string;
+    ideaCardCollection: IdeaCard[];
 };
 
 type SaveIdeaResult =
@@ -16,15 +13,14 @@ type SaveIdeaResult =
     | { status: "success"; updatedCollection: IdeaCard[] };
 
 export function saveIdea({
-    id,
+    card,
     newTitle,
     newDescription,
-    collection,
-    dateCreated,
-    title,
-    description,
+    ideaCardCollection,
 }: SaveIdeaArgs): SaveIdeaResult {
-    const index = collection.findIndex((card) => card.id === id);
+    const index = ideaCardCollection.findIndex(
+        (element) => element.id === card.id
+    );
     if (index === -1) {
         return {
             status: "error",
@@ -34,7 +30,7 @@ export function saveIdea({
     }
 
     // Check for invalid new title
-    if (title !== newTitle && newTitle.trim().length < 2) {
+    if (card.title !== newTitle && newTitle.trim().length < 2) {
         return {
             status: "error",
             message: emptyTitleMessage,
@@ -43,20 +39,20 @@ export function saveIdea({
     }
 
     // No changes
-    if (title === newTitle && description === newDescription) {
-        return { status: "success", updatedCollection: collection };
+    if (card.title === newTitle && card.description === newDescription) {
+        return { status: "success", updatedCollection: ideaCardCollection };
     }
 
     // With changes
     const updatedCard: IdeaCard = {
-        id,
+        id: card.id,
         title: newTitle,
         description: newDescription,
-        dateCreated: dateCreated ?? Date.now(),
-        dateUpdated: dateCreated ? Date.now() : null,
+        dateCreated: card.dateCreated ?? Date.now(),
+        dateUpdated: card.dateCreated ? Date.now() : null,
     };
 
-    const updatedCollection = [...collection];
+    const updatedCollection = [...ideaCardCollection];
     updatedCollection[index] = updatedCard;
 
     return { status: "success", updatedCollection };
