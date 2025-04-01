@@ -4,8 +4,6 @@ import { useEffect, useRef, useState } from "react";
 
 import { CardsList, Header } from "./components/";
 
-import { SortContextProvider } from "./context";
-
 import { IdeaCard } from "./types";
 import { createIdea, saveToLocalStorage } from "./lib";
 // import { useFlipAnimation } from "./hooks";
@@ -40,20 +38,18 @@ function App() {
 
     return (
         <main className='main'>
-            <SortContextProvider>
-                <Header
+            <Header
+                ideaCardCollection={ideaCardCollection}
+                setIdeaCardCollection={setIdeaCardCollection}
+                createNewIdea={handleCreateIdea}
+            />
+            {/* CARDS LIST */}
+            <div ref={containerRef} className='cards-list__container'>
+                <CardsList
                     ideaCardCollection={ideaCardCollection}
                     setIdeaCardCollection={setIdeaCardCollection}
-                    createNewIdea={handleCreateIdea}
                 />
-                {/* CARDS LIST */}
-                <div ref={containerRef} className='cards-list__container'>
-                    <CardsList
-                        ideaCardCollection={ideaCardCollection}
-                        setIdeaCardCollection={setIdeaCardCollection}
-                    />
-                </div>
-            </SortContextProvider>
+            </div>
         </main>
     );
 }
