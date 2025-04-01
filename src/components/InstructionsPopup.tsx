@@ -5,7 +5,7 @@ import { useCloseOnClickOutside } from "../hooks";
 
 import { popupAnimation } from "../lib/animations";
 
-import { Button, ButtonClose } from "./Buttons";
+import { ButtonClose } from "./Buttons";
 import { IconHelp } from "./Icons";
 
 export default function InstructionsPopup() {
@@ -25,9 +25,9 @@ export default function InstructionsPopup() {
 
     return (
         <div ref={popupContainer} className='instructions-popup'>
-            <Button onClickAction={handleClick}>
+            <button onClick={handleClick}>
                 <IconHelp iconColor='secondary' />
-            </Button>
+            </button>
             <AnimatePresence>
                 {showInstructions && (
                     <motion.div

@@ -11,6 +11,7 @@
     text-align: left;
     font-size: var(--text-xl);
     text-transform: uppercase;
+    color: var(--color-text-light);
 }
 
 .header__buttons {

@@ -1,15 +1,6 @@
 body {
     padding: var(--space-md);
-}
-
-@media (prefers-color-scheme: light) {
-    :root {
-        color: var(--color-text-dark);
-        background-color: var(--color-secondary);
-    }
-    a:hover {
-        color: var(--color-link-hover);
-    }
+    background-color: var(--color-primary);
 }
 
 .main {

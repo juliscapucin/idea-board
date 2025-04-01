@@ -1,7 +1,7 @@
 .character-countdown {
-	font-size: var(--text-xxs);
-	text-align: right;
-	margin-top: var(--space-xxs);
-	color: var(--color-faded-medium);
-	margin-right: var(--space-xxs);
+    font-size: var(--text-xxs);
+    text-align: right;
+    margin-top: var(--space-xxs);
+    color: var(--color-text-dark);
+    margin-right: var(--space-xxs);
 }
