@@ -48,4 +48,4 @@ npm run dev
 
 - Tags and filtering
 - Dark mode
-- Keyboard navigation improvements
+- Change card color
