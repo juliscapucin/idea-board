@@ -1,12 +1,9 @@
 .card {
-    --card-width: calc(
-        calc(99vw - calc(2 * var(--space-md)) - calc(2 * var(--space-md))) / 3
-    );
+    min-width: 18rem;
+    aspect-ratio: square;
     position: relative;
     flex: 0 0 var(--card-width);
-    min-width: 18rem;
     max-width: 35rem;
-    aspect-ratio: square;
     background-color: var(--color-secondary);
     color: var(--color-text-dark);
     padding: var(--space-xs);

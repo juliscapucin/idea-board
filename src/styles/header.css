@@ -18,9 +18,9 @@
 
 @media (min-width: 768px) {
     .header__title {
-        font-size: 10vw;
+        font-size: 6vw;
         letter-spacing: -10px;
-        transition: letter-spacing 0.3s ease-in-out;
+        transition: letter-spacing 0.5s ease-in-out;
     }
 
     .header__title:hover {
