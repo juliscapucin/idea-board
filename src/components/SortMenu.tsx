@@ -42,7 +42,7 @@ export default function SortMenu({ onSort, sortChoice }: SortMenuProps) {
                 <div className='sort-menu__trigger-content'>
                     <span>Sort {sortChoice && `by: ${sortChoice}`}</span>
                     <IconChevron
-                        iconColor='secondary'
+                        iconColor='accent'
                         classes={`transform-200 ${showMenu && "rotate-180"}`}
                     />
                 </div>

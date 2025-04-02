@@ -12,15 +12,28 @@
     padding: var(--space-xs);
     padding-top: var(--space-lg);
     border-radius: var(--radius-lg);
-    border: solid 1px var(--color-primary);
-    overflow: hidden;
+    border: solid 2px var(--color-primary);
+    /* overflow: hidden; */
     align-self: start;
 }
+
+/* .card::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-lg);
+    z-index: -10;
+} */
 
 .card__close-button {
     position: absolute;
     top: var(--space-xs);
     right: var(--space-xs);
+    background-color: var(--color-lavender);
 }
 
 .card__title {
@@ -33,8 +46,8 @@
     color: var(--color-text-dark);
     width: 100%;
     display: block;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-accent);
     padding: var(--space-xs);
     font-family: inherit;
     background-color: transparent;
@@ -51,12 +64,12 @@
 
 .card__title:focus-visible,
 .card__description:focus-visible {
-    outline: 1px solid var(--color-primary);
+    outline: 2px solid var(--color-accent);
 }
 
 .card__title,
 .card__description {
-    border: 1px solid var(--color-transparent);
+    border: 2px solid var(--color-transparent);
     transition: all 0.3 ease-in-out;
 }
 

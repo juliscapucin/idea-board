@@ -1,87 +1,91 @@
 .bg-primary {
-	background-color: var(--color-primary);
+    background-color: var(--color-primary);
 }
 
 .bg-secondary {
-	background-color: var(--color-secondary);
+    background-color: var(--color-secondary);
 }
 
-.bg-tertiary {
-	background-color: var(--color-tertiary);
+.bg-accent {
+    background-color: var(--color-accent);
 }
 
-.bg-faded-light {
-	background-color: var(--color-faded-light);
+.bg-faded-cyan-light {
+    background-color: var(--color-faded-cyan-light);
 }
 
-.bg-faded-medium {
-	background-color: var(--color-faded-medium);
+.bg-lavender {
+    background-color: var(--color-lavender);
 }
 
-.bg-faded-dark {
-	background-color: var(--color-faded-dark);
+.bg-orange-deep {
+    background-color: var(--color-orange-deep);
 }
 
 .color-danger {
-	color: var(--color-danger) !important;
+    color: var(--color-danger) !important;
 }
 
 .hidden {
-	visibility: hidden;
+    visibility: hidden;
 }
 
 .highlight {
-	outline: dotted 3px var(--color-tertiary);
+    outline: dotted 3px var(--color-accent);
 }
 
 .opacity-0 {
-	opacity: 0;
+    opacity: 0;
 }
 
 .opacity-1 {
-	opacity: 1;
+    opacity: 1;
 }
 
 .pointer-events-none {
-	pointer-events: none;
+    pointer-events: none;
 }
 
 .rotate-45 {
-	transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 .-rotate-45 {
-	transform: rotate(-45deg);
+    transform: rotate(-45deg);
 }
 
 .rotate-180 {
-	transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 
 .text-left {
-	text-align: left;
+    text-align: left;
 }
 
 .text-primary {
-	color: var(--color-primary);
+    color: var(--color-primary);
 }
 
 .text-secondary {
-	color: var(--color-secondary);
+    color: var(--color-secondary);
 }
 
-.text-tertiary {
-	color: var(--color-tertiary);
+.text-accent {
+    color: var(--color-accent);
 }
 
-.text-faded-medium {
-	color: var(--color-faded-medium);
+.text-lavender {
+    color: var(--color-lavender);
+}
+
+.text-orange-deep {
+    color: var(--color-orange-deep);
 }
 
 .transform-200 {
-	transition: transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out;
 }
 
 .transform-300 {
-	transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
 }

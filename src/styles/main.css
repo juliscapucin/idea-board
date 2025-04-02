@@ -1,5 +1,5 @@
 body {
-    padding: var(--space-md);
+    padding: var(--space-xs);
     background-color: var(--color-primary);
 }
 
@@ -9,7 +9,41 @@ body {
 }
 
 @media (min-width: 768px) {
+    body {
+        padding: var(--space-md);
+    }
+
     .main {
         font-size: var(--text-sm);
     }
+}
+
+/* WebKit Browsers (Chrome, Edge, Safari) */
+
+/* Scrollbar track */
+::-webkit-scrollbar {
+    width: 8px; /* or height for horizontal scroll */
+}
+
+/* Track background */
+::-webkit-scrollbar-track {
+    background: var(--color-lavender);
+}
+
+/* Draggable handle */
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-accent); /* color of the scroll thumb */
+    border-radius: 10px;
+    border: 1px solid var(--color-lavender); /* creates padding around thumb */
+}
+
+/* Optional: on hover */
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-orange-deep);
+}
+
+/* Firefox uses scrollbar-color and scrollbar-width */
+* {
+    scrollbar-color: var(--color-accent) var(--color-lavender); /* thumb, track */
+    scrollbar-width: thin; /* thin | auto | none */
 }

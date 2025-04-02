@@ -10,7 +10,7 @@ button {
 }
 
 button:focus-visible {
-    outline: 4px dotted var(--color-tertiary);
+    outline: 4px dotted var(--color-accent);
 }
 
 .button {
@@ -28,27 +28,27 @@ button:focus-visible {
 }
 
 .button-main {
-    background-color: var(--color-tertiary);
+    background-color: var(--color-accent);
     color: var(--color-text-light);
 }
 
 .button-main:hover {
-    background-color: var(--color-faded-light);
-    border-color: var(--color-tertiary);
+    background-color: var(--color-orange-deep);
+    border-color: var(--color-accent);
     color: var(--color-text-dark);
 }
 
 .button-faded {
-    background-color: var(--color-faded-medium);
+    background-color: var(--color-lavender);
 }
 
 .button-ghost {
-    border: 1px solid var(--color-faded-medium);
-    background-color: var(--color-primary);
+    border: 2px solid var(--color-accent);
+    background-color: var(--color-lavender);
 }
 
 .button-ghost:hover {
-    background-color: var(--color-faded-medium);
+    background-color: var(--color-secondary);
 }
 
 .button-close {
@@ -60,7 +60,7 @@ button:focus-visible {
 }
 
 .button-close:hover {
-    background-color: var(--color-faded-medium);
+    background-color: var(--color-orange-deep);
 
     * {
         background-color: var(--color-secondary);

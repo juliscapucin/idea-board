@@ -26,7 +26,7 @@ export default function InstructionsPopup() {
     return (
         <div ref={popupContainer} className='instructions-popup'>
             <button onClick={handleClick}>
-                <IconHelp iconColor='secondary' />
+                <IconHelp iconColor='orange-deep' />
             </button>
             <AnimatePresence>
                 {showInstructions && (
@@ -45,7 +45,7 @@ export default function InstructionsPopup() {
                         <ButtonClose
                             classes={"instructions-popup__button-close"}
                             onClickAction={handleClick}
-                            iconColor='secondary'
+                            iconColor='orange-deep'
                         />
 
                         <div className='instructions-popup__text'>

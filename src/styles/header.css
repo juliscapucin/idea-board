@@ -1,17 +1,31 @@
 .header {
     position: relative;
     width: 100%;
-    height: var(--header-height);
+    /* height: var(--header-height); */
     margin-bottom: var(--space-lg);
 }
 
 .header__title {
-    display: block;
     width: 100%;
     text-align: left;
-    font-size: var(--text-xl);
+    font-size: 11vw;
+    line-height: 0.7;
     text-transform: uppercase;
-    color: var(--color-text-light);
+    color: var(--color-accent);
+    letter-spacing: -3px;
+    font-weight: 400;
+}
+
+@media (min-width: 768px) {
+    .header__title {
+        font-size: 10vw;
+        letter-spacing: -10px;
+        transition: letter-spacing 0.3s ease-in-out;
+    }
+
+    .header__title:hover {
+        letter-spacing: 80px;
+    }
 }
 
 .header__buttons {

@@ -16,11 +16,12 @@ export default function Header({
     return (
         <div className='header'>
             <InstructionsPopup />
-            <h1 className='header__title'>Idea Board</h1>
+            <h1 className='header__title'>Idea </h1>
+            <h1 className='header__title'>Board</h1>
             <div className='header__buttons'>
                 {/* ADD NEW IDEA */}
                 <Button variant='primary' onClickAction={createNewIdea}>
-                    New Idea
+                    + New Idea
                 </Button>
 
                 {/* SORT DROPDOWN */}

@@ -9,17 +9,18 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    --color-primary: #242424;
-    --color-primary-rgb: 0, 112, 243;
-    --color-secondary: #bfbfc2;
-    --color-tertiary: #646cff;
+    --color-primary: #ece6d7;
+    --color-primary-rgb: 240, 238, 232;
+    --color-secondary: #fbdf80;
+    --color-accent: #3939ff;
 
-    --color-faded-light: #adadb6;
-    --color-faded-medium: #5d5d61;
-    --color-faded-dark: #333336;
+    --color-cyan-light: #aee6ed;
+    --color-lavender: #dbbbff;
+    --color-orange-deep: #ff5822;
 
-    --color-text-light: #ffffff;
-    --color-text-dark: #1a1a1a;
+    --color-text-light: #f0eee8;
+    --color-text-dark: #212192;
+    --color-text-accent: #3939ff;
 
     --color-danger: #e30000;
     --color-success: #05822d;

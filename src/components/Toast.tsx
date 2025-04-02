@@ -11,11 +11,13 @@ export default function Toast({ setShowToast }: ToastProps) {
     useEffect(() => {
         const sequence = async () => {
             await controls.start({
+                opacity: 1,
                 y: "-150%",
                 transition: { duration: 0.3, ease: "easeOut" },
             });
             await controls.start({
                 x: "200%",
+                opacity: 0,
                 transition: {
                     duration: 0.2,
                     ease: "easeIn",
@@ -31,7 +33,7 @@ export default function Toast({ setShowToast }: ToastProps) {
     return (
         <motion.div
             className='toast'
-            initial={{ y: 0, x: 0 }}
+            initial={{ y: 0, x: 0, opacity: 0 }}
             animate={controls}
         >
             <p className='toast__text'>SAVED!</p>

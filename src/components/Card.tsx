@@ -94,7 +94,7 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                 <ButtonClose
                     classes={"card__close-button"}
                     onClickAction={() => onDelete(id)}
-                    iconColor='faded-dark'
+                    iconColor='orange-deep'
                 />
                 <div className='card__fields'>
                     <label
