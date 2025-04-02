@@ -1,8 +1,6 @@
 .header {
     position: relative;
     width: 100%;
-    /* height: var(--header-height); */
-    margin-bottom: var(--space-lg);
 }
 
 .header__title {

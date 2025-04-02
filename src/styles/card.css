@@ -10,21 +10,9 @@
     padding-top: var(--space-lg);
     border-radius: var(--radius-lg);
     border: solid 2px var(--color-primary);
-    /* overflow: hidden; */
+    overflow: hidden;
     align-self: start;
 }
-
-/* .card::after {
-    content: "";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
-    background-color: var(--color-accent);
-    border-radius: var(--radius-lg);
-    z-index: -10;
-} */
 
 .card__close-button {
     position: absolute;
@@ -44,10 +32,11 @@
     width: 100%;
     display: block;
     border-radius: var(--radius-lg);
-    border: 2px solid var(--color-accent);
+    border: 2px solid var(--color-transparent);
     padding: var(--space-xs);
     font-family: inherit;
-    background-color: transparent;
+    background-color: var(--color-primary);
+    transition: all 0.3 ease-in-out;
 }
 
 .card__title:user-invalid,
@@ -64,10 +53,10 @@
     outline: 2px solid var(--color-accent);
 }
 
-.card__title,
-.card__description {
+.card__title:user-valid,
+.card__description:user-valid {
     border: 2px solid var(--color-transparent);
-    transition: all 0.3 ease-in-out;
+    background-color: var(--color-transparent);
 }
 
 .card__input-label {

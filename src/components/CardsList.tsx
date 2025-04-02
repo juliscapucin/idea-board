@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { motion } from "motion/react";
 
 import { deleteIdea, saveIdea } from "../lib";
 
@@ -60,7 +61,12 @@ export default function CardsList({
     };
 
     return (
-        <div className='cards-list__container'>
+        <motion.div
+            className='cards-list__container'
+            layout // Motion settings
+            transition={{ duration: 0.2 }}
+            id='cards-list-container'
+        >
             {ideaCardCollection.length === 0 ? (
                 <div className='cards-list__no-cards'>
                     <p>No ideas in this collection</p>
@@ -79,6 +85,6 @@ export default function CardsList({
                     );
                 })
             )}
-        </div>
+        </motion.div>
     );
 }

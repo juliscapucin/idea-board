@@ -1,14 +1,13 @@
 .cards-list__container {
     position: relative;
     display: grid;
-    grid-template-columns: 1fr;
     gap: var(--space-md);
     background-color: var(--color-primary);
     border: var(--color-accent) 2px solid;
     border-radius: var(--radius-lg);
-    min-height: 50svh;
     padding: var(--space-sm);
     z-index: 1;
+    flex: 1;
 }
 
 @media (min-width: 768px) {

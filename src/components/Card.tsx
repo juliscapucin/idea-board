@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { IdeaCard } from "../types";
 
+import { cardAnimation } from "../lib/animations";
+
 import { formatDateAndTime } from "../lib/utils";
 import { Alert, CharacterCountdown, Toast } from "../components";
 import { Button, ButtonClose } from "./Buttons";
@@ -53,6 +55,8 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
     useEffect(() => {
         if (!ideaCardRef.current) return;
 
+        console.log("save on click outside");
+
         const ideaCardElement = ideaCardRef.current;
 
         const handleClickOutside = (e: MouseEvent) => {
@@ -60,30 +64,31 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                 (title !== newTitle || description !== newDescription) &&
                 !ideaCardElement.contains(e.target as Node)
             ) {
-                onSave(newTitle, newDescription);
+                handleSave();
             }
         };
 
         document.addEventListener("click", handleClickOutside);
 
         return () => {
+            console.log("remove on click outside");
             document.removeEventListener("click", handleClickOutside);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onSave]);
+    }, [handleSave, description, title, newTitle, newDescription]);
 
     return (
         <AnimatePresence>
             <motion.div
                 className='card'
-                layout // Framer Motion settings
-                animate={{
-                    scale: showToast ? 1.05 : 1,
-                    rotate: showToast ? -0.5 : 0,
-                }}
-                transition={{ duration: 0.2, ease: ["easeInOut"] }}
-                key={`card-${id}`}
                 ref={ideaCardRef}
+                layout // Framer Motion settings
+                initial='initial'
+                animate='animate'
+                exit='exit'
+                variants={cardAnimation}
+                transition={cardAnimation.transition}
+                key={`card-${id}`}
+                id={`card-${id}`}
             >
                 <Alert
                     alertMessage={alertMessage}

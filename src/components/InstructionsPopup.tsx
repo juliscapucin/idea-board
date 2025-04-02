@@ -35,11 +35,7 @@ export default function InstructionsPopup() {
                         initial='initial' // Framer Motion settings
                         animate='animate'
                         exit='exit'
-                        variants={{
-                            initial: popupAnimation.initial,
-                            animate: popupAnimation.animate,
-                            exit: popupAnimation.exit,
-                        }}
+                        variants={popupAnimation}
                         transition={popupAnimation.transition}
                     >
                         <ButtonClose
