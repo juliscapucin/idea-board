@@ -34,7 +34,18 @@
     color: var(--color-text-light);
 }
 
+.icon-plus__container {
+    position: relative;
+    height: 1rem;
+    width: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .icon-plus__line {
-    width: 100%;
+    position: absolute;
+    width: 16px;
     height: 2px;
+    background-color: var(--color-primary);
 }

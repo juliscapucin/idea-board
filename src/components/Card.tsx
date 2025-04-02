@@ -143,7 +143,6 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                         id={`description-${title}`}
                         name={`description-${title}`}
                         placeholder='Idea description here'
-                        minLength={2}
                         maxLength={140}
                         rows={4}
                         autoComplete='off'

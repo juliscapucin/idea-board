@@ -5,7 +5,7 @@
     background-color: var(--color-primary);
     border: var(--color-accent) 2px solid;
     border-radius: var(--radius-lg);
-    padding: var(--space-sm);
+    padding: var(--space-xs);
     z-index: 1;
     flex: 1;
 }
@@ -13,6 +13,7 @@
 @media (min-width: 768px) {
     .cards-list__container {
         grid-template-columns: repeat(2, 1fr);
+        padding: var(--space-sm);
     }
 }
 
@@ -29,5 +30,6 @@
     align-items: center;
     justify-content: center;
     grid-column: 1 / -1;
-    color: var(--color-text-dark);
+    color: var(--color-accent);
+    font-weight: 600;
 }

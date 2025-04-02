@@ -51,7 +51,7 @@ export function IconPlus() {
     return (
         <div className='icon-plus__container'>
             <span className='icon-plus__line'></span>
-            <span className='icon-plus__line'></span>
+            <span className='icon-plus__line rotate-90'></span>
         </div>
     );
 }

@@ -1,6 +1,7 @@
 import { SortMenu, InstructionsPopup } from "../components";
 import { Button } from "./Buttons";
 import { SortOption } from "../types";
+import { IconPlus } from "./Icons";
 
 type HeaderProps = {
     onSort: (option: SortOption | null) => void;
@@ -20,8 +21,12 @@ export default function Header({
             <h1 className='header__title'>Board</h1>
             <div className='header__buttons'>
                 {/* ADD NEW IDEA */}
-                <Button variant='primary' onClickAction={createNewIdea}>
-                    + New Idea
+                <Button
+                    variant='primary'
+                    classes='header__add-button'
+                    onClickAction={createNewIdea}
+                >
+                    <IconPlus /> New Idea
                 </Button>
 
                 {/* SORT DROPDOWN */}

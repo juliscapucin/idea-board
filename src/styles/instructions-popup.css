@@ -8,8 +8,8 @@
 
 .instructions-popup__content {
     position: absolute;
-    top: -10px;
-    right: -10px;
+    top: 0;
+    right: 0;
     width: calc(100vw - 2 * var(--space-md));
     height: calc(100svh - 10rem);
     padding: var(--space-xl) 0 var(--space-md) 0;
@@ -22,13 +22,15 @@
 @media (min-width: 768px) {
     .instructions-popup__content {
         width: 50vw;
+        top: -10px;
+        right: -10px;
     }
 }
 
 .instructions-popup__button-close {
     position: absolute;
-    top: var(--space-sm);
-    right: var(--space-sm);
+    top: var(--space-xs);
+    right: var(--space-xs);
     z-index: 10;
     background-color: var(--color-secondary);
 }
@@ -36,7 +38,13 @@
 .instructions-popup__text {
     height: 100%;
     overflow-y: scroll;
-    padding: 0 var(--space-md);
+    padding: 0 var(--space-sm);
+}
+
+@media (min-width: 768px) {
+    .instructions-popup__text {
+        padding: 0 var(--space-md);
+    }
 }
 
 .instructions-popup__title {
