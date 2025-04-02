@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { useCloseOnClickOutside } from "../hooks";
+import { useCloseOnClickOutside, useCloseOnFocusOutside } from "../hooks";
 
 import { popupAnimation } from "../lib/animations";
 
@@ -19,14 +19,18 @@ export default function SortMenu({ onSort, sortChoice }: SortMenuProps) {
 
     const sortMenuContainerRef = useRef<HTMLDivElement | null>(null);
 
+    // SORT
     const handleSort = (option: SortOption) => {
         onSort(option);
 
         setShowMenu(false);
     };
 
-    // CLOSE ON CLICK OUTSIDE FUNCTIONALITY
+    // CLOSE ON CLICK OUTSIDE
     useCloseOnClickOutside(sortMenuContainerRef.current, showMenu, setShowMenu);
+
+    // CLOSE ON FOCUS OUTSIDE
+    useCloseOnFocusOutside(sortMenuContainerRef.current, showMenu, setShowMenu);
 
     return (
         <div ref={sortMenuContainerRef} className='sort-menu'>

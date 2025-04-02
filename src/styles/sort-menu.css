@@ -24,7 +24,7 @@
     width: 100%;
     background-color: var(--color-primary);
     border: 1px solid var(--color-faded-medium);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     display: flex;
     flex-direction: column;
     z-index: 20;
@@ -32,9 +32,9 @@
 
 .sort-menu__list-item {
     border: none;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     text-align: left;
-    padding: var(--space-xs);
+    padding: var(--space-xs) var(--space-sm);
     margin: var(--space-xxs);
     color: var(--color-text-light);
 }

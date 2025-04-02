@@ -63,7 +63,7 @@ export default function CardsList({
         <div className='cards-list__container'>
             {ideaCardCollection.length === 0 ? (
                 <div className='cards-list__no-cards'>
-                    <p>No cards in this collection</p>
+                    <p>No ideas in this collection</p>
                 </div>
             ) : (
                 ideaCardCollection.map((card) => {
