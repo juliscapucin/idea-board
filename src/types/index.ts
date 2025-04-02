@@ -1,10 +1,11 @@
-type IdeaCardType = {
-	title: string
-	description: string
-	[key: string]: string | null | number
-	dateCreatedRaw: number | null
-	dateCreated: string | null
-	dateUpdated: string | null
-}
+type IdeaCard = {
+    id: string;
+    title: string;
+    description: string;
+    dateCreated: number | null;
+    dateUpdated: number | null;
+};
 
-export type { IdeaCardType }
+type SortOption = "Title" | "Date";
+
+export type { IdeaCard, SortOption };

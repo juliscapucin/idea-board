@@ -1,55 +1,51 @@
-# React + TypeScript + Vite
+# 💡 IdeaBoard App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple, animated idea management app that lets you create, edit, and organize your thoughts — all saved in your browser's local storage.
 
-Currently, two official plugins are available:
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-646CFF)](https://juliscapucin-idea-board.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## Expanding the ESLint configuration
+- Create, edit and delete ideas
+- LocalStorage persistence (no backend required)
+- Sort by title or creation date
+- Smooth animations with Motion
+- Autosave and "saved" toast notification
+- Clean, responsive UI
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠 Tech Stack
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Motion](https://motion.dev/docs/react-quick-start)
+- [CSS+BEM](https://getbem.com/) (Uses BEM for CSS class naming)
+- Custom React hooks
+
+## 🚀 Getting Started
+
+Clone the project and install dependencies:
+
+```bash
+git clone https://github.com/juliscapucin/idea-board.git
+cd idea-card-app
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📁 Project Structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+/components → UI components
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
-# idea-board
+/hooks → Custom hooks (dragging, animation, etc.)
+
+/lib → Utilities and shared logic
+
+/types → TypeScript interfaces
+
+/styles → CSS styling
+
+## 🔮 Planned Features
+
+- Tags and filtering
+- Dark mode
+- Keyboard navigation improvements

@@ -1,48 +1,49 @@
 .instructions-popup {
-	position: absolute;
-	top: 0;
-	right: 0;
-	z-index: 100;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 100;
+    color: var(--color-text-light);
 }
 
 .instructions-popup__content {
-	position: absolute;
-	top: 100%;
-	right: 0;
-	width: calc(100vw - 2 * var(--space-md));
-	height: calc(100svh - var(--header-height));
-	padding: var(--space-xl) 0 var(--space-md) 0;
-	background-color: var(--color-primary);
-	border-radius: var(--radius-md);
-	border: 1px solid var(--color-faded-medium);
-	text-align: left;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: calc(100vw - 2 * var(--space-md));
+    height: calc(100svh - var(--header-height));
+    padding: var(--space-xl) 0 var(--space-md) 0;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-faded-medium);
+    text-align: left;
 }
 
 @media (min-width: 768px) {
-	.instructions-popup__content {
-		width: 50vw;
-	}
+    .instructions-popup__content {
+        width: 50vw;
+    }
 }
 
 .instructions-popup__button-close {
-	position: absolute;
-	top: var(--space-sm);
-	right: var(--space-sm);
-	z-index: 10;
+    position: absolute;
+    top: var(--space-sm);
+    right: var(--space-sm);
+    z-index: 10;
 }
 
 .instructions-popup__text {
-	height: 100%;
-	overflow-y: scroll;
-	padding: 0 var(--space-md);
+    height: 100%;
+    overflow-y: scroll;
+    padding: 0 var(--space-md);
 }
 
 .instructions-popup__title {
-	font-size: var(--text-xl);
-	margin-bottom: var(--space-sm);
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-sm);
 }
 
 .instructions-popup__subtitle {
-	font-size: var(--text-lg);
-	margin-top: var(--space-md);
+    font-size: var(--text-lg);
+    margin-top: var(--space-md);
 }

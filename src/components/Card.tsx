@@ -1,310 +1,178 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 
-import gsap from "gsap"
-import Flip from "gsap/Flip"
+import { IdeaCard } from "../types";
 
-gsap.registerPlugin(Flip)
-
-import { IdeaCardType } from "../types"
-
-import {
-	duplicatedDescriptionMessage,
-	duplicatedTitleMessage,
-	emptyDescriptionMessage,
-	emptyTitleMessage,
-} from "../lib/alert-messages"
-
-import { formatDateAndTime, saveToLocalStorage } from "../lib/utils"
-import { useCardDrag } from "../hooks"
-import { Alert, CharacterCountdown, Toast } from "../components"
-import { Button, ButtonClose } from "./Buttons"
-import { useSortMenuContext } from "../context"
+import { formatDateAndTime } from "../lib/utils";
+import { Alert, CharacterCountdown, Toast } from "../components";
+import { Button, ButtonClose } from "./Buttons";
 
 type IdeaCardProps = {
-	ideaCard: IdeaCardType
-	ideaCardCollection: IdeaCardType[]
-	setIdeaCardCollection: (newCollection: IdeaCardType[]) => void
-	cardIndex: number
-}
+    ideaCard: IdeaCard;
+    onSave: (
+        newTitle: string,
+        newDescription: string
+    ) => {
+        status: "success" | "error";
+        message?: string;
+        previousTitle?: string;
+    };
+    onDelete: (id: string) => void;
+};
 
-export default function Card({
-	ideaCard,
-	ideaCardCollection,
-	setIdeaCardCollection,
-	cardIndex,
-}: IdeaCardProps) {
-	const { id, title, description, dateCreated, dateCreatedRaw, dateUpdated } =
-		ideaCard
+export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
+    const { id, title, description, dateCreated, dateUpdated } = ideaCard;
 
-	const [newTitle, setNewTitle] = useState(title)
-	const [newDescription, setNewDescription] = useState(description)
-	const [isEditingTitle, setIsEditingTitle] = useState(false)
-	const [isEditingDescription, setIsEditingDescription] = useState(false)
-	const [showToast, setShowToast] = useState(false)
-	const [showAlert, setShowAlert] = useState(false)
-	const [alertMessage, setAlertMessage] = useState("")
+    const [newTitle, setNewTitle] = useState(title);
+    const [newDescription, setNewDescription] = useState(description);
+    const [showToast, setShowToast] = useState(false);
+    const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
-	const ideaCardRef = useRef<HTMLDivElement | null>(null)
-	const titleRef = useRef<HTMLInputElement>(null)
+    const ideaCardRef = useRef<HTMLDivElement | null>(null);
+    const titleRef = useRef<HTMLInputElement>(null);
 
-	const isNewCard = !dateCreated ? true : false // If dateCreated is null, it's a new card
+    const isNewCard = !dateCreated; // If it has a dateCreated value, it's not a new card; and vice-versa
 
-	const { setSortChoice } = useSortMenuContext()
+    const handleSave = () => {
+        const result = onSave(newTitle, newDescription);
 
-	const saveIdea = () => {
-		// RESET SORT MENU
-		setSortChoice("")
+        if (result.status === "error") {
+            setAlertMessage(result.message || "Something went wrong");
+            setNewTitle(result.previousTitle ?? title);
+        } else {
+            setShowToast(true);
+        }
+    };
 
-		const cardToEdit = ideaCardCollection.find(
-			(card) => card.title === title || card.description === description
-		)
+    // TITLE FOCUS ON NEW CARD
+    useEffect(() => {
+        if (isNewCard && titleRef.current) titleRef.current.focus();
+    }, [titleRef, isNewCard]);
 
-		if (!cardToEdit) return
+    // SAVE IDEA ON CLICK OUTSIDE
+    useEffect(() => {
+        if (!ideaCardRef.current) return;
 
-		const cardToEditIndex = ideaCardCollection.indexOf(cardToEdit)
+        const ideaCardElement = ideaCardRef.current;
 
-		let editedCard: IdeaCardType
+        const handleClickOutside = (e: MouseEvent) => {
+            if (
+                (title !== newTitle || description !== newDescription) &&
+                !ideaCardElement.contains(e.target as Node)
+            ) {
+                onSave(newTitle, newDescription);
+            }
+        };
 
-		// If new card, set Created Date
-		if (isNewCard) {
-			editedCard = {
-				id,
-				title: newTitle,
-				description: newDescription,
-				dateCreated: formatDateAndTime(),
-				dateCreatedRaw: Date.now(),
-				dateUpdated: null,
-			}
-		} else {
-			// If saved previously, set Edited Date
-			editedCard = {
-				id,
-				title: newTitle,
-				description: newDescription,
-				dateCreated,
-				dateCreatedRaw,
-				dateUpdated: formatDateAndTime(),
-			}
-		}
+        document.addEventListener("click", handleClickOutside);
 
-		// CHECK FOR EMPTY / DUPLICATED TITLE
-		if (
-			title !== newTitle && // if Title has been edited
-			editedCard
-		) {
-			// Duplicated title
-			if (
-				ideaCardCollection.find(
-					(card) => card.title.toLowerCase() === editedCard.title.toLowerCase()
-				)
-			) {
-				setAlertMessage(duplicatedTitleMessage)
-				setShowAlert(true)
-				setNewTitle(title) // revert to original title
-				setIsEditingTitle(false)
-				return
-			}
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [onSave]);
 
-			// Empty title
-			if (newTitle.length < 2) {
-				setAlertMessage(emptyTitleMessage)
-				setShowAlert(true)
-				setNewTitle(title) // revert to original title
-				setIsEditingTitle(false)
-				return
-			}
-		}
+    return (
+        <AnimatePresence>
+            <motion.div
+                className='card'
+                layout // Framer Motion settings
+                animate={{
+                    scale: showToast ? 1.05 : 1,
+                    rotate: showToast ? -0.5 : 0,
+                }}
+                transition={{ duration: 0.2, ease: ["easeInOut"] }}
+                key={`card-${id}`}
+                ref={ideaCardRef}
+            >
+                <Alert
+                    alertMessage={alertMessage}
+                    setAlertMessage={setAlertMessage}
+                    titleRef={titleRef.current}
+                />
+                {/* DELETE BUTTON */}
+                <ButtonClose
+                    classes={"card__close-button"}
+                    onClickAction={() => onDelete(id)}
+                    iconColor='faded-dark'
+                />
+                <div className='card__fields'>
+                    <label
+                        className={`card__input-label ${
+                            isNewCard ? "opacity-1" : "opacity-0"
+                        }`}
+                        htmlFor={`title-${title}`}
+                    >
+                        Idea title
+                    </label>
+                    <input
+                        className='card__title'
+                        ref={titleRef}
+                        value={newTitle}
+                        id={`title-${title}`}
+                        name={`title-${title}`}
+                        placeholder='My Best Idea'
+                        minLength={2}
+                        maxLength={50}
+                        type='text'
+                        required
+                        onChange={(e) => {
+                            setNewTitle(e.target.value);
+                        }}
+                    />
+                </div>
+                <div>
+                    <label
+                        className={`card__input-label ${
+                            isNewCard ? "opacity-1" : "opacity-0"
+                        }`} // if already saved once, no need for labels
+                        htmlFor={`description-${title}`}
+                    >
+                        Description
+                    </label>
+                    <textarea
+                        className='card__description'
+                        value={newDescription}
+                        id={`description-${title}`}
+                        name={`description-${title}`}
+                        placeholder='Idea description here'
+                        minLength={2}
+                        maxLength={140}
+                        rows={4}
+                        onChange={(e) => {
+                            setNewDescription(e.target.value);
+                        }}
+                    />
 
-		if (
-			// CHECK FOR EMTPY / DUPLICATED DESCRIPTION
-			description !== newDescription && // if Description has been edited
-			editedCard
-		) {
-			// Empty description
-			if (newDescription.length < 2) {
-				setAlertMessage(emptyDescriptionMessage)
-				setShowAlert(true)
-				setNewDescription(description) // revert to original description
-				setIsEditingDescription(false)
-				return
-			}
-
-			// Duplicated description
-			if (
-				ideaCardCollection.find(
-					(card) =>
-						card.description.toLowerCase() ===
-						editedCard.description.toLowerCase()
-				)
-			) {
-				setAlertMessage(duplicatedDescriptionMessage)
-				setShowAlert(true)
-				setNewDescription(description) // revert to original description
-				setIsEditingDescription(false)
-				return
-			}
-		}
-
-		if (
-			// SAVE AND SHOW TOAST
-			(title !== newTitle || description !== newDescription) &&
-			editedCard
-		) {
-			// Create a new array with updated data
-			const updatedCollection = [...ideaCardCollection]
-			updatedCollection[cardToEditIndex] = editedCard
-
-			console.log("saved")
-
-			setIdeaCardCollection(updatedCollection)
-
-			// Store updated data on local storage
-			const finalData = JSON.stringify(updatedCollection)
-			localStorage.setItem("ideaCardCollection", finalData)
-
-			// Check if data was saved + show toast
-			const storedData = localStorage.getItem("ideaCardCollection")
-			if (storedData === finalData) {
-				setIsEditingTitle(false)
-				setIsEditingDescription(false)
-
-				setShowToast(true)
-			}
-		}
-	}
-
-	const deleteIdea = (title: string) => {
-		if (!ideaCardRef.current || !ideaCardRef.current.parentElement) return
-		const state = Flip.getState(ideaCardRef.current.parentElement.children)
-
-		const updatedCollection = ideaCardCollection.filter((card) => {
-			if (card.title !== title) return card
-		})
-
-		saveToLocalStorage(updatedCollection)
-		setIdeaCardCollection(updatedCollection)
-
-		requestAnimationFrame(() => {
-			requestAnimationFrame(() => {
-				Flip.from(state, {
-					duration: 0.5,
-					ease: "power2.out",
-				})
-			})
-		})
-	}
-
-	// TITLE FOCUS ON NEW CARD
-	useEffect(() => {
-		if (isNewCard && titleRef.current) titleRef.current.focus()
-	}, [isNewCard])
-
-	// TODO: SAVE ON CLICK OUTSIDE
-	// useEffect(() => {
-	// 	if (
-	// 		!ideaCardRef.current ||
-	// 		showAlert || // If handling an error alert
-	// 		(!isEditingTitle && !isEditingDescription)
-	// 	)
-	// 		return
-
-	// 	const saveOnClickOutside = (e: MouseEvent) => {
-	// 		if (!ideaCardRef.current!.contains(e.target as Node)) {
-	// 			saveIdea()
-	// 		}
-	// 	}
-
-	// 	document.addEventListener("click", saveOnClickOutside)
-
-	// 	return () => document.removeEventListener("click", saveOnClickOutside)
-	// }, [isEditingDescription, isEditingTitle])
-
-	// DRAGGABLE FUNCTIONALITY
-	useCardDrag(ideaCardRef, ideaCardCollection, setIdeaCardCollection, isNewCard)
-
-	return (
-		<div ref={ideaCardRef} className='card'>
-			<Alert
-				{...{
-					showAlert,
-					setShowAlert,
-					alertMessage,
-					titleRef: titleRef.current,
-				}}
-			/>
-			<ButtonClose
-				classes={"card__close-button"}
-				onClickAction={() => deleteIdea(title)}
-				iconColor='faded-dark'
-			/>
-
-			<div className='card__fields'>
-				<label
-					className={`card__input-label ${
-						isNewCard ? "opacity-1" : "opacity-0"
-					}`}
-					htmlFor={`title-${cardIndex}`}
-				>
-					Idea title
-				</label>
-				<input
-					className='card__title'
-					ref={titleRef}
-					value={newTitle}
-					id={`title-${cardIndex}`}
-					name={`title-${cardIndex}`}
-					placeholder='My Best Idea'
-					minLength={2}
-					maxLength={50}
-					type='text'
-					required
-					onChange={(e) => {
-						setNewTitle(e.target.value)
-						setIsEditingTitle(true)
-					}}
-				/>
-			</div>
-
-			<div>
-				<label
-					className={`card__input-label ${
-						isNewCard ? "opacity-1" : "opacity-0"
-					}`} // if already saved once, no need for labels
-					htmlFor={`description-${cardIndex}`}
-				>
-					Description
-				</label>
-				<textarea
-					className='card__description'
-					value={newDescription}
-					id={`description-${cardIndex}`}
-					name={`description-${cardIndex}`}
-					placeholder='Idea description here'
-					minLength={2}
-					maxLength={140}
-					rows={4}
-					required
-					onChange={(e) => {
-						setNewDescription(e.target.value)
-						setIsEditingDescription(true)
-					}}
-				/>
-
-				<CharacterCountdown {...{ newDescription, isEditingDescription }} />
-			</div>
-
-			<div className='card__buttons'>
-				{(isEditingTitle || isEditingDescription) && (
-					<Button variant='primary' onClickAction={saveIdea}>
-						Save
-					</Button>
-				)}
-			</div>
-			<div className='card__dates'>
-				<p className={`${!dateUpdated && "hidden"}`}>Updated: {dateUpdated}</p>
-				<p className={`${!dateCreated && "hidden"}`}>Created: {dateCreated}</p>
-			</div>
-			{showToast && <Toast {...{ setShowToast }} />}
-		</div>
-	)
+                    <CharacterCountdown
+                        newDescription={newDescription}
+                        isEditingDescription={description !== newDescription}
+                    />
+                </div>
+                {/* SAVE BUTTON */}
+                <div className='card__buttons'>
+                    {(title !== newTitle || description !== newDescription) && ( // show if card is being edited
+                        <Button variant='primary' onClickAction={handleSave}>
+                            Save
+                        </Button>
+                    )}
+                </div>
+                <div className='card__dates'>
+                    <p className={`${!dateUpdated && "hidden"}`}>
+                        Updated:{" "}
+                        {dateUpdated
+                            ? `${formatDateAndTime(dateUpdated)}`
+                            : "-"}
+                    </p>
+                    <p className={`${!dateCreated && "hidden"}`}>
+                        Created:{" "}
+                        {dateCreated
+                            ? `${formatDateAndTime(dateCreated)}`
+                            : "-"}
+                    </p>
+                </div>
+                {showToast && <Toast setShowToast={setShowToast} />}
+            </motion.div>
+        </AnimatePresence>
+    );
 }

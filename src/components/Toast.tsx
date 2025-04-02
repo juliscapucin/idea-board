@@ -1,36 +1,40 @@
-import { useEffect, useRef } from "react"
-
-import gsap from "gsap"
+import { useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
 
 type ToastProps = {
-	setShowToast: (arg: boolean) => void
-}
+    setShowToast: (arg: boolean) => void;
+};
 
 export default function Toast({ setShowToast }: ToastProps) {
-	const toastRef = useRef(null)
+    const controls = useAnimation();
 
-	useEffect(() => {
-		const ctx = gsap.context(() => {
-			const tl = gsap.timeline()
-			tl.to(toastRef.current, {
-				yPercent: -150,
-				ease: "power3.out",
-				duration: 0.3,
-			}).to(toastRef.current, {
-				xPercent: 200,
-				duration: 0.1,
-				ease: "power4.in",
-				delay: 1,
-				onComplete: () => setShowToast(false),
-			})
-		})
+    useEffect(() => {
+        const sequence = async () => {
+            await controls.start({
+                y: "-150%",
+                transition: { duration: 0.3, ease: "easeOut" },
+            });
+            await controls.start({
+                x: "200%",
+                transition: {
+                    duration: 0.2,
+                    ease: "easeIn",
+                    delay: 1, // delay before exit
+                },
+            });
+            setShowToast(false);
+        };
 
-		return () => ctx.revert()
-	}, [])
+        sequence();
+    }, [controls, setShowToast]);
 
-	return (
-		<div ref={toastRef} className='toast'>
-			<p className='toast__text'>SAVED!</p>
-		</div>
-	)
+    return (
+        <motion.div
+            className='toast'
+            initial={{ y: 0, x: 0 }}
+            animate={controls}
+        >
+            <p className='toast__text'>SAVED!</p>
+        </motion.div>
+    );
 }

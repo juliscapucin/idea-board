@@ -1,67 +1,15 @@
 body {
-	padding: var(--space-md);
-}
-
-a {
-	font-weight: 500;
-	color: var(--color-link);
-	text-decoration: inherit;
-}
-
-a:hover {
-	color: var(--color-link-hover);
-}
-
-h1 {
-	font-size: var(--text-xl);
-}
-
-@media (prefers-color-scheme: light) {
-	:root {
-		color: var(--color-text-dark);
-		background-color: var(--color-secondary);
-	}
-	a:hover {
-		color: var(--color-link-hover);
-	}
-}
-
-input,
-textarea {
-	display: block;
-	border-radius: var(--radius-md);
-	border: 1px solid var(--color-primary);
-	padding: var(--space-xs);
-	font-family: inherit;
-	background-color: transparent;
-}
-
-input:user-invalid,
-textarea:user-invalid {
-	border: 2px solid var(--color-danger);
-}
-
-input:user-valid,
-textarea:user-valid {
-	border: 2px solid var(--color-success);
-}
-
-textarea {
-	resize: none;
-}
-
-input:focus-visible,
-textarea:focus-visible {
-	outline: 1px solid var(--color-primary);
+    padding: var(--space-md);
+    background-color: var(--color-primary);
 }
 
 .main {
-	width: 100%;
-	font-size: var(--text-xs);
+    width: 100%;
+    font-size: var(--text-xs);
 }
 
 @media (min-width: 768px) {
-	.main {
-		font-size: var(--text-sm);
-	}
+    .main {
+        font-size: var(--text-sm);
+    }
 }

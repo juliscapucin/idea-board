@@ -1,101 +1,65 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react";
 
-import Flip from "gsap/Flip"
+import { CardsList, Header } from "./components/";
 
-import { CardsList, Header } from "./components/"
-import { incompleteCardMessage } from "./lib/alert-messages"
-
-import { SortContextProvider } from "./context"
-
-import { IdeaCardType } from "./types"
+import { IdeaCard, SortOption } from "./types";
+import { createIdea, saveToLocalStorage, sortIdeas } from "./lib";
+// import { useFlipAnimation } from "./hooks";
 
 function App() {
-	const containerRef = useRef<HTMLDivElement>(null)
-	const flipStateRef = useRef<ReturnType<typeof Flip.getState>>(null)
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
+    const [sortChoice, setSortChoice] = useState<SortOption | null>(null);
+    const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCard[]>(
+        []
+    );
 
-	const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCardType[]>(
-		[]
-	)
+    // CREATE NEW IDEA
+    const handleCreateIdea = () => {
+        setIdeaCardCollection(createIdea(ideaCardCollection));
+        handleSort(null);
+    };
 
-	const createNewIdea = () => {
-		// CHECK IF EMPTY CARD ALREADY EXISTS
-		const duplicatedTitle = ideaCardCollection.find((card) => card.title === "")
+    // SORT IDEAS
+    const handleSort = (option: SortOption | null) => {
+        if (option) {
+            const sortedCollection = sortIdeas(option, ideaCardCollection);
+            setIdeaCardCollection(sortedCollection);
+        }
 
-		if (duplicatedTitle) {
-			alert(incompleteCardMessage)
-			return
-		}
-		if (!containerRef.current) return
-		flipStateRef.current = Flip.getState(containerRef.current.children)
+        setSortChoice(option);
+    };
 
-		setIdeaCardCollection([
-			{
-				id: crypto.randomUUID(), // needs to be UNIQUE and STABLE to be used as key
-				title: "",
-				description: "",
-				dateCreated: null,
-				dateCreatedRaw: null,
-				dateUpdated: null,
-			},
-			...ideaCardCollection,
-		])
-	}
+    // SAVE TO LOCAL STORAGE
+    useEffect(() => {
+        if (isFirstLoad) return;
 
-	// FLIP ANIMATION
-	useEffect(() => {
-		if (!flipStateRef.current) return
+        saveToLocalStorage(ideaCardCollection);
+    }, [ideaCardCollection, isFirstLoad]);
 
-		Flip.from(flipStateRef.current!, {
-			duration: 0.5,
-			ease: "power2.out",
-			onComplete: () => (flipStateRef.current = null),
-		})
-	}, [ideaCardCollection])
+    // RETRIEVE CARDS FROM LOCAL STORAGE
+    useEffect(() => {
+        const cards = localStorage.getItem("ideaCardCollection");
+        if (cards) setIdeaCardCollection(JSON.parse(cards));
 
-	// RETRIEVE CARDS FROM LOCAL STORAGE
-	useEffect(() => {
-		const getLocalStorage = localStorage.getItem("ideaCardCollection")
-		getLocalStorage && setIdeaCardCollection(JSON.parse(getLocalStorage))
-	}, [])
+        setIsFirstLoad(false);
+    }, []);
 
-	//TODO CREATE IDEA CARD ON ENTER KEYDOWN
-	// useEffect(() => {
-	// 	const handleKeyDown = (e: KeyboardEvent) => {
-	// 		if (e.key == "Enter") createIdea()
-	// 	}
-
-	// 	document.addEventListener("keydown", handleKeyDown)
-
-	// 	return () => {
-	// 		document.removeEventListener("keydown", handleKeyDown)
-	// 	}
-	// }, [])
-
-	return (
-		<main className='main'>
-			<SortContextProvider>
-				<Header
-					{...{
-						ideaCardCollection,
-						setIdeaCardCollection,
-						createNewIdea,
-						cardsContainer: containerRef.current,
-					}}
-				/>
-				{/* CARDS LIST */}
-				<div ref={containerRef} className='cards-list__container'>
-					<CardsList
-						{...{
-							ideaCardCollection,
-							setIdeaCardCollection,
-						}}
-					/>
-				</div>
-			</SortContextProvider>
-		</main>
-	)
+    return (
+        <main className='main'>
+            <Header
+                createNewIdea={handleCreateIdea}
+                onSort={(option: SortOption | null) => handleSort(option)}
+                sortChoice={sortChoice}
+            />
+            <CardsList
+                ideaCardCollection={ideaCardCollection}
+                setIdeaCardCollection={setIdeaCardCollection}
+                setSortChoice={setSortChoice}
+            />
+        </main>
+    );
 }
 
-export default App
+export default App;

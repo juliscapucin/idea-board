@@ -1,56 +1,57 @@
-import { useEffect, useRef } from "react"
-import { Button } from "./Buttons"
+import { AnimatePresence, motion } from "framer-motion";
+
+import { Button } from "./Buttons";
 
 type AlertProps = {
-	showAlert: boolean
-	setShowAlert: (arg: boolean) => void
-	alertMessage: string
-	titleRef: HTMLInputElement | null
-}
+    alertMessage: string | null;
+    setAlertMessage: (arg: string | null) => void;
+    titleRef: HTMLInputElement | null;
+};
+
+import { popupAnimation } from "../lib/animations";
 
 export default function Alert({
-	showAlert,
-	setShowAlert,
-	alertMessage,
-	titleRef,
+    alertMessage,
+    setAlertMessage,
+    titleRef,
 }: AlertProps) {
-	const alertRef = useRef(null)
+    const handleClick = () => {
+        setAlertMessage(null);
+        titleRef?.focus();
+    };
 
-	const handleClick = () => {
-		setShowAlert(false)
-		titleRef?.focus()
-	}
-
-	useEffect(() => {
-		if (!showAlert || alertRef.current) return
-
-		const ctx = gsap.context(() => {
-			gsap.fromTo(
-				alertRef.current,
-				{ opacity: 0 },
-				{
-					opacity: 1,
-					duration: 0.5,
-				}
-			)
-		})
-
-		return () => ctx.revert()
-	}, [showAlert])
-
-	return (
-		<div ref={alertRef} className={`alert ${!showAlert && "hidden"}`}>
-			<div className='alert__overlay'>
-				<div className='alert__popup'>
-					<div className='alert__content'>
-						<h2>Oops!</h2>
-						<p className='alert__message'>{alertMessage}</p>
-						<Button onClickAction={handleClick} variant='primary'>
-							OK
-						</Button>
-					</div>
-				</div>
-			</div>
-		</div>
-	)
+    return (
+        <AnimatePresence>
+            {alertMessage && (
+                <motion.div
+                    className='alert'
+                    initial='initial' // Framer Motion settings
+                    animate='animate'
+                    exit='exit'
+                    variants={{
+                        initial: popupAnimation.initial,
+                        animate: popupAnimation.animate,
+                        exit: popupAnimation.exit,
+                    }}
+                    transition={popupAnimation.transition}
+                    key='alert'
+                >
+                    <div className='alert__overlay'>
+                        <div className='alert__popup'>
+                            <div className='alert__content'>
+                                <h2>Oops!</h2>
+                                <p className='alert__message'>{alertMessage}</p>
+                                <Button
+                                    onClickAction={handleClick}
+                                    variant='primary'
+                                >
+                                    OK
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>
+    );
 }

@@ -1,28 +1,20 @@
-import { IdeaCardType } from "../types"
+const ensureTwoDigits = (value: number) => value.toString().padStart(2, "0"); // Adds '0' to start if a number has only one digit
 
-const ensureTwoDigits = (value: number) => value.toString().padStart(2, "0") // Adds '0' to start if a number has only one digit
+const formatDateAndTime = (timestamp: number) => {
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = ensureTwoDigits(date.getMonth() + 1);
+    const dayOfMonth = ensureTwoDigits(date.getDate());
+    const time = `${ensureTwoDigits(date.getHours())}:${ensureTwoDigits(
+        date.getMinutes()
+    )}`;
 
-const formatDateAndTime = () => {
-	const dateCreated = new Date()
-	const year = dateCreated.getFullYear()
-	const month = ensureTwoDigits(dateCreated.getMonth() + 1)
-	const date = ensureTwoDigits(dateCreated.getDate())
-	const time = `${ensureTwoDigits(dateCreated.getHours())}:${ensureTwoDigits(
-		dateCreated.getMinutes()
-	)}`
+    return `${dayOfMonth}/${month}/${year} at ${time}`;
+};
 
-	return `${date}/${month}/${year} at ${time}`
-}
+export { formatDateAndTime };
 
-const saveToLocalStorage = (ideaCardCollection: IdeaCardType[]) => {
-	const finalData = JSON.stringify(ideaCardCollection)
-
-	localStorage.setItem("ideaCardCollection", finalData)
-}
-
-export { formatDateAndTime, saveToLocalStorage }
-
-// const formattedDate = dateCreated.toLocaleString("en-GB", {
+// const formattedDate = date.toLocaleString("en-GB", {
 // 	day: "2-digit",
 // 	month: "2-digit",
 // 	year: "numeric",

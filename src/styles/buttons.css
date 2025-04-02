@@ -1,58 +1,68 @@
 button {
-	display: block;
-	font-size: 1em;
-	font-weight: 500;
-	font-family: inherit;
-	border: none;
-	cursor: pointer;
-	background-color: transparent;
-	white-space: nowrap;
+    display: block;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    white-space: nowrap;
 }
 
 button:focus-visible {
-	outline: 4px dotted var(--color-tertiary);
+    outline: 4px dotted var(--color-tertiary);
 }
 
 .button {
-	border-radius: var(--radius-lg);
-	padding: var(--space-xs) var(--space-sm);
-	transition: background-color 0.3s;
+    display: block;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    white-space: nowrap;
+    border-radius: var(--radius-lg);
+    padding: var(--space-xs) var(--space-sm);
+    transition: all 0.3s;
 }
 
 .button-main {
-	background-color: var(--color-tertiary);
+    background-color: var(--color-tertiary);
+    color: var(--color-text-light);
 }
 
 .button-main:hover {
-	background-color: var(--color-faded-light);
-	border-color: var(--color-tertiary);
+    background-color: var(--color-faded-light);
+    border-color: var(--color-tertiary);
+    color: var(--color-text-dark);
 }
 
 .button-faded {
-	background-color: var(--color-faded-medium);
+    background-color: var(--color-faded-medium);
 }
 
 .button-ghost {
-	border: 1px solid var(--color-faded-medium);
-	background-color: var(--color-primary);
+    border: 1px solid var(--color-faded-medium);
+    background-color: var(--color-primary);
 }
 
 .button-ghost:hover {
-	background-color: var(--color-faded-medium);
+    background-color: var(--color-faded-medium);
 }
 
 .button-close {
-	display: block;
-	width: 3rem;
-	height: 3rem;
-	border-radius: var(--radius-circle);
-	transition: background-color 0.3s;
+    display: block;
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--radius-circle);
+    transition: background-color 0.3s;
 }
 
 .button-close:hover {
-	background-color: var(--color-faded-medium);
+    background-color: var(--color-faded-medium);
 
-	* {
-		background-color: var(--color-secondary);
-	}
+    * {
+        background-color: var(--color-secondary);
+    }
 }
