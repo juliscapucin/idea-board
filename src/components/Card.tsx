@@ -122,6 +122,7 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                         maxLength={50}
                         type='text'
                         required
+                        autoComplete='off'
                         onChange={(e) => {
                             setNewTitle(e.target.value);
                         }}
@@ -145,6 +146,7 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                         minLength={2}
                         maxLength={140}
                         rows={4}
+                        autoComplete='off'
                         onChange={(e) => {
                             setNewDescription(e.target.value);
                         }}

@@ -28,14 +28,12 @@ button:focus-visible {
 }
 
 .button-main {
-    background-color: var(--color-accent);
+    background-color: var(--color-orange-deep);
     color: var(--color-text-light);
 }
 
 .button-main:hover {
-    background-color: var(--color-orange-deep);
-    border-color: var(--color-accent);
-    color: var(--color-text-dark);
+    background-color: var(--color-accent);
 }
 
 .button-faded {
@@ -53,10 +51,11 @@ button:focus-visible {
 
 .button-close {
     display: block;
-    width: 3rem;
-    height: 3rem;
+    width: 2.8rem;
+    height: 2.8rem;
     border-radius: var(--radius-circle);
-    transition: background-color 0.3s;
+    transition: all 0.3s;
+    padding: 8px;
 }
 
 .button-close:hover {

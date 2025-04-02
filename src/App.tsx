@@ -6,7 +6,6 @@ import { CardsList, Header } from "./components/";
 
 import { IdeaCard, SortOption } from "./types";
 import { createIdea, saveToLocalStorage, sortIdeas } from "./lib";
-// import { useFlipAnimation } from "./hooks";
 
 function App() {
     const [isFirstLoad, setIsFirstLoad] = useState(true);

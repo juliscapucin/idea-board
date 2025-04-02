@@ -26,7 +26,7 @@ export default function InstructionsPopup() {
     return (
         <div ref={popupContainer} className='instructions-popup'>
             <button onClick={handleClick}>
-                <IconHelp iconColor='orange-deep' />
+                <IconHelp />
             </button>
             <AnimatePresence>
                 {showInstructions && (

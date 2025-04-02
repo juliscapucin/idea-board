@@ -8,12 +8,12 @@
 
 .instructions-popup__content {
     position: absolute;
-    top: 100%;
-    right: 0;
+    top: -10px;
+    right: -10px;
     width: calc(100vw - 2 * var(--space-md));
-    height: calc(100svh - var(--header-height));
+    height: calc(100svh - 10rem);
     padding: var(--space-xl) 0 var(--space-md) 0;
-    background-color: var(--color-cyan-light);
+    background-color: var(--color-lavender);
     border-radius: var(--radius-lg);
     border: 2px solid var(--color-accent);
     text-align: left;
