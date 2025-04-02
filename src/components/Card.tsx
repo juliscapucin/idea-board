@@ -74,7 +74,8 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
             console.log("remove on click outside");
             document.removeEventListener("click", handleClickOutside);
         };
-    }, [handleSave, description, title, newTitle, newDescription]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [description, title, newTitle, newDescription]);
 
     return (
         <AnimatePresence>
@@ -136,7 +137,7 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                         Description
                     </label>
                     <textarea
-                        className='card__description'
+                        className={`card__description ${!isNewCard && newDescription.length === 0 ? "bg-secondary" : ""}`}
                         value={newDescription}
                         id={`description-${title}`}
                         name={`description-${title}`}
