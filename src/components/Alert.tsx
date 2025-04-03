@@ -44,6 +44,7 @@ export default function Alert({
                                 <Button
                                     onClickAction={handleClick}
                                     variant='primary'
+                                    testId='dismiss-button'
                                 >
                                     OK
                                 </Button>

@@ -6,15 +6,21 @@ type ButtonProps = {
     children?: React.ReactNode;
     iconColor?: string;
     variant?: string;
+    testId: string;
 };
 
 export function ButtonClose({
     onClickAction,
     classes,
     iconColor,
+    testId,
 }: ButtonProps) {
     return (
-        <button className={`button-close ${classes}`} onClick={onClickAction}>
+        <button
+            className={`button-close ${classes}`}
+            onClick={onClickAction}
+            data-testid={testId}
+        >
             <IconClose
                 {...{ iconColor: iconColor ? iconColor : "secondary" }}
             />
@@ -27,6 +33,7 @@ export function Button({
     classes,
     children,
     variant,
+    testId,
 }: ButtonProps) {
     const variantClasses: Record<string, string> = {
         primary: "button-main",
@@ -38,6 +45,7 @@ export function Button({
         <button
             className={`button ${variant && variantClasses[variant]} ${classes}`}
             onClick={onClickAction}
+            data-testid={testId}
         >
             {children}
         </button>
