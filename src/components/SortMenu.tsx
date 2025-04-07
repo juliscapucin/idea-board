@@ -38,6 +38,8 @@ export default function SortMenu({ onSort, sortChoice }: SortMenuProps) {
                 classes='sort-menu__trigger'
                 onClickAction={() => setShowMenu(!showMenu)}
                 variant='ghost'
+                testId='sort-menu-trigger'
+                ariaLabel='sort ideas'
             >
                 <div className='sort-menu__trigger-content'>
                     <span>Sort {sortChoice && `by: ${sortChoice}`}</span>
@@ -63,6 +65,7 @@ export default function SortMenu({ onSort, sortChoice }: SortMenuProps) {
                             onClick={() => {
                                 handleSort("Title");
                             }}
+                            aria-label='sort by title'
                         >
                             Title
                         </button>
@@ -71,6 +74,7 @@ export default function SortMenu({ onSort, sortChoice }: SortMenuProps) {
                             onClick={() => {
                                 handleSort("Date");
                             }}
+                            aria-label='sort by date created'
                         >
                             Date Created
                         </button>

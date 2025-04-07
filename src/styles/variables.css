@@ -9,16 +9,16 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    --color-primary: #ece6d7;
+    --color-primary: #f7f3eb;
     --color-primary-rgb: 240, 238, 232;
     --color-secondary: #fbdf80;
     --color-accent: #3939ff;
 
     --color-cyan-light: #aee6ed;
-    --color-lavender: #dec5fc;
-    --color-orange-deep: #ff5822;
+    --color-lavender: #eadcfb;
+    --color-orange-deep: #ca3702;
 
-    --color-text-light: #f0eee8;
+    --color-text-light: #ffffff;
     --color-text-dark: #212192;
     --color-text-accent: #3939ff;
 
