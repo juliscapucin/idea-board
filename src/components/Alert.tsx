@@ -45,6 +45,7 @@ export default function Alert({
                                     onClickAction={handleClick}
                                     variant='primary'
                                     testId='dismiss-button'
+                                    ariaLabel='close popup'
                                 >
                                     OK
                                 </Button>

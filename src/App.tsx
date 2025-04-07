@@ -46,18 +46,20 @@ function App() {
     }, []);
 
     return (
-        <main className='main'>
+        <>
             <Header
                 createNewIdea={handleCreateIdea}
                 onSort={(option: SortOption | null) => handleSort(option)}
                 sortChoice={sortChoice}
             />
-            <CardsList
-                ideaCardCollection={ideaCardCollection}
-                setIdeaCardCollection={setIdeaCardCollection}
-                setSortChoice={setSortChoice}
-            />
-        </main>
+            <main className='main'>
+                <CardsList
+                    ideaCardCollection={ideaCardCollection}
+                    setIdeaCardCollection={setIdeaCardCollection}
+                    setSortChoice={setSortChoice}
+                />
+            </main>
+        </>
     );
 }
 

@@ -101,6 +101,8 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                     classes={"card__close-button"}
                     onClickAction={() => onDelete(id)}
                     iconColor='orange-deep'
+                    testId='delete-button'
+                    ariaLabel='delete idea'
                 />
                 <div className='card__fields'>
                     <label
@@ -159,7 +161,12 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                 {/* SAVE BUTTON */}
                 <div className='card__buttons'>
                     {(title !== newTitle || description !== newDescription) && ( // show if card is being edited
-                        <Button variant='primary' onClickAction={handleSave}>
+                        <Button
+                            variant='primary'
+                            onClickAction={handleSave}
+                            testId='save-button'
+                            ariaLabel='save idea'
+                        >
                             Save
                         </Button>
                     )}

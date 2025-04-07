@@ -7,6 +7,7 @@ type ButtonProps = {
     iconColor?: string;
     variant?: string;
     testId: string;
+    ariaLabel?: string;
 };
 
 export function ButtonClose({
@@ -14,12 +15,14 @@ export function ButtonClose({
     classes,
     iconColor,
     testId,
+    ariaLabel,
 }: ButtonProps) {
     return (
         <button
             className={`button-close ${classes}`}
             onClick={onClickAction}
             data-testid={testId}
+            aria-label={ariaLabel}
         >
             <IconClose
                 {...{ iconColor: iconColor ? iconColor : "secondary" }}
@@ -34,6 +37,7 @@ export function Button({
     children,
     variant,
     testId,
+    ariaLabel,
 }: ButtonProps) {
     const variantClasses: Record<string, string> = {
         primary: "button-main",
@@ -46,6 +50,7 @@ export function Button({
             className={`button ${variant && variantClasses[variant]} ${classes}`}
             onClick={onClickAction}
             data-testid={testId}
+            aria-label={ariaLabel}
         >
             {children}
         </button>
