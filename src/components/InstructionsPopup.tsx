@@ -40,8 +40,9 @@ export default function InstructionsPopup() {
                     >
                         <ButtonClose
                             classes={"instructions-popup__button-close"}
-                            onClickAction={handleClick}
+                            onClick={handleClick}
                             iconColor='orange-deep'
+                            aria-label='Close Popup'
                         />
 
                         <div className='instructions-popup__text'>

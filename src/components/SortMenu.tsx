@@ -36,10 +36,9 @@ export default function SortMenu({ onSort, sortChoice }: SortMenuProps) {
         <div ref={sortMenuContainerRef} className='sort-menu'>
             <Button
                 classes='sort-menu__trigger'
-                onClickAction={() => setShowMenu(!showMenu)}
+                onClick={() => setShowMenu(!showMenu)}
                 variant='ghost'
-                testId='sort-menu-trigger'
-                ariaLabel='sort ideas'
+                aria-label='sort ideas'
             >
                 <div className='sort-menu__trigger-content'>
                     <span>Sort {sortChoice && `by: ${sortChoice}`}</span>

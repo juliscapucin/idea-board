@@ -24,7 +24,7 @@ export default function Header({
                 <Button
                     variant='primary'
                     classes='header__add-button'
-                    onClickAction={createNewIdea}
+                    onClick={createNewIdea}
                 >
                     <IconPlus /> New Idea
                 </Button>

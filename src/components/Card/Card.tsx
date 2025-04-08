@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
-import { IdeaCard } from "../types";
+import { IdeaCard } from "../../types";
 
-import { cardAnimation } from "../lib/animations";
+import { cardAnimation } from "../../lib/animations";
 
-import { formatDateAndTime } from "../lib/utils";
-import { Alert, CharacterCountdown, Toast } from "../components";
-import { Button, ButtonClose } from "./Buttons/Buttons";
+import { formatDateAndTime } from "../../lib/utils";
+import { Alert, CharacterCountdown, Toast } from "..";
+import { Button, ButtonClose } from "../Buttons/Buttons";
+import { useSaveOnClickOutside } from "../../hooks";
 
 type IdeaCardProps = {
     ideaCard: IdeaCard;
@@ -52,30 +53,14 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
     }, [titleRef, isNewCard]);
 
     // SAVE IDEA ON CLICK OUTSIDE
-    useEffect(() => {
-        if (!ideaCardRef.current) return;
-
-        console.log("save on click outside");
-
-        const ideaCardElement = ideaCardRef.current;
-
-        const handleClickOutside = (e: MouseEvent) => {
-            if (
-                (title !== newTitle || description !== newDescription) &&
-                !ideaCardElement.contains(e.target as Node)
-            ) {
-                handleSave();
-            }
-        };
-
-        document.addEventListener("click", handleClickOutside);
-
-        return () => {
-            console.log("remove on click outside");
-            document.removeEventListener("click", handleClickOutside);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [description, title, newTitle, newDescription]);
+    useSaveOnClickOutside(
+        ideaCardRef,
+        title,
+        newTitle,
+        description,
+        newDescription,
+        handleSave
+    );
 
     return (
         <AnimatePresence>
@@ -103,7 +88,13 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                     iconColor='orange-deep'
                     aria-label='delete idea'
                 />
-                <div className='card__fields'>
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        handleSave();
+                    }}
+                    className='card__fields'
+                >
                     <label
                         className={`card__input-label ${
                             isNewCard ? "opacity-1" : "opacity-0"
@@ -128,47 +119,51 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                             setNewTitle(e.target.value);
                         }}
                     />
-                </div>
-                <div>
-                    <label
-                        className={`card__input-label ${
-                            isNewCard ? "opacity-1" : "opacity-0"
-                        }`} // if already saved once, no need for labels
-                        htmlFor={`description-${title}`}
-                    >
-                        Description
-                    </label>
-                    <textarea
-                        className={`card__description ${!isNewCard && newDescription.length === 0 ? "bg-secondary" : ""}`}
-                        value={newDescription}
-                        id={`description-${title}`}
-                        name={`description-${title}`}
-                        placeholder='Idea description here'
-                        maxLength={140}
-                        rows={4}
-                        autoComplete='off'
-                        onChange={(e) => {
-                            setNewDescription(e.target.value);
-                        }}
-                    />
 
-                    <CharacterCountdown
-                        newDescription={newDescription}
-                        isEditingDescription={description !== newDescription}
-                    />
-                </div>
-                {/* SAVE BUTTON */}
-                <div className='card__buttons'>
-                    {(title !== newTitle || description !== newDescription) && ( // show if card is being edited
-                        <Button
-                            variant='primary'
-                            onClick={handleSave}
-                            aria-label='save idea'
+                    <div>
+                        <label
+                            className={`card__input-label ${
+                                isNewCard ? "opacity-1" : "opacity-0"
+                            }`} // if already saved once, no need for labels
+                            htmlFor={`description-${title}`}
                         >
-                            Save
-                        </Button>
-                    )}
-                </div>
+                            Description
+                        </label>
+                        <textarea
+                            className={`card__description ${!isNewCard && newDescription.length === 0 ? "bg-secondary" : ""}`}
+                            value={newDescription}
+                            id={`description-${title}`}
+                            name={`description-${title}`}
+                            placeholder='Idea description here'
+                            maxLength={140}
+                            rows={4}
+                            autoComplete='off'
+                            onChange={(e) => {
+                                setNewDescription(e.target.value);
+                            }}
+                        />
+
+                        <CharacterCountdown
+                            newDescription={newDescription}
+                            isEditingDescription={
+                                description !== newDescription
+                            }
+                        />
+                    </div>
+                    {/* SAVE BUTTON */}
+                    <div className='card__buttons'>
+                        {(title !== newTitle ||
+                            description !== newDescription) && ( // show if card is being edited
+                            <Button
+                                variant='primary'
+                                aria-label='save idea'
+                                type='submit'
+                            >
+                                Save
+                            </Button>
+                        )}
+                    </div>
+                </form>
                 <div className='card__dates'>
                     <p className={`${!dateUpdated && "hidden"}`}>
                         Updated:{" "}
