@@ -1,7 +1,7 @@
 export function IconClose({ iconColor }: { iconColor: string }) {
     const backgroundColor = `bg-${iconColor}`;
     return (
-        <div className='icon-close__container'>
+        <div data-testid='icon-close' className='icon-close__container'>
             <div
                 className={`icon-close__line rotate-45 ${
                     backgroundColor && backgroundColor

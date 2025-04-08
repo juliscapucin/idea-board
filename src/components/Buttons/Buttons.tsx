@@ -10,9 +10,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 export function ButtonClose({ classes, iconColor, ...props }: ButtonProps) {
     return (
         <button className={`button-close ${classes}`} {...props}>
-            <IconClose
-                {...{ iconColor: iconColor ? iconColor : "secondary" }}
-            />
+            <IconClose iconColor={iconColor || "secondary"} />
         </button>
     );
 }
