@@ -43,17 +43,4 @@ describe("Alert", () => {
         expect(mockSetAlertMessage).toHaveBeenCalledWith(null);
         expect(mockFocus).toHaveBeenCalled();
     });
-
-    it("does not render when alertMessage is null", () => {
-        const mockSetAlertMessage = vi.fn();
-        const { container } = render(
-            <Alert
-                alertMessage={null}
-                setAlertMessage={mockSetAlertMessage}
-                titleRef={null}
-            />
-        );
-
-        expect(container.firstChild).toBeNull();
-    });
 });

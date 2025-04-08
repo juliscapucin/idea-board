@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 
 type ToastProps = {
-    setShowToast: (arg: boolean) => void;
+    handleShowToast: () => void;
 };
 
-export default function Toast({ setShowToast }: ToastProps) {
+export default function Toast({ handleShowToast }: ToastProps) {
     const controls = useAnimation();
 
     useEffect(() => {
@@ -24,11 +24,11 @@ export default function Toast({ setShowToast }: ToastProps) {
                     delay: 1, // delay before exit
                 },
             });
-            setShowToast(false);
+            handleShowToast();
         };
 
         sequence();
-    }, [controls, setShowToast]);
+    }, [controls, handleShowToast]);
 
     return (
         <motion.div

@@ -18,9 +18,16 @@ import { IdeaCard, SortOption } from "./types";
 function App() {
     const [isFirstLoad, setIsFirstLoad] = useState(true);
     const [sortChoice, setSortChoice] = useState<SortOption | null>(null);
+    const [showToast, setShowToast] = useState<string | null>(null);
+
     const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCard[]>(
         []
     );
+
+    // SHOW TOAST
+    const handleShowToast = (id?: string) => {
+        setShowToast(id || null); // if id is not passed, set null
+    };
 
     // CREATE NEW IDEA
     const handleCreateIdea = () => {
@@ -33,30 +40,20 @@ function App() {
         card: IdeaCard,
         newTitle: string,
         newDescription: string
-    ):
-        | { status: "success" }
-        | { status: "error"; message?: string; previousTitle?: string } => {
+    ) => {
         setSortChoice(null); // Reset sort menu
 
-        const result = saveIdea({
-            card,
-            newTitle,
-            newDescription,
-            ideaCardCollection,
-        });
-
-        if (result.status === "error") {
-            return {
-                status: "error",
-                message: result.message,
-                previousTitle: card.title,
-            };
-        }
-
         // Update collection
-        setIdeaCardCollection(result.updatedCollection);
+        setIdeaCardCollection(
+            saveIdea({
+                card,
+                newTitle,
+                newDescription,
+                ideaCardCollection,
+            })
+        );
 
-        return { status: "success" };
+        handleShowToast(card.id);
     };
 
     // DELETE IDEA
@@ -120,14 +117,21 @@ function App() {
                                 <Card
                                     key={`ideaCard-${card.id}`}
                                     ideaCard={card}
-                                    onSave={(newTitle, newDescription) =>
+                                    showToast={showToast === card.id}
+                                    handleShowToast={handleShowToast}
+                                    handleSaveIdea={(
+                                        newTitle,
+                                        newDescription
+                                    ) =>
                                         handleSaveIdea(
                                             card,
                                             newTitle,
                                             newDescription
                                         )
                                     }
-                                    onDelete={() => handleDeleteIdea(card.id)}
+                                    handleDeleteIdea={() =>
+                                        handleDeleteIdea(card.id)
+                                    }
                                 />
                             );
                         })

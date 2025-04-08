@@ -6,46 +6,34 @@ import { IdeaCard } from "../../types";
 import { cardAnimation } from "../../lib/animations";
 
 import { formatDateAndTime } from "../../lib/utils";
-import { Alert, CharacterCountdown, Toast } from "..";
+import { CharacterCountdown, Toast } from "..";
 import { Button, ButtonClose } from "../Buttons/Buttons";
 import { useSaveOnClickOutside } from "../../hooks";
 
 type IdeaCardProps = {
     ideaCard: IdeaCard;
-    onSave: (
-        newTitle: string,
-        newDescription: string
-    ) => {
-        status: "success" | "error";
-        message?: string;
-        previousTitle?: string;
-    };
-    onDelete: (id: string) => void;
+    handleSaveIdea: (newTitle: string, newDescription: string) => void;
+    handleDeleteIdea: (id: string) => void;
+    showToast: boolean;
+    handleShowToast: () => void;
 };
 
-export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
+export default function Card({
+    ideaCard,
+    handleSaveIdea,
+    handleDeleteIdea,
+    showToast,
+    handleShowToast,
+}: IdeaCardProps) {
     const { id, title, description, dateCreated, dateUpdated } = ideaCard;
 
     const [newTitle, setNewTitle] = useState(title);
     const [newDescription, setNewDescription] = useState(description);
-    const [showToast, setShowToast] = useState(false);
-    const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
     const ideaCardRef = useRef<HTMLDivElement | null>(null);
     const titleRef = useRef<HTMLInputElement>(null);
 
     const isNewCard = !dateCreated; // If it has a dateCreated value, it's not a new card; and vice-versa
-
-    const handleSave = () => {
-        const result = onSave(newTitle, newDescription);
-
-        if (result.status === "error") {
-            setAlertMessage(result.message || "Something went wrong");
-            setNewTitle(result.previousTitle ?? title);
-        } else {
-            setShowToast(true);
-        }
-    };
 
     // TITLE FOCUS ON NEW CARD
     useEffect(() => {
@@ -59,7 +47,7 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
         newTitle,
         description,
         newDescription,
-        handleSave
+        handleSaveIdea
     );
 
     return (
@@ -76,22 +64,17 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                 key={`card-${id}`}
                 id={`card-${id}`}
             >
-                <Alert
-                    alertMessage={alertMessage}
-                    setAlertMessage={setAlertMessage}
-                    titleRef={titleRef.current}
-                />
                 {/* DELETE BUTTON */}
                 <ButtonClose
                     classes={"card__close-button"}
-                    onClick={() => onDelete(id)}
+                    onClick={() => handleDeleteIdea(id)}
                     iconColor='orange-deep'
                     aria-label='delete idea'
                 />
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
-                        handleSave();
+                        handleSaveIdea(newTitle, newDescription);
                     }}
                     className='card__fields'
                 >
@@ -99,7 +82,7 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                         className={`card__input-label ${
                             isNewCard ? "opacity-1" : "opacity-0"
                         }`}
-                        htmlFor={`title-${title}`}
+                        htmlFor={`title-${id}`}
                     >
                         Idea title
                     </label>
@@ -107,8 +90,8 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                         className='card__title'
                         ref={titleRef}
                         value={newTitle}
-                        id={`title-${title}`}
-                        name={`title-${title}`}
+                        id={`title-${id}`}
+                        name={`title-${id}`}
                         placeholder='My Best Idea'
                         minLength={2}
                         maxLength={50}
@@ -125,15 +108,15 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                             className={`card__input-label ${
                                 isNewCard ? "opacity-1" : "opacity-0"
                             }`} // if already saved once, no need for labels
-                            htmlFor={`description-${title}`}
+                            htmlFor={`description-${id}`}
                         >
                             Description
                         </label>
                         <textarea
                             className={`card__description ${!isNewCard && newDescription.length === 0 ? "bg-secondary" : ""}`}
                             value={newDescription}
-                            id={`description-${title}`}
-                            name={`description-${title}`}
+                            id={`description-${id}`}
+                            name={`description-${id}`}
                             placeholder='Idea description here'
                             maxLength={140}
                             rows={4}
@@ -178,7 +161,7 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                             : "-"}
                     </p>
                 </div>
-                {showToast && <Toast setShowToast={setShowToast} />}
+                {showToast && <Toast handleShowToast={handleShowToast} />}
             </motion.div>
         </AnimatePresence>
     );

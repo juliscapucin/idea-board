@@ -6,7 +6,7 @@ export default function useSaveOnClickOutside(
     newTitle: string,
     description: string,
     newDescription: string,
-    handleSave: () => void
+    handleSave: (newTitle: string, newDescription: string) => void
 ) {
     useEffect(() => {
         if (!ideaCardRef.current) return;
@@ -18,7 +18,7 @@ export default function useSaveOnClickOutside(
                 (title !== newTitle || description !== newDescription) &&
                 !ideaCardElement.contains(e.target as Node)
             ) {
-                handleSave();
+                handleSave(newTitle, newDescription);
             }
         };
 
