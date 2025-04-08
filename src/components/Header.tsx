@@ -1,5 +1,5 @@
 import { SortMenu, InstructionsPopup } from "../components";
-import { Button } from "./Buttons";
+import { Button } from "./Buttons/Buttons";
 import { SortOption } from "../types";
 import { IconPlus } from "./Icons";
 

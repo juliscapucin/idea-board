@@ -5,7 +5,7 @@ import { useCloseOnClickOutside, useCloseOnFocusOutside } from "../hooks";
 
 import { popupAnimation } from "../lib/animations";
 
-import { Button } from "./Buttons";
+import { Button } from "./Buttons/Buttons";
 import { IconChevron } from "./Icons";
 import { SortOption } from "../types";
 

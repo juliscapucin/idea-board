@@ -7,7 +7,7 @@ import { cardAnimation } from "../lib/animations";
 
 import { formatDateAndTime } from "../lib/utils";
 import { Alert, CharacterCountdown, Toast } from "../components";
-import { Button, ButtonClose } from "./Buttons";
+import { Button, ButtonClose } from "./Buttons/Buttons";
 
 type IdeaCardProps = {
     ideaCard: IdeaCard;
@@ -99,10 +99,9 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                 {/* DELETE BUTTON */}
                 <ButtonClose
                     classes={"card__close-button"}
-                    onClickAction={() => onDelete(id)}
+                    onClick={() => onDelete(id)}
                     iconColor='orange-deep'
-                    testId='delete-button'
-                    ariaLabel='delete idea'
+                    aria-label='delete idea'
                 />
                 <div className='card__fields'>
                     <label
@@ -163,9 +162,8 @@ export default function Card({ ideaCard, onSave, onDelete }: IdeaCardProps) {
                     {(title !== newTitle || description !== newDescription) && ( // show if card is being edited
                         <Button
                             variant='primary'
-                            onClickAction={handleSave}
-                            testId='save-button'
-                            ariaLabel='save idea'
+                            onClick={handleSave}
+                            aria-label='save idea'
                         >
                             Save
                         </Button>

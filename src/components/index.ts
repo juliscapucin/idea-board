@@ -1,4 +1,4 @@
-import Alert from "./Alert";
+import Alert from "./Alert/Alert";
 import Card from "./Card";
 import CharacterCountdown from "./CharacterCountdown";
 import Header from "./Header";

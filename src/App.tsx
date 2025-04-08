@@ -1,14 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 
-import { deleteIdea, saveIdea } from "./lib";
+import {
+    createIdea,
+    saveToLocalStorage,
+    sortIdeas,
+    deleteIdea,
+    saveIdea,
+} from "./lib";
 
 import { Card, Header } from "./components/";
 
 import { IdeaCard, SortOption } from "./types";
-import { createIdea, saveToLocalStorage, sortIdeas } from "./lib";
-import { motion } from "motion/react";
 
 function App() {
     const [isFirstLoad, setIsFirstLoad] = useState(true);
@@ -22,10 +27,6 @@ function App() {
         setIdeaCardCollection(createIdea(ideaCardCollection));
         handleSort(null);
     };
-
-    useEffect(() => {
-        if (ideaCardCollection.length === 0) setSortChoice(null); // Clear sort menu choice if collection is empty
-    }, [setSortChoice, ideaCardCollection]);
 
     // SAVE IDEA
     const handleSaveIdea = (
@@ -75,6 +76,14 @@ function App() {
         setSortChoice(option);
     };
 
+    // RETRIEVE CARDS FROM LOCAL STORAGE ON FIRST LOAD
+    useEffect(() => {
+        const cards = localStorage.getItem("ideaCardCollection");
+        if (cards) setIdeaCardCollection(JSON.parse(cards));
+
+        setIsFirstLoad(false);
+    }, []);
+
     // SAVE TO LOCAL STORAGE
     useEffect(() => {
         if (isFirstLoad) return;
@@ -82,13 +91,10 @@ function App() {
         saveToLocalStorage(ideaCardCollection);
     }, [ideaCardCollection, isFirstLoad]);
 
-    // RETRIEVE CARDS FROM LOCAL STORAGE
+    // CLEAR SORT MENU
     useEffect(() => {
-        const cards = localStorage.getItem("ideaCardCollection");
-        if (cards) setIdeaCardCollection(JSON.parse(cards));
-
-        setIsFirstLoad(false);
-    }, []);
+        if (ideaCardCollection.length === 0) setSortChoice(null); // Clear sort menu if collection is empty
+    }, [setSortChoice, ideaCardCollection]);
 
     return (
         <>

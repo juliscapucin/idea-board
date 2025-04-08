@@ -5,7 +5,7 @@ import { useCloseOnClickOutside } from "../hooks";
 
 import { popupAnimation } from "../lib/animations";
 
-import { ButtonClose } from "./Buttons";
+import { ButtonClose } from "./Buttons/Buttons";
 import { IconHelp } from "./Icons";
 
 export default function InstructionsPopup() {

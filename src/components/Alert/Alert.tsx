@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 
-import { Button } from "./Buttons";
+import { Button } from "../Buttons/Buttons";
 
 type AlertProps = {
     alertMessage: string | null;
@@ -8,7 +8,7 @@ type AlertProps = {
     titleRef: HTMLInputElement | null;
 };
 
-import { popupAnimation } from "../lib/animations";
+import { popupAnimation } from "../../lib/animations";
 
 export default function Alert({
     alertMessage,
@@ -42,10 +42,9 @@ export default function Alert({
                                 <h2>Oops!</h2>
                                 <p className='alert__message'>{alertMessage}</p>
                                 <Button
-                                    onClickAction={handleClick}
+                                    onClick={handleClick}
                                     variant='primary'
-                                    testId='dismiss-button'
-                                    ariaLabel='close popup'
+                                    aria-label='close popup'
                                 >
                                     OK
                                 </Button>

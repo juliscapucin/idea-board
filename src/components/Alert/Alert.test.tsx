@@ -1,23 +1,24 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
-import Alert from "../components/Alert";
+import Alert from "./Alert";
 
 describe("Alert", () => {
     it("renders when alertMessage is provided", () => {
         const mockSetAlertMessage = vi.fn();
+        const testMessage = "Test message";
 
         render(
             <Alert
-                alertMessage='Test message'
+                alertMessage={testMessage}
                 setAlertMessage={mockSetAlertMessage}
                 titleRef={null}
             />
         );
 
         expect(screen.getByText("Oops!")).toBeInTheDocument();
-        expect(screen.getByText("Test message")).toBeInTheDocument();
-        expect(screen.getByTestId("dismiss-button")).toBeInTheDocument();
+        expect(screen.getByText(testMessage)).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "OK" })).toBeInTheDocument();
     });
 
     it("calls setAlertMessage and focuses input when clicking OK", async () => {
