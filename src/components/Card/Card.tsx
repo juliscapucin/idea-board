@@ -162,7 +162,7 @@ export default function Card({
                             : "-"}
                     </p>
                 </div>
-                {/* {showToast && <Toast handleShowToast={handleShowToast} />} */}
+                {showToast && <Toast handleShowToast={handleShowToast} />}
             </motion.div>
         </AnimatePresence>
     );

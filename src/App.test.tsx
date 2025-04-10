@@ -1,59 +1,10 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
-import { IdeaCard } from "./types";
-
-vi.mock("./lib/createIdea", () => ({
-    createIdea: () => [
-        {
-            id: "test-123",
-            title: "",
-            description: "",
-            dateCreated: null,
-            dateUpdated: null,
-        },
-    ],
-}));
-
-vi.mock("./lib/saveIdea", () => ({
-    saveIdea: ({
-        card,
-        newTitle,
-        newDescription,
-        ideaCardCollection,
-    }: {
-        card: IdeaCard;
-        newTitle: string;
-        newDescription: string;
-        ideaCardCollection: IdeaCard[];
-    }) => {
-        const updatedCollection = ideaCardCollection.map((c) =>
-            c.id === card.id
-                ? {
-                      ...c,
-                      title: newTitle,
-                      description: newDescription,
-                      dateCreated: Date.now(),
-                      dateUpdated: Date.now(),
-                  }
-                : c
-        );
-        return updatedCollection;
-    },
-}));
-
-vi.mock("./lib/deleteIdea", () => ({
-    deleteIdea: (id: string, collection: IdeaCard[]) =>
-        collection.filter((item) => item.id !== id),
-}));
 
 vi.mock("./lib/saveToLocalStorage", () => ({
     saveToLocalStorage: vi.fn(),
-}));
-
-vi.mock("./lib/sortIdeas", () => ({
-    sortIdeas: (_option: string, collection: IdeaCard[]) => collection,
 }));
 
 describe("App", () => {
@@ -65,7 +16,8 @@ describe("App", () => {
         ).toBeInTheDocument();
     });
 
-    it("creates a new idea when clicking the create button", async () => {
+    it("creates a new idea and deletes it", async () => {
+        localStorage.clear();
         render(<App />);
         const createButton = await screen.findByRole("button", {
             name: "New Idea",
@@ -73,10 +25,13 @@ describe("App", () => {
 
         await userEvent.click(createButton);
 
-        const card = await screen.findByTestId("card-test-123");
+        const testId = /card-/i;
+        const cards = await screen.findAllByTestId(testId);
+
+        expect(cards.length).toBe(1); // expect to have only one card at this point
 
         // Check for New card
-        expect(card).toBeInTheDocument();
+        expect(cards[0]).toBeInTheDocument();
 
         // Check for input fields + labels
         const titleInput = await screen.findByLabelText("Title");
@@ -85,21 +40,35 @@ describe("App", () => {
         expect(titleInput).toBeInTheDocument();
         expect(descriptionInput).toBeInTheDocument();
 
+        // Mock user input values
         const testTitle = "Test Title";
         const testDescription = "Test description";
 
-        // Check for user type action
+        // User types on input fields
         await userEvent.clear(titleInput);
         await userEvent.type(titleInput, testTitle);
         await userEvent.clear(descriptionInput);
         await userEvent.type(descriptionInput, testDescription);
 
-        // Check for Save Button
+        // Save Button shows
         const saveButton = await screen.findByRole("button", {
-            name: "save idea",
+            name: /save idea/i,
         });
-        // Save idea
+
+        // Save idea click
         await userEvent.click(saveButton);
+
+        // Toast shows
+        expect(screen.getByText(/saved/i)).toBeInTheDocument();
+
+        // Animation runs and toast is removed
+        await waitFor(
+            () => {
+                // 'queryByText' returns null if no element is found, so doesn't throw an error
+                expect(screen.queryByText(/saved/i)).not.toBeInTheDocument();
+            },
+            { timeout: 1600 } // animation duration
+        );
 
         // Check for input values
         expect(screen.getByDisplayValue(testTitle)).toBeInTheDocument();
@@ -107,13 +76,11 @@ describe("App", () => {
 
         // Delete idea
         const deleteButton = await screen.findByRole("button", {
-            name: "delete idea",
+            name: /delete idea/i,
         });
         await userEvent.click(deleteButton);
 
         // Check for card deletion
-        expect(
-            await screen.queryByTestId("card-test-123")
-        ).not.toBeInTheDocument();
+        expect(await screen.queryByTestId(testId)).not.toBeInTheDocument();
     });
 });

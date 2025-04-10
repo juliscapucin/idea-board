@@ -6,7 +6,6 @@ export default function useCloseOnClickOutside(
     setState: (arg: boolean) => void
 ) {
     useEffect(() => {
-        console.log("close on click outside");
         if (!container) return;
 
         function handleClickOutside(e: MouseEvent) {

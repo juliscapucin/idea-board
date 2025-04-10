@@ -25,7 +25,6 @@ export default function useSaveOnClickOutside(
         document.addEventListener("click", handleClickOutside);
 
         return () => {
-            console.log("remove on click outside");
             document.removeEventListener("click", handleClickOutside);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
