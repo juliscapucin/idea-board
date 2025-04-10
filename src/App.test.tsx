@@ -3,10 +3,6 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 
-vi.mock("./lib/saveToLocalStorage", () => ({
-    saveToLocalStorage: vi.fn(),
-}));
-
 describe("App", () => {
     it("displays 'No ideas' state when empty", () => {
         localStorage.clear();
@@ -16,13 +12,18 @@ describe("App", () => {
         ).toBeInTheDocument();
     });
 
-    it("creates a new idea and deletes it", async () => {
+    it("user creates a new idea, saves to local storage, triggers toast and user deletes it", async () => {
         localStorage.clear();
+        //   vi.useFakeTimers();
+
+        const setItemSpy = vi.spyOn(Storage.prototype, "setItem");
+
         render(<App />);
         const createButton = await screen.findByRole("button", {
             name: "New Idea",
         });
 
+        // User creates new idea card
         await userEvent.click(createButton);
 
         const testId = /card-/i;
@@ -55,8 +56,18 @@ describe("App", () => {
             name: /save idea/i,
         });
 
-        // Save idea click
+        // User clicks on Save idea button
         await userEvent.click(saveButton);
+
+        // Card is saved in local storage
+        expect(setItemSpy).toHaveBeenCalledWith(
+            "ideaCardCollection",
+            expect.stringContaining(testTitle)
+        );
+        expect(setItemSpy).toHaveBeenCalledWith(
+            "ideaCardCollection",
+            expect.stringContaining(testDescription)
+        );
 
         // Toast shows
         expect(screen.getByText(/saved/i)).toBeInTheDocument();
@@ -70,11 +81,15 @@ describe("App", () => {
             { timeout: 1600 } // animation duration
         );
 
-        // Check for input values
+        // 'queryByText' returns null if no element is found, so doesn't throw an error
+        //   expect(screen.queryByText(/saved/i)).not.toBeInTheDocument();
+        //   vi.advanceTimersToNextTimer();
+
+        // Check for card with user typed input values
         expect(screen.getByDisplayValue(testTitle)).toBeInTheDocument();
         expect(screen.getByDisplayValue(testDescription)).toBeInTheDocument();
 
-        // Delete idea
+        // User clicks on delete idea button
         const deleteButton = await screen.findByRole("button", {
             name: /delete idea/i,
         });
@@ -82,5 +97,7 @@ describe("App", () => {
 
         // Check for card deletion
         expect(await screen.queryByTestId(testId)).not.toBeInTheDocument();
+
+        //   vi.useRealTimers();
     });
 });

@@ -27,6 +27,5 @@ export default function useSaveOnClickOutside(
         return () => {
             document.removeEventListener("click", handleClickOutside);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [description, title, newTitle, newDescription]);
+    }, [description, title, newTitle, newDescription, handleSave, ideaCardRef]);
 }
