@@ -68,9 +68,8 @@ function App() {
         if (option) {
             const sortedCollection = sortIdeas(option, ideaCardCollection);
             setIdeaCardCollection(sortedCollection);
+            setSortChoice(option);
         }
-
-        setSortChoice(option);
     };
 
     // RETRIEVE CARDS FROM LOCAL STORAGE ON FIRST LOAD

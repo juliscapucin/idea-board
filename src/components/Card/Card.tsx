@@ -63,6 +63,7 @@ export default function Card({
                 transition={cardAnimation.transition}
                 key={`card-${id}`}
                 id={`card-${id}`}
+                data-testid={`card-${id}`}
             >
                 {/* DELETE BUTTON */}
                 <ButtonClose
@@ -84,7 +85,7 @@ export default function Card({
                         }`}
                         htmlFor={`title-${id}`}
                     >
-                        Idea title
+                        Title
                     </label>
                     <input
                         className='card__title'
@@ -161,7 +162,7 @@ export default function Card({
                             : "-"}
                     </p>
                 </div>
-                {showToast && <Toast handleShowToast={handleShowToast} />}
+                {/* {showToast && <Toast handleShowToast={handleShowToast} />} */}
             </motion.div>
         </AnimatePresence>
     );
