@@ -1,9 +1,9 @@
 .card {
-    min-width: 18rem;
+    min-width: 20rem;
+    max-width: 28rem;
     aspect-ratio: square;
     position: relative;
     flex: 0 0 var(--card-width);
-    max-width: 35rem;
     background-color: var(--color-secondary);
     color: var(--color-text-dark);
     padding: var(--space-xs);
@@ -11,7 +11,7 @@
     border-radius: var(--radius-lg);
     border: solid 2px var(--color-primary);
     overflow: hidden;
-    align-self: start;
+    align-self: center;
 }
 
 .card__close-button {

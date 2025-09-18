@@ -26,6 +26,12 @@
     color: var(--color-danger) !important;
 }
 
+.container {
+    max-width: 1800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .flex {
     display: flex;
     justify-content: center;

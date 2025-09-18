@@ -10,14 +10,14 @@
     flex: 1;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 900px) {
     .cards-list__container {
         grid-template-columns: repeat(2, 1fr);
         padding: var(--space-sm);
     }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1200px) {
     .cards-list__container {
         grid-template-columns: repeat(3, 1fr);
     }

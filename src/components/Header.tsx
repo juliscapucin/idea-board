@@ -15,7 +15,7 @@ export default function Header({
     sortChoice,
 }: HeaderProps) {
     return (
-        <div className='header'>
+        <div className='header container'>
             <InstructionsPopup />
             <h1 className='header__title'>Idea </h1>
             <h1 className='header__title'>Board</h1>

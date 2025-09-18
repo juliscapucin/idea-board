@@ -91,18 +91,20 @@ function App() {
                 onSort={(option: SortOption | null) => handleSort(option)}
                 sortChoice={sortChoice}
             />
-            <main className='main'>
+            <main className='main container'>
                 <motion.div
                     className='cards-list__container'
                     layout // Motion settings
                     transition={{ duration: 0.2 }}
                     id='cards-list-container'
                 >
+                    {/* Empty state */}
                     {ideaCardCollection.length === 0 ? (
                         <div className='cards-list__no-cards'>
                             <p>No ideas in this collection</p>
                         </div>
                     ) : (
+                        // * Idea cards * //
                         ideaCardCollection.map((card) => {
                             return (
                                 <Card
