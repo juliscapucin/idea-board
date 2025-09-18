@@ -12,23 +12,20 @@ import { useSaveOnClickOutside } from "../../hooks";
 
 type IdeaCardProps = {
     ideaCard: IdeaCard;
-    handleSaveIdea: (newTitle: string, newDescription: string) => void;
-    handleDeleteIdea: (id: string) => void;
-    showToast: boolean;
-    handleShowToast: () => void;
+    onSaveIdea: (newTitle: string, newDescription: string) => void;
+    onDeleteIdea: (id: string) => void;
 };
 
 export default function Card({
     ideaCard,
-    handleSaveIdea,
-    handleDeleteIdea,
-    showToast,
-    handleShowToast,
+    onSaveIdea,
+    onDeleteIdea,
 }: IdeaCardProps) {
     const { id, title, description, dateCreated, dateUpdated } = ideaCard;
 
     const [newTitle, setNewTitle] = useState(title);
     const [newDescription, setNewDescription] = useState(description);
+    const [showToast, setShowToast] = useState<boolean>(false);
 
     const ideaCardRef = useRef<HTMLDivElement | null>(null);
     const titleRef = useRef<HTMLInputElement>(null);
@@ -47,7 +44,7 @@ export default function Card({
         newTitle,
         description,
         newDescription,
-        handleSaveIdea
+        onSaveIdea
     );
 
     return (
@@ -68,14 +65,15 @@ export default function Card({
                 {/* DELETE BUTTON */}
                 <ButtonClose
                     classes={"card__close-button"}
-                    onClick={() => handleDeleteIdea(id)}
+                    onClick={() => onDeleteIdea(id)}
                     iconColor='orange-deep'
                     aria-label='delete idea'
                 />
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
-                        handleSaveIdea(newTitle, newDescription);
+                        onSaveIdea(newTitle, newDescription);
+                        setShowToast(true);
                     }}
                     className='card__fields'
                 >
@@ -162,7 +160,7 @@ export default function Card({
                             : "-"}
                     </p>
                 </div>
-                {showToast && <Toast handleShowToast={handleShowToast} />}
+                {showToast && <Toast />}
             </motion.div>
         </AnimatePresence>
     );

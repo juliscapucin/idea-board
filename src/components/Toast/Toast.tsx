@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 
-type ToastProps = {
-    handleShowToast: () => void;
-};
-
-export default function Toast({ handleShowToast }: ToastProps) {
+export default function Toast() {
     const controls = useAnimation();
     const [isMounted, setIsMounted] = useState(false);
 
@@ -32,11 +28,10 @@ export default function Toast({ handleShowToast }: ToastProps) {
                 },
             });
             setIsMounted(false);
-            handleShowToast();
         };
 
         sequence();
-    }, [controls, handleShowToast, isMounted]);
+    }, [controls, isMounted]);
 
     return (
         <motion.div

@@ -18,16 +18,10 @@ import { IdeaCard, SortOption } from "./types";
 function App() {
     const [isFirstLoad, setIsFirstLoad] = useState(true);
     const [sortChoice, setSortChoice] = useState<SortOption | null>(null);
-    const [showToast, setShowToast] = useState<string | null>(null);
 
     const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCard[]>(
         []
     );
-
-    // SHOW TOAST
-    const handleShowToast = (id?: string) => {
-        setShowToast(id || null); // if id is not passed, set null
-    };
 
     // CREATE NEW IDEA
     const handleCreateIdea = () => {
@@ -52,8 +46,6 @@ function App() {
                 ideaCardCollection,
             })
         );
-
-        handleShowToast(card.id);
     };
 
     // DELETE IDEA
@@ -116,19 +108,14 @@ function App() {
                                 <Card
                                     key={`ideaCard-${card.id}`}
                                     ideaCard={card}
-                                    showToast={showToast === card.id}
-                                    handleShowToast={handleShowToast}
-                                    handleSaveIdea={(
-                                        newTitle,
-                                        newDescription
-                                    ) =>
+                                    onSaveIdea={(newTitle, newDescription) =>
                                         handleSaveIdea(
                                             card,
                                             newTitle,
                                             newDescription
                                         )
                                     }
-                                    handleDeleteIdea={() =>
+                                    onDeleteIdea={() =>
                                         handleDeleteIdea(card.id)
                                     }
                                 />
