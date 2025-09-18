@@ -27,10 +27,8 @@ describe("Card", () => {
         render(
             <Card
                 ideaCard={mockCard}
-                handleSaveIdea={handleSaveIdea}
-                handleDeleteIdea={handleDeleteIdea}
-                showToast={false}
-                handleShowToast={handleShowToast}
+                onSaveIdea={handleSaveIdea}
+                onDeleteIdea={handleDeleteIdea}
             />
         );
 
