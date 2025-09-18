@@ -12,12 +12,14 @@ import { useSaveOnClickOutside } from "../../hooks";
 
 type IdeaCardProps = {
     ideaCard: IdeaCard;
+    containerDimensions?: DOMRect | null;
     onSaveIdea: (newTitle: string, newDescription: string) => void;
     onDeleteIdea: (id: string) => void;
 };
 
 export default function Card({
     ideaCard,
+    containerDimensions,
     onSaveIdea,
     onDeleteIdea,
 }: IdeaCardProps) {
@@ -26,6 +28,9 @@ export default function Card({
     const [newTitle, setNewTitle] = useState(title);
     const [newDescription, setNewDescription] = useState(description);
     const [showToast, setShowToast] = useState<boolean>(false);
+    const [dragConstraints, setDragConstraints] = useState<
+        false | Partial<DOMRect> | React.RefObject<Element> | undefined
+    >(undefined);
 
     const ideaCardRef = useRef<HTMLDivElement | null>(null);
     const titleRef = useRef<HTMLInputElement>(null);
@@ -52,20 +57,38 @@ export default function Card({
         handleToggleToast
     );
 
+    // DRAG CONSTRAINTS
+    useEffect(() => {
+        if (!containerDimensions || !ideaCardRef.current) return;
+
+        const cardRect = ideaCardRef.current.getBoundingClientRect();
+
+        setDragConstraints({
+            top: -(cardRect.top - containerDimensions.top), // how far up the card can go
+            left: -(cardRect.left - containerDimensions.left), // how far left
+            right: containerDimensions.right - cardRect.right, // how far right
+            bottom: containerDimensions.bottom - cardRect.bottom, // how far down
+        });
+    }, [containerDimensions]);
+
     return (
         <AnimatePresence>
             <motion.div
                 className={`card ${isNewCard ? "card--new" : ""}`}
                 ref={ideaCardRef}
+                key={`card-${id}`}
+                id={`card-${id}`}
+                data-testid={`card-${id}`}
                 layout // Framer Motion settings
                 initial='initial'
                 animate='animate'
                 exit='exit'
                 variants={cardAnimation}
                 transition={cardAnimation.transition}
-                key={`card-${id}`}
-                id={`card-${id}`}
-                data-testid={`card-${id}`}
+                drag
+                dragConstraints={dragConstraints}
+                dragTransition={{ bounceStiffness: 10, bounceDamping: 200 }}
+                whileTap={{ cursor: "grabbing" }}
             >
                 {/* DELETE BUTTON */}
                 <ButtonClose

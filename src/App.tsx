@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 
 import {
@@ -18,10 +18,21 @@ import { IdeaCard, SortOption } from "./types";
 function App() {
     const [isFirstLoad, setIsFirstLoad] = useState(true);
     const [sortChoice, setSortChoice] = useState<SortOption | null>(null);
+    const [containerDimensions, setContainerDimensions] =
+        useState<DOMRect | null>(null);
+    const cardsListContainerRef = useRef<HTMLDivElement | null>(null);
 
     const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCard[]>(
         []
     );
+
+    useEffect(() => {
+        if (!cardsListContainerRef.current) return;
+
+        const containerElement = cardsListContainerRef.current;
+        const containerDimensions = containerElement.getBoundingClientRect();
+        setContainerDimensions(containerDimensions);
+    }, [cardsListContainerRef]);
 
     // CREATE NEW IDEA
     const handleCreateIdea = () => {
@@ -94,9 +105,10 @@ function App() {
             <main className='main container'>
                 <motion.div
                     className='cards-list__container'
+                    id='cards-list-container'
+                    ref={cardsListContainerRef}
                     layout // Motion settings
                     transition={{ duration: 0.2 }}
-                    id='cards-list-container'
                 >
                     {/* Empty state */}
                     {ideaCardCollection.length === 0 ? (
@@ -110,6 +122,7 @@ function App() {
                                 <Card
                                     key={`ideaCard-${card.id}`}
                                     ideaCard={card}
+                                    containerDimensions={containerDimensions}
                                     onSaveIdea={(newTitle, newDescription) =>
                                         handleSaveIdea(
                                             card,
