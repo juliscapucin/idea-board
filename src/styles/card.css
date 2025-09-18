@@ -32,11 +32,19 @@
     width: 100%;
     display: block;
     border-radius: var(--radius-lg);
-    border: 2px solid var(--color-transparent);
     padding: var(--space-xs);
     font-family: inherit;
-    background-color: var(--color-primary);
+    border: 2px solid var(--color-transparent);
+    background-color: rgba(var(--color-primary-rgb), 0.3);
     transition: all 0.3 ease-in-out;
+}
+
+.card--new {
+    .card__title,
+    .card__description {
+        border: 2px solid var(--color-transparent);
+        background-color: rgba(var(--color-primary-rgb), 0.8);
+    }
 }
 
 .card__title:user-invalid,
@@ -51,12 +59,6 @@
 .card__title:focus-visible,
 .card__description:focus-visible {
     outline: 2px solid var(--color-accent);
-}
-
-.card__title:user-valid,
-.card__description:user-valid {
-    border: 2px solid var(--color-transparent);
-    background-color: var(--color-transparent);
 }
 
 .card__input-label {

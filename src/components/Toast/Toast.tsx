@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 
-export default function Toast() {
+type ToastProps = {
+    showToast: (param: boolean) => void;
+};
+
+export default function Toast({ showToast }: ToastProps) {
     const controls = useAnimation();
-    const [isMounted, setIsMounted] = useState(false);
 
+    // Toast animation sequence
     useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
-    useEffect(() => {
-        if (!isMounted) return;
+        if (!showToast) return;
 
         const sequence = async () => {
             await controls.start({
@@ -27,11 +27,11 @@ export default function Toast() {
                     delay: 1, // delay before exit
                 },
             });
-            setIsMounted(false);
+            showToast(false);
         };
 
         sequence();
-    }, [controls, isMounted]);
+    }, [controls, showToast]);
 
     return (
         <motion.div

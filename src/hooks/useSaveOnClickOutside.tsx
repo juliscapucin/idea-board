@@ -6,7 +6,8 @@ export default function useSaveOnClickOutside(
     newTitle: string,
     description: string,
     newDescription: string,
-    handleSave: (newTitle: string, newDescription: string) => void
+    handleSave: (newTitle: string, newDescription: string) => void,
+    handleToggleToast: (param: boolean) => void
 ) {
     useEffect(() => {
         if (!ideaCardRef.current) return;
@@ -19,6 +20,7 @@ export default function useSaveOnClickOutside(
                 !ideaCardElement.contains(e.target as Node)
             ) {
                 handleSave(newTitle, newDescription);
+                handleToggleToast(true);
             }
         };
 

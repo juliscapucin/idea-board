@@ -32,6 +32,10 @@ export default function Card({
 
     const isNewCard = !dateCreated; // If it has a dateCreated value, it's not a new card; and vice-versa
 
+    const handleToggleToast = (param: boolean) => {
+        setShowToast(param);
+    };
+
     // TITLE FOCUS ON NEW CARD
     useEffect(() => {
         if (isNewCard && titleRef.current) titleRef.current.focus();
@@ -44,13 +48,14 @@ export default function Card({
         newTitle,
         description,
         newDescription,
-        onSaveIdea
+        onSaveIdea,
+        handleToggleToast
     );
 
     return (
         <AnimatePresence>
             <motion.div
-                className='card'
+                className={`card ${isNewCard ? "card--new" : ""}`}
                 ref={ideaCardRef}
                 layout // Framer Motion settings
                 initial='initial'
@@ -160,7 +165,7 @@ export default function Card({
                             : "-"}
                     </p>
                 </div>
-                {showToast && <Toast />}
+                {showToast && <Toast showToast={handleToggleToast} />}
             </motion.div>
         </AnimatePresence>
     );
