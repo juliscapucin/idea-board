@@ -1,15 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 
-import { CardsList, Header } from "./components/";
+import {
+    createIdea,
+    saveToLocalStorage,
+    sortIdeas,
+    deleteIdea,
+    saveIdea,
+} from "./lib";
+
+import { Card, Header } from "./components/";
 
 import { IdeaCard, SortOption } from "./types";
-import { createIdea, saveToLocalStorage, sortIdeas } from "./lib";
 
 function App() {
     const [isFirstLoad, setIsFirstLoad] = useState(true);
     const [sortChoice, setSortChoice] = useState<SortOption | null>(null);
+
     const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCard[]>(
         []
     );
@@ -20,15 +29,48 @@ function App() {
         handleSort(null);
     };
 
+    // SAVE IDEA
+    const handleSaveIdea = (
+        card: IdeaCard,
+        newTitle: string,
+        newDescription: string
+    ) => {
+        setSortChoice(null); // Reset sort menu
+
+        // Update collection
+        setIdeaCardCollection(
+            saveIdea({
+                card,
+                newTitle,
+                newDescription,
+                ideaCardCollection,
+            })
+        );
+    };
+
+    // DELETE IDEA
+    const handleDeleteIdea = (id: string) => {
+        const updatedCollection = deleteIdea(id, ideaCardCollection);
+
+        setIdeaCardCollection(updatedCollection);
+    };
+
     // SORT IDEAS
     const handleSort = (option: SortOption | null) => {
         if (option) {
             const sortedCollection = sortIdeas(option, ideaCardCollection);
             setIdeaCardCollection(sortedCollection);
+            setSortChoice(option);
         }
-
-        setSortChoice(option);
     };
+
+    // RETRIEVE CARDS FROM LOCAL STORAGE ON FIRST LOAD
+    useEffect(() => {
+        const cards = localStorage.getItem("ideaCardCollection");
+        if (cards) setIdeaCardCollection(JSON.parse(cards));
+
+        setIsFirstLoad(false);
+    }, []);
 
     // SAVE TO LOCAL STORAGE
     useEffect(() => {
@@ -37,27 +79,52 @@ function App() {
         saveToLocalStorage(ideaCardCollection);
     }, [ideaCardCollection, isFirstLoad]);
 
-    // RETRIEVE CARDS FROM LOCAL STORAGE
+    // CLEAR SORT MENU
     useEffect(() => {
-        const cards = localStorage.getItem("ideaCardCollection");
-        if (cards) setIdeaCardCollection(JSON.parse(cards));
-
-        setIsFirstLoad(false);
-    }, []);
+        if (ideaCardCollection.length === 0) setSortChoice(null); // Clear sort menu if collection is empty
+    }, [setSortChoice, ideaCardCollection]);
 
     return (
-        <main className='main'>
+        <>
             <Header
                 createNewIdea={handleCreateIdea}
                 onSort={(option: SortOption | null) => handleSort(option)}
                 sortChoice={sortChoice}
             />
-            <CardsList
-                ideaCardCollection={ideaCardCollection}
-                setIdeaCardCollection={setIdeaCardCollection}
-                setSortChoice={setSortChoice}
-            />
-        </main>
+            <main className='main'>
+                <motion.div
+                    className='cards-list__container'
+                    layout // Motion settings
+                    transition={{ duration: 0.2 }}
+                    id='cards-list-container'
+                >
+                    {ideaCardCollection.length === 0 ? (
+                        <div className='cards-list__no-cards'>
+                            <p>No ideas in this collection</p>
+                        </div>
+                    ) : (
+                        ideaCardCollection.map((card) => {
+                            return (
+                                <Card
+                                    key={`ideaCard-${card.id}`}
+                                    ideaCard={card}
+                                    onSaveIdea={(newTitle, newDescription) =>
+                                        handleSaveIdea(
+                                            card,
+                                            newTitle,
+                                            newDescription
+                                        )
+                                    }
+                                    onDeleteIdea={() =>
+                                        handleDeleteIdea(card.id)
+                                    }
+                                />
+                            );
+                        })
+                    )}
+                </motion.div>
+            </main>
+        </>
     );
 }
 

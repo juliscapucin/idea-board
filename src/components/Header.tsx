@@ -1,5 +1,5 @@
 import { SortMenu, InstructionsPopup } from "../components";
-import { Button } from "./Buttons";
+import { Button } from "./Buttons/Buttons";
 import { SortOption } from "../types";
 import { IconPlus } from "./Icons";
 
@@ -24,7 +24,7 @@ export default function Header({
                 <Button
                     variant='primary'
                     classes='header__add-button'
-                    onClickAction={createNewIdea}
+                    onClick={createNewIdea}
                 >
                     <IconPlus /> New Idea
                 </Button>

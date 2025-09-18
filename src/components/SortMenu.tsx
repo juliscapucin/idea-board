@@ -5,7 +5,7 @@ import { useCloseOnClickOutside, useCloseOnFocusOutside } from "../hooks";
 
 import { popupAnimation } from "../lib/animations";
 
-import { Button } from "./Buttons";
+import { Button } from "./Buttons/Buttons";
 import { IconChevron } from "./Icons";
 import { SortOption } from "../types";
 
@@ -36,8 +36,9 @@ export default function SortMenu({ onSort, sortChoice }: SortMenuProps) {
         <div ref={sortMenuContainerRef} className='sort-menu'>
             <Button
                 classes='sort-menu__trigger'
-                onClickAction={() => setShowMenu(!showMenu)}
+                onClick={() => setShowMenu(!showMenu)}
                 variant='ghost'
+                aria-label='sort ideas'
             >
                 <div className='sort-menu__trigger-content'>
                     <span>Sort {sortChoice && `by: ${sortChoice}`}</span>
@@ -63,6 +64,7 @@ export default function SortMenu({ onSort, sortChoice }: SortMenuProps) {
                             onClick={() => {
                                 handleSort("Title");
                             }}
+                            aria-label='sort by title'
                         >
                             Title
                         </button>
@@ -71,6 +73,7 @@ export default function SortMenu({ onSort, sortChoice }: SortMenuProps) {
                             onClick={() => {
                                 handleSort("Date");
                             }}
+                            aria-label='sort by date created'
                         >
                             Date Created
                         </button>

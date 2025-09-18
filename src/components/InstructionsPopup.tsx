@@ -5,7 +5,7 @@ import { useCloseOnClickOutside } from "../hooks";
 
 import { popupAnimation } from "../lib/animations";
 
-import { ButtonClose } from "./Buttons";
+import { ButtonClose } from "./Buttons/Buttons";
 import { IconHelp } from "./Icons";
 
 export default function InstructionsPopup() {
@@ -40,8 +40,9 @@ export default function InstructionsPopup() {
                     >
                         <ButtonClose
                             classes={"instructions-popup__button-close"}
-                            onClickAction={handleClick}
+                            onClick={handleClick}
                             iconColor='orange-deep'
+                            aria-label='Close Popup'
                         />
 
                         <div className='instructions-popup__text'>
