@@ -15,12 +15,10 @@ const mockCard: IdeaCard = {
 describe("Card", () => {
     let handleSaveIdea: ReturnType<typeof vi.fn>;
     let handleDeleteIdea: ReturnType<typeof vi.fn>;
-    let handleShowToast: ReturnType<typeof vi.fn>;
 
     beforeEach(() => {
         handleSaveIdea = vi.fn();
         handleDeleteIdea = vi.fn();
-        handleShowToast = vi.fn();
     });
 
     it("renders with initial values", () => {
