@@ -23,7 +23,7 @@ button:focus-visible {
     background-color: transparent;
     white-space: nowrap;
     border-radius: var(--radius-lg);
-    padding: var(--space-xs) var(--space-sm);
+    padding: var(--space-xxs) var(--space-xs);
     transition: all 0.3s;
 }
 

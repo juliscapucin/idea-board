@@ -2,18 +2,18 @@
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    row-gap: var(--space-md);
+    row-gap: var(--space-sm);
     background-color: var(--color-primary);
     border: var(--color-accent) 2px solid;
     border-radius: var(--radius-lg);
-    /* padding: var(--space-xs); */
+    padding: var(--space-xs) 0;
     z-index: 1;
     flex: 1;
 }
 
 @media (min-width: 900px) {
     .cards-list__container {
-        padding: var(--space-sm);
+        padding: 1.2rem var(--space-xxs);
     }
 }
 

@@ -1,5 +1,4 @@
 .card {
-    aspect-ratio: square;
     position: relative;
     flex: 1;
     background-color: var(--color-secondary);
@@ -8,15 +7,14 @@
     padding-top: var(--space-lg);
     border-radius: var(--radius-lg);
     border: solid 2px var(--color-primary);
-    overflow: hidden;
+    overflow: clip;
     align-self: center;
 }
 
 .card__container {
     position: relative;
-    height: var(--card-height);
     display: flex;
-    width: 400px;
+    width: 380px;
     margin: 0 var(--space-xs);
 }
 
@@ -27,8 +25,9 @@
 }
 
 .card__container--dragged {
+    clip-path: inset(0 round 1rem);
+
     .card {
-        /* opacity: 0.4; */
         z-index: 20;
         cursor: grabbing;
         transition: all 0.2s ease-in-out;
@@ -36,21 +35,21 @@
 }
 
 .card__drag-indicator {
-    width: 10px;
+    width: 5px;
     height: 90%;
     top: 5%;
-    background-color: var(--color-lavender);
+    background-color: var(--color-accent);
     position: absolute;
 }
 
 .card__drag-indicator--left {
     left: 0;
-    transform: translateX(-18px);
+    transform: translateX(-15px);
 }
 
 .card__drag-indicator--right {
     right: 0;
-    transform: translateX(18px);
+    transform: translateX(15px);
 }
 
 .card__close-button {
@@ -112,14 +111,16 @@
     margin-top: var(--space-xs);
 }
 
-.card__buttons {
+.card__button {
+    position: absolute;
+    right: var(--space-xs);
     width: 100%;
     height: 3rem;
     margin-top: var(--space-xxs);
     margin-bottom: var(--space-xs);
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
 }
 
 .card__dates {

@@ -152,7 +152,7 @@ export default function Card({
                                 name={`description-${id}`}
                                 placeholder='Idea description here'
                                 maxLength={140}
-                                rows={4}
+                                rows={3}
                                 autoComplete='off'
                                 onChange={(e) => {
                                     setNewDescription(e.target.value);
@@ -167,16 +167,24 @@ export default function Card({
                             />
                         </div>
                         {/* SAVE BUTTON */}
-                        <div className='card__buttons'>
+                        <div className='card__button'>
                             {(title !== newTitle ||
-                                description !== newDescription) && ( // show if card is being edited
-                                <Button
-                                    variant='primary'
-                                    aria-label='save idea'
-                                    type='submit'
+                                description !== newDescription) && (
+                                <motion.div
+                                    layout
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: 10 }}
+                                    transition={{ duration: 0.3 }}
                                 >
-                                    Save
-                                </Button>
+                                    <Button
+                                        variant='primary'
+                                        aria-label='save idea'
+                                        type='submit'
+                                    >
+                                        Save
+                                    </Button>
+                                </motion.div>
                             )}
                         </div>
                     </form>
