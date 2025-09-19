@@ -68,7 +68,6 @@ function App() {
     };
 
     // DRAG AND DROP REORDERING
-
     const handleDragStart = (card: IdeaCard, index: number) => {
         setDraggedCard({ card, index });
     };
