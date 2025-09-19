@@ -15,10 +15,16 @@ const mockCard: IdeaCard = {
 describe("Card", () => {
     let handleSaveIdea: ReturnType<typeof vi.fn>;
     let handleDeleteIdea: ReturnType<typeof vi.fn>;
+    let handleDragStart: ReturnType<typeof vi.fn>;
+    let handleDragOver: ReturnType<typeof vi.fn>;
+    let handleDragEnd: ReturnType<typeof vi.fn>;
 
     beforeEach(() => {
         handleSaveIdea = vi.fn();
         handleDeleteIdea = vi.fn();
+        handleDragStart = vi.fn();
+        handleDragOver = vi.fn();
+        handleDragEnd = vi.fn();
     });
 
     it("renders with initial values", () => {
@@ -27,6 +33,10 @@ describe("Card", () => {
                 ideaCard={mockCard}
                 onSaveIdea={handleSaveIdea}
                 onDeleteIdea={handleDeleteIdea}
+                onDragStart={handleDragStart}
+                onDragOver={handleDragOver}
+                onDragEnd={handleDragEnd}
+                index={0}
             />
         );
 

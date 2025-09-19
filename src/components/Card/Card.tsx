@@ -136,7 +136,7 @@ export default function Card({
                             }}
                         />
 
-                        <div>
+                        <div className='card__description-container'>
                             <label
                                 className={`card__input-label ${
                                     isNewCard ? "opacity-1" : "opacity-0"
@@ -146,7 +146,7 @@ export default function Card({
                                 Description
                             </label>
                             <textarea
-                                className={`card__description ${!isNewCard && newDescription.length === 0 ? "bg-secondary" : ""}`}
+                                className={`card__description`}
                                 value={newDescription}
                                 id={`description-${id}`}
                                 name={`description-${id}`}

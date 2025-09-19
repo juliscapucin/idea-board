@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { fireEvent, render } from "@testing-library/react";
 import { useRef } from "react";
 
@@ -10,12 +10,14 @@ function TestComponent({
     description,
     newDescription,
     onSave,
+    handleToggleToast,
 }: {
     title: string;
     newTitle: string;
     description: string;
     newDescription: string;
     onSave: (newTitle: string, newDescription: string) => void;
+    handleToggleToast: () => void;
 }) {
     const ref = useRef<HTMLDivElement | null>(null);
     useSaveOnClickOutside(
@@ -24,7 +26,8 @@ function TestComponent({
         newTitle,
         description,
         newDescription,
-        onSave
+        onSave,
+        handleToggleToast
     );
 
     return (
@@ -38,23 +41,31 @@ function TestComponent({
 }
 
 describe("useSaveOnClickOutside", () => {
-    it("calls handleSave when clicking outside and content has changed", () => {
-        const handleSave = vi.fn();
+    const mockHandleSave = vi.fn();
+    const mockToggleToast = vi.fn();
 
+    beforeEach(() => {
+        vi.clearAllMocks();
+        mockHandleSave.mockClear();
+        mockToggleToast.mockClear();
+    });
+
+    it("calls handleSave when clicking outside and content has changed", () => {
         const { getByTestId } = render(
             <TestComponent
                 title='Initial Title'
                 newTitle='Changed Title'
                 description='Initial Description'
                 newDescription='Changed Description'
-                onSave={handleSave}
+                onSave={mockHandleSave}
+                handleToggleToast={mockToggleToast}
             />
         );
 
         const outside = getByTestId("outside");
         fireEvent.click(outside);
 
-        expect(handleSave).toHaveBeenCalledWith(
+        expect(mockHandleSave).toHaveBeenCalledWith(
             "Changed Title",
             "Changed Description"
         );
@@ -69,7 +80,8 @@ describe("useSaveOnClickOutside", () => {
                 newTitle='Title'
                 description='Description'
                 newDescription='Description'
-                onSave={handleSave}
+                onSave={mockHandleSave}
+                handleToggleToast={mockToggleToast}
             />
         );
 
@@ -88,7 +100,8 @@ describe("useSaveOnClickOutside", () => {
                 newTitle='New'
                 description='Desc'
                 newDescription='New Desc'
-                onSave={handleSave}
+                onSave={mockHandleSave}
+                handleToggleToast={mockToggleToast}
             />
         );
 

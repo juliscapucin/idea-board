@@ -138,57 +138,59 @@ function App() {
                 onSort={(option: SortOption | null) => handleSort(option)}
                 sortChoice={sortChoice}
             />
-            <main className='main container'>
-                <motion.div
-                    className='cards-list__container'
-                    id='cards-list-container'
-                    ref={cardsListContainerRef}
-                    layout // Motion settings
-                    transition={{ duration: 0.2 }}
-                >
-                    {/* Empty state */}
-                    {ideaCardCollection.length === 0 ? (
-                        <div className='cards-list__no-cards'>
-                            <p>No ideas in this collection</p>
-                        </div>
-                    ) : (
-                        // * Idea cards * //
-                        ideaCardCollection.map(
-                            (card: IdeaCard, index: number) => {
-                                return (
-                                    <Card
-                                        key={`ideaCard-${card.id}`}
-                                        ideaCard={card}
-                                        onDragStart={() =>
-                                            handleDragStart(card, index)
-                                        }
-                                        onDragOver={() =>
-                                            handleDragOver(card, index)
-                                        }
-                                        onDragEnd={() => handleDragEnd()}
-                                        draggedCard={draggedCard}
-                                        dragOverCard={dragOverCard}
-                                        index={index}
-                                        onSaveIdea={(
-                                            newTitle,
-                                            newDescription
-                                        ) =>
-                                            handleSaveIdea(
-                                                card,
+            {/* Empty state */}
+            {ideaCardCollection.length === 0 ? (
+                <main className='main container cards-list__no-cards'>
+                    <p>No ideas in this collection</p>
+                </main>
+            ) : (
+                <main className='main container'>
+                    <motion.div
+                        className='cards-list__container'
+                        id='cards-list-container'
+                        ref={cardsListContainerRef}
+                        layout // Motion settings
+                        transition={{ duration: 0.2 }}
+                    >
+                        {
+                            // * Idea cards * //
+                            ideaCardCollection.map(
+                                (card: IdeaCard, index: number) => {
+                                    return (
+                                        <Card
+                                            key={`ideaCard-${card.id}`}
+                                            ideaCard={card}
+                                            onDragStart={() =>
+                                                handleDragStart(card, index)
+                                            }
+                                            onDragOver={() =>
+                                                handleDragOver(card, index)
+                                            }
+                                            onDragEnd={() => handleDragEnd()}
+                                            draggedCard={draggedCard}
+                                            dragOverCard={dragOverCard}
+                                            index={index}
+                                            onSaveIdea={(
                                                 newTitle,
                                                 newDescription
-                                            )
-                                        }
-                                        onDeleteIdea={() =>
-                                            handleDeleteIdea(card.id)
-                                        }
-                                    />
-                                );
-                            }
-                        )
-                    )}
-                </motion.div>
-            </main>
+                                            ) =>
+                                                handleSaveIdea(
+                                                    card,
+                                                    newTitle,
+                                                    newDescription
+                                                )
+                                            }
+                                            onDeleteIdea={() =>
+                                                handleDeleteIdea(card.id)
+                                            }
+                                        />
+                                    );
+                                }
+                            )
+                        }
+                    </motion.div>
+                </main>
+            )}
         </>
     );
 }

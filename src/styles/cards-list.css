@@ -2,11 +2,11 @@
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    row-gap: var(--space-sm);
+    row-gap: var(--space-md);
     background-color: var(--color-primary);
     border: var(--color-accent) 2px solid;
     border-radius: var(--radius-lg);
-    padding: var(--space-xs);
+    /* padding: var(--space-xs); */
     z-index: 1;
     flex: 1;
 }
@@ -23,7 +23,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    grid-column: 1 / -1;
     color: var(--color-accent);
     font-weight: 600;
+    background-color: var(--color-primary);
+    border: var(--color-accent) 2px solid;
+    border-radius: var(--radius-lg);
 }

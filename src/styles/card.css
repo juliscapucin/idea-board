@@ -74,7 +74,7 @@
     padding: var(--space-xs);
     font-family: inherit;
     border: 2px solid var(--color-transparent);
-    background-color: rgba(var(--color-primary-rgb), 0.3);
+    background-color: rgba(var(--color-primary-rgb), 0.2);
     transition: all 0.3 ease-in-out;
 }
 
@@ -106,6 +106,10 @@
 
 .card__fields {
     margin-bottom: var(--space-xxs);
+}
+
+.card__description-container {
+    margin-top: var(--space-xs);
 }
 
 .card__buttons {
