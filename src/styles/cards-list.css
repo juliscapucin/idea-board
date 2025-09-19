@@ -1,7 +1,8 @@
 .cards-list__container {
     position: relative;
-    display: grid;
-    gap: var(--space-md);
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: var(--space-sm);
     background-color: var(--color-primary);
     border: var(--color-accent) 2px solid;
     border-radius: var(--radius-lg);
@@ -12,14 +13,7 @@
 
 @media (min-width: 900px) {
     .cards-list__container {
-        grid-template-columns: repeat(2, 1fr);
         padding: var(--space-sm);
-    }
-}
-
-@media (min-width: 1200px) {
-    .cards-list__container {
-        grid-template-columns: repeat(3, 1fr);
     }
 }
 

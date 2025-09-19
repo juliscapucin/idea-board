@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 
-import { IdeaCard } from "../../types";
+import { IdeaCard, DragElement } from "../../types";
 
 import { cardAnimation } from "../../lib/animations";
 
@@ -12,14 +12,24 @@ import { useSaveOnClickOutside } from "../../hooks";
 
 type IdeaCardProps = {
     ideaCard: IdeaCard;
-    containerDimensions?: DOMRect | null;
+    index: number;
+    draggedCard?: DragElement | null;
+    dragOverCard?: DragElement | null;
+    onDragStart: (card: IdeaCard) => void;
+    onDragOver: (card: IdeaCard) => void;
+    onDragEnd: () => void;
     onSaveIdea: (newTitle: string, newDescription: string) => void;
     onDeleteIdea: (id: string) => void;
 };
 
 export default function Card({
     ideaCard,
-    containerDimensions,
+    index,
+    draggedCard,
+    dragOverCard,
+    onDragStart,
+    onDragOver,
+    onDragEnd,
     onSaveIdea,
     onDeleteIdea,
 }: IdeaCardProps) {
@@ -28,10 +38,6 @@ export default function Card({
     const [newTitle, setNewTitle] = useState(title);
     const [newDescription, setNewDescription] = useState(description);
     const [showToast, setShowToast] = useState<boolean>(false);
-    const [dragConstraints, setDragConstraints] = useState<
-        false | Partial<DOMRect> | React.RefObject<Element> | undefined
-    >(undefined);
-
     const ideaCardRef = useRef<HTMLDivElement | null>(null);
     const titleRef = useRef<HTMLInputElement>(null);
 
@@ -57,39 +63,38 @@ export default function Card({
         handleToggleToast
     );
 
-    // DRAG CONSTRAINTS
-    useEffect(() => {
-        if (!containerDimensions || !ideaCardRef.current) return;
-
-        const cardRect = ideaCardRef.current.getBoundingClientRect();
-
-        setDragConstraints({
-            top: -(cardRect.top - containerDimensions.top), // how far up the card can go
-            left: -(cardRect.left - containerDimensions.left), // how far left
-            right: containerDimensions.right - cardRect.right, // how far right
-            bottom: containerDimensions.bottom - cardRect.bottom, // how far down
-        });
-    }, [containerDimensions]);
-
     return (
-        <AnimatePresence>
-            <motion.div
-                className={`card ${isNewCard ? "card--new" : ""}`}
-                ref={ideaCardRef}
-                key={`card-${id}`}
-                id={`card-${id}`}
-                data-testid={`card-${id}`}
-                layout // Framer Motion settings
-                initial='initial'
-                animate='animate'
-                exit='exit'
-                variants={cardAnimation}
-                transition={cardAnimation.transition}
-                drag
-                dragConstraints={dragConstraints}
-                dragTransition={{ bounceStiffness: 10, bounceDamping: 200 }}
-                whileTap={{ cursor: "grabbing" }}
-            >
+        <motion.div
+            ref={ideaCardRef}
+            className={`card__container ${draggedCard?.card.id === ideaCard.id ? "card__container--dragged" : ""} ${
+                dragOverCard?.card.id === ideaCard.id
+                    ? "card__container--drag-over"
+                    : ""
+            }`}
+            layout // Framer Motion settings
+            initial='initial'
+            animate='animate'
+            exit='exit'
+            variants={cardAnimation}
+            transition={cardAnimation.transition}
+            data-testid={`card-${id}`}
+            draggable
+            onDragStart={() => onDragStart(ideaCard)}
+            onDragOver={(e) => {
+                e.preventDefault();
+                onDragOver(ideaCard);
+            }}
+            onDragEnd={() => onDragEnd()}
+        >
+            {draggedCard && (
+                <DragIndicator
+                    isActive={draggedCard?.index - 1 === index}
+                    previousIndex={index - 1}
+                    nextIndex={index + 1}
+                />
+            )}
+
+            <div className={`card ${isNewCard ? "card--new" : ""}`}>
                 {/* DELETE BUTTON */}
                 <ButtonClose
                     classes={"card__close-button"}
@@ -189,7 +194,33 @@ export default function Card({
                     </p>
                 </div>
                 {showToast && <Toast showToast={handleToggleToast} />}
-            </motion.div>
-        </AnimatePresence>
+            </div>
+
+            {draggedCard && (
+                <DragIndicator
+                    isActive={draggedCard?.index + 1 === index}
+                    previousIndex={index - 1}
+                    nextIndex={index + 1}
+                />
+            )}
+        </motion.div>
+    );
+}
+
+function DragIndicator({
+    isActive,
+    previousIndex,
+    nextIndex,
+}: {
+    isActive: boolean;
+    previousIndex?: number;
+    nextIndex?: number;
+}) {
+    return (
+        <div
+            className={`card__drag-indicator ${isActive ? "opacity-100" : "opacity-0"}`}
+            data-previous={previousIndex}
+            data-next={nextIndex}
+        ></div>
     );
 }

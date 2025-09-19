@@ -13,26 +13,18 @@ import {
 
 import { Card, Header } from "./components/";
 
-import { IdeaCard, SortOption } from "./types";
+import { IdeaCard, SortOption, DragElement } from "./types";
 
 function App() {
     const [isFirstLoad, setIsFirstLoad] = useState(true);
     const [sortChoice, setSortChoice] = useState<SortOption | null>(null);
-    const [containerDimensions, setContainerDimensions] =
-        useState<DOMRect | null>(null);
+    const [draggedCard, setDraggedCard] = useState<DragElement>(null);
+    const [dragOverCard, setDragOverCard] = useState<DragElement>(null);
     const cardsListContainerRef = useRef<HTMLDivElement | null>(null);
 
     const [ideaCardCollection, setIdeaCardCollection] = useState<IdeaCard[]>(
         []
     );
-
-    useEffect(() => {
-        if (!cardsListContainerRef.current) return;
-
-        const containerElement = cardsListContainerRef.current;
-        const containerDimensions = containerElement.getBoundingClientRect();
-        setContainerDimensions(containerDimensions);
-    }, [cardsListContainerRef]);
 
     // CREATE NEW IDEA
     const handleCreateIdea = () => {
@@ -73,6 +65,51 @@ function App() {
             setIdeaCardCollection(sortedCollection);
             setSortChoice(option);
         }
+    };
+
+    // DRAG AND DROP REORDERING
+
+    const handleDragStart = (card: IdeaCard, index: number) => {
+        setDraggedCard({ card, index });
+    };
+
+    const handleDragOver = (card: IdeaCard, index: number) => {
+        setDragOverCard({ card, index });
+    };
+
+    const handleDragEnd = () => {
+        if (draggedCard && dragOverCard) {
+            reorderCards(draggedCard, dragOverCard);
+        }
+        setDraggedCard(null);
+        setDragOverCard(null);
+    };
+
+    const reorderCards = (
+        draggedCard: DragElement,
+        targetCard: DragElement
+    ) => {
+        if (
+            !draggedCard ||
+            !targetCard ||
+            draggedCard.card.id === targetCard.card.id
+        )
+            return; // No need to reorder if the same card
+
+        const updatedCollection = [...ideaCardCollection];
+        const draggedIndex = updatedCollection.findIndex(
+            (card) => card.id === draggedCard.card.id
+        );
+        const targetIndex = updatedCollection.findIndex(
+            (card) => card.id === targetCard.card.id
+        );
+
+        // Remove dragged card from its original position
+        updatedCollection.splice(draggedIndex, 1);
+        // Insert dragged card at the target position
+        updatedCollection.splice(targetIndex, 0, draggedCard.card);
+
+        setIdeaCardCollection(updatedCollection);
     };
 
     // RETRIEVE CARDS FROM LOCAL STORAGE ON FIRST LOAD
@@ -117,25 +154,39 @@ function App() {
                         </div>
                     ) : (
                         // * Idea cards * //
-                        ideaCardCollection.map((card) => {
-                            return (
-                                <Card
-                                    key={`ideaCard-${card.id}`}
-                                    ideaCard={card}
-                                    containerDimensions={containerDimensions}
-                                    onSaveIdea={(newTitle, newDescription) =>
-                                        handleSaveIdea(
-                                            card,
+                        ideaCardCollection.map(
+                            (card: IdeaCard, index: number) => {
+                                return (
+                                    <Card
+                                        key={`ideaCard-${card.id}`}
+                                        ideaCard={card}
+                                        onDragStart={() =>
+                                            handleDragStart(card, index)
+                                        }
+                                        onDragOver={() =>
+                                            handleDragOver(card, index)
+                                        }
+                                        onDragEnd={() => handleDragEnd()}
+                                        draggedCard={draggedCard}
+                                        dragOverCard={dragOverCard}
+                                        index={index}
+                                        onSaveIdea={(
                                             newTitle,
                                             newDescription
-                                        )
-                                    }
-                                    onDeleteIdea={() =>
-                                        handleDeleteIdea(card.id)
-                                    }
-                                />
-                            );
-                        })
+                                        ) =>
+                                            handleSaveIdea(
+                                                card,
+                                                newTitle,
+                                                newDescription
+                                            )
+                                        }
+                                        onDeleteIdea={() =>
+                                            handleDeleteIdea(card.id)
+                                        }
+                                    />
+                                );
+                            }
+                        )
                     )}
                 </motion.div>
             </main>

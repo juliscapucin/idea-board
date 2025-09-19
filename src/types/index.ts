@@ -8,4 +8,9 @@ type IdeaCard = {
 
 type SortOption = "Title" | "Date";
 
-export type { IdeaCard, SortOption };
+type DragElement = {
+    card: IdeaCard;
+    index: number;
+} | null;
+
+export type { IdeaCard, SortOption, DragElement };
