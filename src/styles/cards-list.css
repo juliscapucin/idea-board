@@ -1,6 +1,8 @@
 .cards-list__container {
     position: relative;
     display: flex;
+    align-items: start;
+    justify-content: start;
     flex-wrap: wrap;
     row-gap: var(--space-sm);
     background-color: var(--color-primary);
